@@ -14,7 +14,7 @@
 <style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
 <title>ติว TOEIC 700</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Thai:wght@400;500;700&family=Permanent+Marker&family=Kanit:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Thai:wght@400;500;700&family=Stardos+Stencil:wght@700&family=Kanit:wght@600&display=swap">
 <style>
 /* Layout: ใบคำตอบข้อสอบ (answer sheet): คอลัมน์เดียว ตัวเลือกเป็นวงกลม OMR และสเกลคะแนน 10-990 พร้อมขีดเป้า 700 */
 :root{
@@ -177,7 +177,7 @@ td.n{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
   --bg:#121111; --surface:#1C1A1A; --ink:#F4F0E6; --muted:#B9B1A2; --line:#3B3836;
   --accent:#E3262F; --accent-ink:#FFFFFF; --soft:#2C1719;
   --good:#5BD98F; --good-bg:#10261A; --warn:#F2B84B; --warn-bg:#2B2210; --bad:#FF6B6B; --bad-bg:#2E1414;
-  --f-head:'Permanent Marker','Kanit','Noto Sans Thai',system-ui,sans-serif;
+  --f-head:'Kanit','Noto Sans Thai',system-ui,sans-serif;
   color-scheme:dark;
 }
 :root[data-punk="1"] .brand{padding-bottom:14px; border-bottom:8px solid transparent; border-image:repeating-linear-gradient(90deg,var(--ink) 0 8px,var(--bg) 8px 16px) 8}
@@ -190,6 +190,22 @@ td.n{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
 .coach svg{flex:none; background:var(--surface); border:2px solid var(--accent); border-radius:12px; padding:3px; box-shadow:3px 3px 0 var(--accent)}
 .coach .say{min-width:0; background:var(--surface); color:var(--ink); border:2px solid var(--accent); border-radius:2px 14px 14px 14px; padding:8px 12px; font-weight:600; font-size:15px; line-height:1.45; box-shadow:3px 3px 0 var(--accent)}
 .coach .who{display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700}
+/* punk mode v2: xerox zine / stencil / spray paint */
+:root[data-punk="1"][data-punk]{ --f-head:'Stardos Stencil','Kanit','Noto Sans Thai',system-ui,sans-serif; --tape:rgba(232,220,190,.82); }
+:root[data-punk="1"] body{background-color:var(--bg); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+:root[data-punk="1"] h1, :root[data-punk="1"] h2{letter-spacing:.02em}
+:root[data-punk="1"] .brand h1{font-size:26px; text-transform:uppercase}
+:root[data-punk="1"] .brand > :first-child{font-family:'Stardos Stencil','Kanit',sans-serif; font-size:22px; background:var(--accent); color:var(--accent-ink); border-radius:2px; box-shadow:none; transform:rotate(-5deg); outline:2px dashed var(--ink); outline-offset:3px}
+:root[data-punk="1"] h2{display:inline-block; padding:0 6px; background:linear-gradient(176deg, transparent 52%, var(--accent) 53%, var(--accent) 86%, transparent 87%)}
+:root[data-punk="1"] .card{position:relative; border:2px solid var(--ink); border-radius:2px; box-shadow:5px 5px 0 rgba(0,0,0,.55)}
+:root[data-punk="1"] .card::before{content:""; position:absolute; top:-9px; left:22px; width:62px; height:18px; background:var(--tape); transform:rotate(-6deg); opacity:.9; pointer-events:none}
+:root[data-punk="1"] .grid .card:nth-child(even)::before{left:auto; right:22px; transform:rotate(5deg)}
+:root[data-punk="1"] .btn{border-radius:2px; font-weight:700}
+:root[data-punk="1"] .btn.primary{text-transform:uppercase; letter-spacing:.06em; border-radius:2px}
+:root[data-punk="1"] nav a{border-radius:2px; border-width:2px}
+:root[data-punk="1"] nav a[aria-current="page"]{transform:rotate(-2deg)}
+:root[data-punk="1"] .coach .say{border-radius:2px; border-color:var(--ink); box-shadow:4px 4px 0 var(--accent)}
+:root[data-punk="1"] .coach svg{border-radius:2px; border-color:var(--ink)}
 @media (prefers-reduced-motion: no-preference){ .coach.pop{animation:coachIn .28s cubic-bezier(.2,1.4,.4,1)} @keyframes coachIn{from{opacity:0; transform:translate(-50%,-18px) rotate(-2deg)} to{opacity:1; transform:translate(-50%,0)}} }
 
 .scene{border-radius:12px; overflow:hidden; border:1px solid var(--line); background:#E6ECF8}
