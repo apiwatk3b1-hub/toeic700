@@ -232,20 +232,6 @@ td.n{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
 :root[data-toon="1"] .coach .say{border:3px solid var(--ink); border-radius:18px 14px 20px 6px; box-shadow:3px 3px 0 var(--shade); background:var(--surface)}
 :root[data-toon="1"] .coach .who{color:var(--accent)}
 :root[data-toon="1"] .coach .face svg{background:var(--mustard); border:3px solid var(--ink); border-radius:50%; box-shadow:3px 3px 0 var(--shade)}
-/* emo-punk sketchbook (original): toon structure + dark palette */
-:root[data-emo="1"][data-toon="1"][data-emo]{
-  --bg:#16131B; --surface:#201C27; --ink:#F3EEF7; --muted:#B4ABBF; --line:#F3EEF7;
-  --accent:#FF3D6E; --accent-ink:#FFFFFF; --soft:#3A2440;
-  --good:#5BE0B0; --good-bg:#12302A; --warn:#FFC266; --warn-bg:#33270F; --bad:#FF6B8B; --bad-bg:#3A1621;
-  --mustard:#8B5CF6; --shade:#FF3D6E;
-  color-scheme:dark;
-}
-:root[data-emo="1"] body{background-image:radial-gradient(rgba(243,238,247,.10) 1.2px, transparent 1.3px); background-size:22px 22px}
-:root[data-emo="1"] .brand{border-bottom:8px solid transparent; border-image:repeating-linear-gradient(90deg,var(--ink) 0 8px,var(--bg) 8px 16px) 8; padding-bottom:14px}
-:root[data-emo="1"] .brand > :first-child{border-color:var(--ink); box-shadow:3px 3px 0 #8B5CF6}
-:root[data-emo="1"] .btn.primary{border-color:var(--ink)}
-:root[data-emo="1"] .card::after{border-color:var(--ink)}
-:root[data-emo="1"] h2{color:var(--ink)}
 .coach .faces{display:flex; flex:none}
 .coach .faces.trio .face + .face{margin-left:-16px}
 .coach .face{display:block; line-height:0}
@@ -1653,15 +1639,16 @@ function render(){
   if(r!=='practice' && r!=='vocab' && r!=='game'){ stopAudio(); }
 }
 /* ---------- punk mode: original coach character "Max Fuzz" + gig-poster theme ---------- */
-var SKINS=['toon','emo','punk',''], SKINN={emo:'อีโมพังก์',toon:'การ์ตูน',punk:'พังก์','':'ปกติ'};
+var SKINS=['toon','punk',''], SKINN={toon:'การ์ตูน',punk:'พังก์','':'ปกติ'};
+if(SKINS.indexOf(state.skin2)<0) state.skin2='toon';
 var COACH={
   start:['เสียบแจ็คแล้ว! One, two, three, four!','ซาวด์เช็คเสร็จ ลุยเลย!','ไฟเวทีเปิดแล้ว เล่นให้มันส์!'],
   ok:['เป๊ะ! ริฟนี้ผ่าน','Nice! โน้ตตรงเป๊ะ','ถูก! คนดูกรี๊ดแล้ว','แจ่ม! เก็บไปอีกหนึ่ง','Yeah! จังหวะแน่นมาก'],
   combo:['ตึง ตึง แช่! คอมโบ x{n}!','x{n} ติดกัน! กลองรัวไม่หยุดแล้ว','x{n}! ไม้กลองจะหักแล้วเนี่ย!'],
-  bad:['ผิดข้อนี้ใจสลายนิดนึง… แต่เดี๋ยวก็หาย จำเฉลยไว้นะ','ความเศร้าคือเชื้อเพลิง ข้อหน้าเอาคืน','Even the longest night ends. ข้อหน้าเอาใหม่','ไม่เป็นไร เขียนลงสมุดดำไว้ แล้วไปต่อ'],
+  bad:['พลาดได้ อ่านเฉลยแล้วจำไว้ ข้อหน้าเอาคืน','ไม่เป็นไร! คอร์ดเพี้ยนนิดเดียว ไปต่อ','จดข้อนี้ไว้ รอบหน้าไม่พลาดแน่','No worries! ข้อหน้าเอาใหม่'],
   level:['ทั้งวงขึ้นเวที! LEVEL UP!','LEVEL UP! ทัวร์รอบใหม่ เราไปด้วยกัน'],
   win:['จบโชว์สวย! Stage dive ได้เลย','ทั้งฮอลล์ลุกขึ้นยืน! วงเราภูมิใจในตัวนาย'],
-  lose:['ไฟดับกลางโชว์… ไม่เป็นไร เราซ้อมใหม่ด้วยกัน','วันนี้มืดหน่อย แต่พรุ่งนี้เราจะกลับขึ้นเวที']
+  lose:['ไฟดับกลางโชว์ ไม่เป็นไร ซ้อมใหม่แล้วกลับขึ้นเวที','โชว์นี้ยังไม่ปัง รอบหน้าเอาให้ทั้งฮอลล์ลุก!']
 };
 var BAND={
   max:{n:'Max Fuzz · กีตาร์',svg:'<svg viewBox="0 0 48 52" width="44" height="48" aria-hidden="true"><path d="M14 9 L17 1 L20 8 L24 0 L27 8 L31 1 L33 9 Z" fill="#1B1720"/><path d="M24 50 C10 38 3 26 4 16 C5 10 13 8 24 8 C35 8 43 10 44 16 C45 26 38 38 24 50 Z" fill="var(--accent)" stroke="#1B1720" stroke-width="2.5"/><path d="M8 17 Q16 9 30 12 Q22 14 18 22 Z" fill="#1B1720"/><circle cx="31" cy="20" r="2.6" fill="#1B1720"/><path d="M33 19 L37 16.5" stroke="#1B1720" stroke-width="2" stroke-linecap="round"/><path d="M26 25 L20 33 L25 33 L21 42 L30 30 L25 30 L28 25 Z" fill="#1B1720"/></svg>'},
@@ -1687,8 +1674,8 @@ function coach(kind){
 }
 function applyPunk(){ try{ var r=document.documentElement; if(!r||!r.setAttribute) return; var k=state.skin2;
   if(k==='punk') r.setAttribute('data-punk','1'); else r.removeAttribute('data-punk');
-  if(k==='toon'||k==='emo') r.setAttribute('data-toon','1'); else r.removeAttribute('data-toon');
-  if(k==='emo') r.setAttribute('data-emo','1'); else r.removeAttribute('data-emo'); }catch(e){} }
+  if(k==='toon') r.setAttribute('data-toon','1'); else r.removeAttribute('data-toon');
+  r.removeAttribute('data-emo'); }catch(e){} }
 function togglePunk(){ var i=SKINS.indexOf(state.skin2); state.skin2=SKINS[(i+1)%SKINS.length]; save(); applyPunk(); if(state.skin2) coach('start'); else { var el=$('#coach'); if(el) el.hidden=true; } render(); }
 (function(){
   var _sfx=sfx; sfx=function(k){ coach(k); _sfx(k); };
