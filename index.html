@@ -747,7 +747,7 @@ var state = {
   badges: store.get('badges', {}),
   snd: store.get('snd', true),
   maxCombo: store.get('maxCombo', 0),
-  skin: store.get('skin', 'emo')
+  skin2: store.get('skin2', 'toon')
 };
 state.user.forEach(function(it){ ITEMS.push(it); });
 function save(){ for(var k in state){ if(k!=='user') store.set(k, state[k]); } }
@@ -1616,7 +1616,7 @@ function viewGame(){
   if(M) return viewMatch();
   var b=state.best;
   function card(t,d,s,fn,label){ return '<div class="card"><div><h3>'+t+'</h3><p class="muted">'+d+'</p>'+(s?'<p class="mono" style="font-size:13px; margin-top:6px">'+s+'</p>':'')+'</div><button class="btn primary" onclick="'+fn+'">'+label+'</button></div>'; }
-  return '<div class="stack"><div class="row"><h2 style="font-size:20px">มินิเกม</h2><button class="btn small" onclick="toggleSnd()" aria-pressed="'+(state.snd?'true':'false')+'">เสียงเอฟเฟกต์: '+(state.snd?'เปิด':'ปิด')+'</button><button class="btn small" onclick="togglePunk()">ธีม: '+SKINN[state.skin]+'</button></div>'+
+  return '<div class="stack"><div class="row"><h2 style="font-size:20px">มินิเกม</h2><button class="btn small" onclick="toggleSnd()" aria-pressed="'+(state.snd?'true':'false')+'">เสียงเอฟเฟกต์: '+(state.snd?'เปิด':'ปิด')+'</button><button class="btn small" onclick="togglePunk()">ธีม: '+SKINN[state.skin2]+'</button></div>'+
     '<p class="muted">เล่นแล้วได้ XP เลื่อนเลเวลและเก็บเหรียญ คำที่ตอบผิดจะกลับมาถามบ่อยขึ้นในโหมดฝึกศัพท์</p><div class="grid menu">'+
     card('Word Rush','เห็นความหมายภาษาไทย รีบเลือกคำอังกฤษให้ทัน 60 วินาที ถูกติดกันได้คะแนนคูณ ผิดเสียเวลา 3 วินาที','สถิติ '+(b.rush||0)+' คำ','startRush()','เริ่มเล่น')+
     card('จับคู่ศัพท์','จับคู่คำอังกฤษกับความหมายไทย 6 คู่ ยิ่งเร็วและพลาดน้อย ยิ่งได้ XP มาก',(b.matchMiss===undefined?'ยังไม่เคยเล่น':'พลาดน้อยสุด '+b.matchMiss+' ครั้ง · เร็วสุด '+mmss(b.matchTime)),'startMatch()','เริ่มเล่น')+
@@ -1653,7 +1653,7 @@ function render(){
   if(r!=='practice' && r!=='vocab' && r!=='game'){ stopAudio(); }
 }
 /* ---------- punk mode: original coach character "Max Fuzz" + gig-poster theme ---------- */
-var SKINS=['emo','toon','punk',''], SKINN={emo:'อีโมพังก์',toon:'การ์ตูน',punk:'พังก์','':'ปกติ'};
+var SKINS=['toon','emo','punk',''], SKINN={emo:'อีโมพังก์',toon:'การ์ตูน',punk:'พังก์','':'ปกติ'};
 var COACH={
   start:['เสียบแจ็คแล้ว! One, two, three, four!','ซาวด์เช็คเสร็จ ลุยเลย!','ไฟเวทีเปิดแล้ว เล่นให้มันส์!'],
   ok:['เป๊ะ! ริฟนี้ผ่าน','Nice! โน้ตตรงเป๊ะ','ถูก! คนดูกรี๊ดแล้ว','แจ่ม! เก็บไปอีกหนึ่ง','Yeah! จังหวะแน่นมาก'],
@@ -1673,7 +1673,7 @@ var coachT=null;
 function pickLine(a){ return a[Math.floor(Math.random()*a.length)]; }
 function coachCombo(){ var c=0; if(R&&!R.over) c=R.combo; else if(P&&P.game) c=P.game.combo; return c||0; }
 function coach(kind){
-  if(!state.skin || kind==='tap') return;
+  if(!state.skin2 || kind==='tap') return;
   try{
     var el=$('#coach'); if(!el) return;
     var line, c=coachCombo(), who=['max'];
@@ -1685,11 +1685,11 @@ function coach(kind){
     clearTimeout(coachT); coachT=setTimeout(function(){ el.hidden=true; },who.length>1?3200:2600);
   }catch(e){}
 }
-function applyPunk(){ try{ var r=document.documentElement; if(!r||!r.setAttribute) return; var k=state.skin;
+function applyPunk(){ try{ var r=document.documentElement; if(!r||!r.setAttribute) return; var k=state.skin2;
   if(k==='punk') r.setAttribute('data-punk','1'); else r.removeAttribute('data-punk');
   if(k==='toon'||k==='emo') r.setAttribute('data-toon','1'); else r.removeAttribute('data-toon');
   if(k==='emo') r.setAttribute('data-emo','1'); else r.removeAttribute('data-emo'); }catch(e){} }
-function togglePunk(){ var i=SKINS.indexOf(state.skin); state.skin=SKINS[(i+1)%SKINS.length]; save(); applyPunk(); if(state.skin) coach('start'); else { var el=$('#coach'); if(el) el.hidden=true; } render(); }
+function togglePunk(){ var i=SKINS.indexOf(state.skin2); state.skin2=SKINS[(i+1)%SKINS.length]; save(); applyPunk(); if(state.skin2) coach('start'); else { var el=$('#coach'); if(el) el.hidden=true; } render(); }
 (function(){
   var _sfx=sfx; sfx=function(k){ coach(k); _sfx(k); };
   var _fg=finishGame; finishGame=function(){ var was=P&&P.game&&P.game.done; _fg(); if(!was&&P&&P.game&&P.game.done) coach(P.game.lives>0?'win':'lose'); };
