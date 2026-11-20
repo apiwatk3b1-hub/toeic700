@@ -14,7 +14,7 @@
 <style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
 <title>ติว TOEIC 700</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Thai:wght@400;500;700&family=Stardos+Stencil:wght@700&family=Kanit:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Thai:wght@400;500;700&family=Stardos+Stencil:wght@700&family=Mali:wght@500;700&family=Kanit:wght@600&display=swap">
 <style>
 /* Layout: ใบคำตอบข้อสอบ (answer sheet): คอลัมน์เดียว ตัวเลือกเป็นวงกลม OMR และสเกลคะแนน 10-990 พร้อมขีดเป้า 700 */
 :root{
@@ -206,6 +206,32 @@ td.n{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
 :root[data-punk="1"] nav a[aria-current="page"]{transform:rotate(-2deg)}
 :root[data-punk="1"] .coach .say{border-radius:2px; border-color:var(--ink); box-shadow:4px 4px 0 var(--accent)}
 :root[data-punk="1"] .coach svg{border-radius:2px; border-color:var(--ink)}
+/* cartoon sketchbook mode (original) */
+:root[data-toon="1"][data-toon]{
+  --bg:#FBF5E6; --surface:#FFFDF6; --ink:#1F1B16; --muted:#5E564A; --line:#1F1B16;
+  --accent:#E5462B; --accent-ink:#FFFFFF; --soft:#FCE7A6;
+  --good:#1E7F72; --good-bg:#D8F1EA; --warn:#9A5B00; --warn-bg:#FCEBC4; --bad:#C2321E; --bad-bg:#FCE0D9;
+  --mustard:#F4B63F; --teal:#2A9D8F;
+  --f-head:'Mali','Noto Sans Thai',system-ui,sans-serif; --f-body:'Mali','Noto Sans Thai',system-ui,sans-serif;
+  color-scheme:light;
+}
+:root[data-toon="1"] body{background-color:var(--bg); background-image:radial-gradient(rgba(31,27,22,.13) 1.2px, transparent 1.3px); background-size:22px 22px}
+:root[data-toon="1"] .brand{position:relative; padding-bottom:10px}
+:root[data-toon="1"] .brand > :first-child{background:var(--accent); color:#fff; border:3px solid var(--ink); border-radius:50% 46% 52% 44%; box-shadow:3px 3px 0 var(--ink); transform:rotate(-6deg)}
+:root[data-toon="1"] .brand::after{content:""; position:absolute; right:4px; top:-4px; width:46px; height:46px; pointer-events:none; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 46'%3E%3Cpath d='M23 4l4.6 11.4L40 16.6l-9.6 8 3 12.2L23 30.2 12.6 36.8l3-12.2-9.6-8 12.4-1.2z' fill='%23F4B63F' stroke='%231F1B16' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M38 4c2 2 3 4 2 7M6 34c-2 2-2 5 0 7' fill='none' stroke='%231F1B16' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/contain; transform:rotate(12deg)}
+:root[data-toon="1"] h2{display:inline-block; padding:0 4px; background:linear-gradient(transparent 58%, var(--mustard) 58%, var(--mustard) 90%, transparent 90%)}
+:root[data-toon="1"] .card{position:relative; border-color:transparent; border-radius:14px; box-shadow:4px 5px 0 var(--ink)}
+:root[data-toon="1"] .card::after{content:""; position:absolute; inset:-2px; border:3px solid var(--ink); border-radius:16px 12px 18px 10px; filter:url(#wob); pointer-events:none}
+:root[data-toon="1"] .grid .card:nth-child(odd){transform:rotate(-.4deg)}
+:root[data-toon="1"] .grid .card:nth-child(even){transform:rotate(.45deg)}
+:root[data-toon="1"] .btn{border:2.5px solid var(--ink); border-radius:12px 9px 13px 8px; font-weight:700}
+:root[data-toon="1"] .btn.primary{background:var(--accent); color:#fff; box-shadow:3px 3px 0 var(--ink)}
+:root[data-toon="1"] .btn.primary:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink)}
+:root[data-toon="1"] nav a{border:2.5px solid var(--ink); color:var(--ink); border-radius:999px 820px 999px 760px}
+:root[data-toon="1"] nav a[aria-current="page"]{background:var(--mustard); color:var(--ink); border-color:var(--ink); box-shadow:2px 2px 0 var(--ink)}
+:root[data-toon="1"] .coach .say{border:3px solid var(--ink); border-radius:18px 14px 20px 6px; box-shadow:3px 3px 0 var(--ink); background:var(--surface)}
+:root[data-toon="1"] .coach .who{color:var(--accent)}
+:root[data-toon="1"] .coach svg{background:var(--mustard); border:3px solid var(--ink); border-radius:50%; box-shadow:3px 3px 0 var(--ink)}
 @media (prefers-reduced-motion: no-preference){ .coach.pop{animation:coachIn .28s cubic-bezier(.2,1.4,.4,1)} @keyframes coachIn{from{opacity:0; transform:translate(-50%,-18px) rotate(-2deg)} to{opacity:1; transform:translate(-50%,0)}} }
 
 .scene{border-radius:12px; overflow:hidden; border:1px solid var(--line); background:#E6ECF8}
@@ -259,7 +285,7 @@ input[type=file]{max-width:100%; font:14px var(--f-body); color:var(--ink)}
   <main id="app"></main>
 </div>
 
-<div id="toast" class="toast" role="status" aria-live="polite"></div><div id="coach" class="coach" role="status" aria-live="polite" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div><div id="coach" class="coach" role="status" aria-live="polite" hidden></div><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="wob"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <script>
 var G = [
  {id:'g1',cat:'บุพบท',q:'The manager asked all employees to submit their reports ______ Friday.',o:['by','until','during','since'],a:0,e:'by = ภายในเวลา ใช้กับกำหนดส่ง (deadline) ส่วน until ใช้กับการกระทำที่ต่อเนื่องไปจนถึงเวลานั้น'},
@@ -703,7 +729,8 @@ var state = {
   best: store.get('best', {}),
   badges: store.get('badges', {}),
   snd: store.get('snd', true),
-  maxCombo: store.get('maxCombo', 0)
+  maxCombo: store.get('maxCombo', 0),
+  skin: store.get('skin', 'toon')
 };
 state.user.forEach(function(it){ ITEMS.push(it); });
 function save(){ for(var k in state){ if(k!=='user') store.set(k, state[k]); } }
@@ -1572,7 +1599,7 @@ function viewGame(){
   if(M) return viewMatch();
   var b=state.best;
   function card(t,d,s,fn,label){ return '<div class="card"><div><h3>'+t+'</h3><p class="muted">'+d+'</p>'+(s?'<p class="mono" style="font-size:13px; margin-top:6px">'+s+'</p>':'')+'</div><button class="btn primary" onclick="'+fn+'">'+label+'</button></div>'; }
-  return '<div class="stack"><div class="row"><h2 style="font-size:20px">มินิเกม</h2><button class="btn small" onclick="toggleSnd()" aria-pressed="'+(state.snd?'true':'false')+'">เสียงเอฟเฟกต์: '+(state.snd?'เปิด':'ปิด')+'</button><button class="btn small" onclick="togglePunk()" aria-pressed="'+(state.punk?'true':'false')+'">โหมดพังก์: '+(state.punk?'เปิด':'ปิด')+'</button></div>'+
+  return '<div class="stack"><div class="row"><h2 style="font-size:20px">มินิเกม</h2><button class="btn small" onclick="toggleSnd()" aria-pressed="'+(state.snd?'true':'false')+'">เสียงเอฟเฟกต์: '+(state.snd?'เปิด':'ปิด')+'</button><button class="btn small" onclick="togglePunk()">ธีม: '+SKINN[state.skin]+'</button></div>'+
     '<p class="muted">เล่นแล้วได้ XP เลื่อนเลเวลและเก็บเหรียญ คำที่ตอบผิดจะกลับมาถามบ่อยขึ้นในโหมดฝึกศัพท์</p><div class="grid menu">'+
     card('Word Rush','เห็นความหมายภาษาไทย รีบเลือกคำอังกฤษให้ทัน 60 วินาที ถูกติดกันได้คะแนนคูณ ผิดเสียเวลา 3 วินาที','สถิติ '+(b.rush||0)+' คำ','startRush()','เริ่มเล่น')+
     card('จับคู่ศัพท์','จับคู่คำอังกฤษกับความหมายไทย 6 คู่ ยิ่งเร็วและพลาดน้อย ยิ่งได้ XP มาก',(b.matchMiss===undefined?'ยังไม่เคยเล่น':'พลาดน้อยสุด '+b.matchMiss+' ครั้ง · เร็วสุด '+mmss(b.matchTime)),'startMatch()','เริ่มเล่น')+
@@ -1609,7 +1636,7 @@ function render(){
   if(r!=='practice' && r!=='vocab' && r!=='game'){ stopAudio(); }
 }
 /* ---------- punk mode: original coach character "Max Fuzz" + gig-poster theme ---------- */
-if(state.punk===undefined) state.punk=true;
+var SKINS=['toon','punk',''], SKINN={toon:'การ์ตูน',punk:'พังก์','':'ปกติ'};
 var COACH={
   start:['เสียบแจ็คแล้ว! One, two, three, four!','ซาวด์เช็คเสร็จ ลุยเลย!','ไฟเวทีเปิดแล้ว เล่นให้มันส์!'],
   ok:['เป๊ะ! ริฟนี้ผ่าน','Nice! โน้ตตรงเป๊ะ','ถูก! คนดูกรี๊ดแล้ว','แจ่ม! เก็บไปอีกหนึ่ง','Yeah! จังหวะแน่นมาก'],
@@ -1624,7 +1651,7 @@ var coachT=null;
 function pickLine(a){ return a[Math.floor(Math.random()*a.length)]; }
 function coachCombo(){ var c=0; if(R&&!R.over) c=R.combo; else if(P&&P.game) c=P.game.combo; return c||0; }
 function coach(kind){
-  if(!state.punk || kind==='tap') return;
+  if(!state.skin || kind==='tap') return;
   try{
     var el=$('#coach'); if(!el) return;
     var line, c=coachCombo();
@@ -1635,8 +1662,8 @@ function coach(kind){
     clearTimeout(coachT); coachT=setTimeout(function(){ el.hidden=true; },2600);
   }catch(e){}
 }
-function applyPunk(){ try{ var r=document.documentElement; if(!r||!r.setAttribute) return; if(state.punk) r.setAttribute('data-punk','1'); else r.removeAttribute('data-punk'); }catch(e){} }
-function togglePunk(){ state.punk=!state.punk; save(); applyPunk(); if(state.punk) coach('start'); else { var el=$('#coach'); if(el) el.hidden=true; } render(); }
+function applyPunk(){ try{ var r=document.documentElement; if(!r||!r.setAttribute) return; if(state.skin==='punk') r.setAttribute('data-punk','1'); else r.removeAttribute('data-punk'); if(state.skin==='toon') r.setAttribute('data-toon','1'); else r.removeAttribute('data-toon'); }catch(e){} }
+function togglePunk(){ var i=SKINS.indexOf(state.skin); state.skin=SKINS[(i+1)%SKINS.length]; save(); applyPunk(); if(state.skin) coach('start'); else { var el=$('#coach'); if(el) el.hidden=true; } render(); }
 (function(){
   var _sfx=sfx; sfx=function(k){ coach(k); _sfx(k); };
   var _fg=finishGame; finishGame=function(){ var was=P&&P.game&&P.game.done; _fg(); if(!was&&P&&P.game&&P.game.done) coach(P.game.lives>0?'win':'lose'); };
