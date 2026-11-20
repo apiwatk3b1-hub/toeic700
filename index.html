@@ -1466,6 +1466,26 @@ function viewMatch(){
 
 /* ---------- game tab ---------- */
 function leaveGame(){ R=null; M=null; render(); }
+
+/* ---------- my own music (local file, never uploaded) ---------- */
+var BGM={a:null,name:'',vol:0.5};
+function bgmLoad(inp){
+  var f=inp.files&&inp.files[0]; if(!f) return;
+  try{ if(BGM.a){ BGM.a.pause(); URL.revokeObjectURL(BGM.a.src); } }catch(e){}
+  BGM.a=new Audio(URL.createObjectURL(f)); BGM.a.loop=true; BGM.a.volume=BGM.vol; BGM.name=f.name;
+  BGM.a.play().catch(function(){}); render();
+}
+function bgmToggle(){ if(!BGM.a) return; if(BGM.a.paused) BGM.a.play().catch(function(){}); else BGM.a.pause(); render(); }
+function bgmVol(v){ BGM.vol=v/100; if(BGM.a) BGM.a.volume=BGM.vol; }
+function bgmClear(){ try{ if(BGM.a){ BGM.a.pause(); URL.revokeObjectURL(BGM.a.src); } }catch(e){} BGM.a=null; BGM.name=''; render(); }
+function bgmCard(){
+  var on=BGM.a&&!BGM.a.paused;
+  return '<div class="card"><div><h3>เพลงของฉัน</h3><p class="muted">เลือกไฟล์เพลงในเครื่องคุณเอง (เช่น mp3 ที่มีอยู่) ไว้เปิดคลอตอนเล่นเกม ไฟล์อยู่ในเครื่องเท่านั้น ไม่ถูกอัปโหลด และต้องเลือกใหม่ทุกครั้งที่เปิดแอป</p>'+
+  (BGM.a?'<p class="mono" style="font-size:13px; margin-top:6px">'+esc(BGM.name)+'</p><label class="muted" style="display:block; margin-top:8px">ความดัง <input type="range" min="0" max="100" value="'+Math.round(BGM.vol*100)+'" oninput="bgmVol(this.value)" style="width:60%"></label>':'')+
+  '</div><div class="row" style="gap:8px; flex-wrap:wrap"><label class="btn primary" style="cursor:pointer">เลือกไฟล์เพลง<input type="file" accept="audio/*" onchange="bgmLoad(this)" style="display:none"></label>'+
+  (BGM.a?'<button class="btn" onclick="bgmToggle()">'+(on?'หยุดชั่วคราว':'เล่น')+'</button><button class="btn" onclick="bgmClear()">เอาออก</button>':'')+'</div></div>';
+}
+
 function viewGame(){
   if(P && P.game) return viewPractice();
   if(R){ return R.over ? rushResult() : viewRush(); }
@@ -1478,7 +1498,7 @@ function viewGame(){
     card('จับคู่ศัพท์','จับคู่คำอังกฤษกับความหมายไทย 6 คู่ ยิ่งเร็วและพลาดน้อย ยิ่งได้ XP มาก',(b.matchMiss===undefined?'ยังไม่เคยเล่น':'พลาดน้อยสุด '+b.matchMiss+' ครั้ง · เร็วสุด '+mmss(b.matchTime)),'startMatch()','เริ่มเล่น')+
     card('Grammar Sprint','ข้อสอบ Part 5 จำนวน 10 ข้อ ข้อละ 20 วินาที มีหัวใจ 3 ดวง ผิดหรือหมดเวลาเสียหนึ่งดวง ผ่านครบได้โบนัส','สถิติ '+(b.gs||0)+' / 10','startPractice(\'gs\')','เริ่มเล่น')+
     card('Listening Ears','ฟัง Part 2 จำนวน 8 ข้อ มีหัวใจ 3 ดวง ไม่จับเวลา ฝึกหูให้ไวขึ้น','สถิติ '+(b.le||0)+' / 8','startPractice(\'le\')','เริ่มเล่น')+
-    '</div></div>';
+    bgmCard()+'</div></div>';
 }
 
 /* ---------- render ---------- */
