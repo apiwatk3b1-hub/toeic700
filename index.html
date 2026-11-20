@@ -211,27 +211,44 @@ td.n{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
   --bg:#FBF5E6; --surface:#FFFDF6; --ink:#1F1B16; --muted:#5E564A; --line:#1F1B16;
   --accent:#E5462B; --accent-ink:#FFFFFF; --soft:#FCE7A6;
   --good:#1E7F72; --good-bg:#D8F1EA; --warn:#9A5B00; --warn-bg:#FCEBC4; --bad:#C2321E; --bad-bg:#FCE0D9;
-  --mustard:#F4B63F; --teal:#2A9D8F;
+  --mustard:#F4B63F; --shade:#1F1B16; --teal:#2A9D8F;
   --f-head:'Mali','Noto Sans Thai',system-ui,sans-serif; --f-body:'Mali','Noto Sans Thai',system-ui,sans-serif;
   color-scheme:light;
 }
 :root[data-toon="1"] body{background-color:var(--bg); background-image:radial-gradient(rgba(31,27,22,.13) 1.2px, transparent 1.3px); background-size:22px 22px}
 :root[data-toon="1"] .brand{position:relative; padding-bottom:10px}
-:root[data-toon="1"] .brand > :first-child{background:var(--accent); color:#fff; border:3px solid var(--ink); border-radius:50% 46% 52% 44%; box-shadow:3px 3px 0 var(--ink); transform:rotate(-6deg)}
+:root[data-toon="1"] .brand > :first-child{background:var(--accent); color:#fff; border:3px solid var(--ink); border-radius:50% 46% 52% 44%; box-shadow:3px 3px 0 var(--shade); transform:rotate(-6deg)}
 :root[data-toon="1"] .brand::after{content:""; position:absolute; right:4px; top:-4px; width:46px; height:46px; pointer-events:none; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 46'%3E%3Cpath d='M23 4l4.6 11.4L40 16.6l-9.6 8 3 12.2L23 30.2 12.6 36.8l3-12.2-9.6-8 12.4-1.2z' fill='%23F4B63F' stroke='%231F1B16' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M38 4c2 2 3 4 2 7M6 34c-2 2-2 5 0 7' fill='none' stroke='%231F1B16' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/contain; transform:rotate(12deg)}
 :root[data-toon="1"] h2{display:inline-block; padding:0 4px; background:linear-gradient(transparent 58%, var(--mustard) 58%, var(--mustard) 90%, transparent 90%)}
-:root[data-toon="1"] .card{position:relative; border-color:transparent; border-radius:14px; box-shadow:4px 5px 0 var(--ink)}
+:root[data-toon="1"] .card{position:relative; border-color:transparent; border-radius:14px; box-shadow:4px 5px 0 var(--shade)}
 :root[data-toon="1"] .card::after{content:""; position:absolute; inset:-2px; border:3px solid var(--ink); border-radius:16px 12px 18px 10px; filter:url(#wob); pointer-events:none}
 :root[data-toon="1"] .grid .card:nth-child(odd){transform:rotate(-.4deg)}
 :root[data-toon="1"] .grid .card:nth-child(even){transform:rotate(.45deg)}
 :root[data-toon="1"] .btn{border:2.5px solid var(--ink); border-radius:12px 9px 13px 8px; font-weight:700}
-:root[data-toon="1"] .btn.primary{background:var(--accent); color:#fff; box-shadow:3px 3px 0 var(--ink)}
-:root[data-toon="1"] .btn.primary:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink)}
+:root[data-toon="1"] .btn.primary{background:var(--accent); color:#fff; box-shadow:3px 3px 0 var(--shade)}
+:root[data-toon="1"] .btn.primary:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--shade)}
 :root[data-toon="1"] nav a{border:2.5px solid var(--ink); color:var(--ink); border-radius:999px 820px 999px 760px}
-:root[data-toon="1"] nav a[aria-current="page"]{background:var(--mustard); color:var(--ink); border-color:var(--ink); box-shadow:2px 2px 0 var(--ink)}
-:root[data-toon="1"] .coach .say{border:3px solid var(--ink); border-radius:18px 14px 20px 6px; box-shadow:3px 3px 0 var(--ink); background:var(--surface)}
+:root[data-toon="1"] nav a[aria-current="page"]{background:var(--mustard); color:var(--ink); border-color:var(--ink); box-shadow:2px 2px 0 var(--shade)}
+:root[data-toon="1"] .coach .say{border:3px solid var(--ink); border-radius:18px 14px 20px 6px; box-shadow:3px 3px 0 var(--shade); background:var(--surface)}
 :root[data-toon="1"] .coach .who{color:var(--accent)}
-:root[data-toon="1"] .coach svg{background:var(--mustard); border:3px solid var(--ink); border-radius:50%; box-shadow:3px 3px 0 var(--ink)}
+:root[data-toon="1"] .coach .face svg{background:var(--mustard); border:3px solid var(--ink); border-radius:50%; box-shadow:3px 3px 0 var(--shade)}
+/* emo-punk sketchbook (original): toon structure + dark palette */
+:root[data-emo="1"][data-toon="1"][data-emo]{
+  --bg:#16131B; --surface:#201C27; --ink:#F3EEF7; --muted:#B4ABBF; --line:#F3EEF7;
+  --accent:#FF3D6E; --accent-ink:#FFFFFF; --soft:#3A2440;
+  --good:#5BE0B0; --good-bg:#12302A; --warn:#FFC266; --warn-bg:#33270F; --bad:#FF6B8B; --bad-bg:#3A1621;
+  --mustard:#8B5CF6; --shade:#FF3D6E;
+  color-scheme:dark;
+}
+:root[data-emo="1"] body{background-image:radial-gradient(rgba(243,238,247,.10) 1.2px, transparent 1.3px); background-size:22px 22px}
+:root[data-emo="1"] .brand{border-bottom:8px solid transparent; border-image:repeating-linear-gradient(90deg,var(--ink) 0 8px,var(--bg) 8px 16px) 8; padding-bottom:14px}
+:root[data-emo="1"] .brand > :first-child{border-color:var(--ink); box-shadow:3px 3px 0 #8B5CF6}
+:root[data-emo="1"] .btn.primary{border-color:var(--ink)}
+:root[data-emo="1"] .card::after{border-color:var(--ink)}
+:root[data-emo="1"] h2{color:var(--ink)}
+.coach .faces{display:flex; flex:none}
+.coach .faces.trio .face + .face{margin-left:-16px}
+.coach .face{display:block; line-height:0}
 @media (prefers-reduced-motion: no-preference){ .coach.pop{animation:coachIn .28s cubic-bezier(.2,1.4,.4,1)} @keyframes coachIn{from{opacity:0; transform:translate(-50%,-18px) rotate(-2deg)} to{opacity:1; transform:translate(-50%,0)}} }
 
 .scene{border-radius:12px; overflow:hidden; border:1px solid var(--line); background:#E6ECF8}
@@ -730,7 +747,7 @@ var state = {
   badges: store.get('badges', {}),
   snd: store.get('snd', true),
   maxCombo: store.get('maxCombo', 0),
-  skin: store.get('skin', 'toon')
+  skin: store.get('skin', 'emo')
 };
 state.user.forEach(function(it){ ITEMS.push(it); });
 function save(){ for(var k in state){ if(k!=='user') store.set(k, state[k]); } }
@@ -1636,17 +1653,22 @@ function render(){
   if(r!=='practice' && r!=='vocab' && r!=='game'){ stopAudio(); }
 }
 /* ---------- punk mode: original coach character "Max Fuzz" + gig-poster theme ---------- */
-var SKINS=['toon','punk',''], SKINN={toon:'การ์ตูน',punk:'พังก์','':'ปกติ'};
+var SKINS=['emo','toon','punk',''], SKINN={emo:'อีโมพังก์',toon:'การ์ตูน',punk:'พังก์','':'ปกติ'};
 var COACH={
   start:['เสียบแจ็คแล้ว! One, two, three, four!','ซาวด์เช็คเสร็จ ลุยเลย!','ไฟเวทีเปิดแล้ว เล่นให้มันส์!'],
   ok:['เป๊ะ! ริฟนี้ผ่าน','Nice! โน้ตตรงเป๊ะ','ถูก! คนดูกรี๊ดแล้ว','แจ่ม! เก็บไปอีกหนึ่ง','Yeah! จังหวะแน่นมาก'],
-  combo:['คอมโบ x{n}! มือกลองตามไม่ทันแล้ว','x{n} ติดกัน! Encore! Encore!','ไฟลุกแล้ว x{n}!'],
-  bad:['สายขาดนิดหน่อย เปลี่ยนสายแล้วไปต่อ','Wrong chord! อ่านเฉลยแล้วจำไว้','พลาดได้ พังก์ไม่กลัวพลาด','คอร์ดเพี้ยนไปหน่อย รอบหน้าเอาใหม่'],
-  level:['เลเวลอัป! วงเราได้เล่นเวทีใหญ่ขึ้นแล้ว','LEVEL UP! ทัวร์รอบใหม่มาแล้ว'],
-  win:['จบโชว์สวย! Stage dive ได้เลย','ทั้งฮอลล์ลุกขึ้นยืน! เก่งมาก'],
-  lose:['ไฟดับกลางโชว์... ซ้อมอีกนิดแล้วกลับขึ้นเวที','โชว์นี้ยังไม่ปัง แต่วงดังทุกวงก็เคยล่มมาก่อน']
+  combo:['ตึง ตึง แช่! คอมโบ x{n}!','x{n} ติดกัน! กลองรัวไม่หยุดแล้ว','x{n}! ไม้กลองจะหักแล้วเนี่ย!'],
+  bad:['ผิดข้อนี้ใจสลายนิดนึง… แต่เดี๋ยวก็หาย จำเฉลยไว้นะ','ความเศร้าคือเชื้อเพลิง ข้อหน้าเอาคืน','Even the longest night ends. ข้อหน้าเอาใหม่','ไม่เป็นไร เขียนลงสมุดดำไว้ แล้วไปต่อ'],
+  level:['ทั้งวงขึ้นเวที! LEVEL UP!','LEVEL UP! ทัวร์รอบใหม่ เราไปด้วยกัน'],
+  win:['จบโชว์สวย! Stage dive ได้เลย','ทั้งฮอลล์ลุกขึ้นยืน! วงเราภูมิใจในตัวนาย'],
+  lose:['ไฟดับกลางโชว์… ไม่เป็นไร เราซ้อมใหม่ด้วยกัน','วันนี้มืดหน่อย แต่พรุ่งนี้เราจะกลับขึ้นเวที']
 };
-var COACH_SVG='<svg viewBox="0 0 48 52" width="44" height="48" aria-hidden="true"><path d="M14 9 L17 1 L20 8 L24 0 L27 8 L31 1 L33 9 Z" fill="var(--ink)"/><path d="M24 50 C10 38 3 26 4 16 C5 10 13 8 24 8 C35 8 43 10 44 16 C45 26 38 38 24 50 Z" fill="var(--accent)" stroke="var(--ink)" stroke-width="2.5"/><circle cx="17" cy="20" r="2.6" fill="var(--ink)"/><circle cx="31" cy="20" r="2.6" fill="var(--ink)"/><path d="M26 25 L20 33 L25 33 L21 42 L30 30 L25 30 L28 25 Z" fill="var(--ink)"/></svg>';
+var BAND={
+  max:{n:'Max Fuzz · กีตาร์',svg:'<svg viewBox="0 0 48 52" width="44" height="48" aria-hidden="true"><path d="M14 9 L17 1 L20 8 L24 0 L27 8 L31 1 L33 9 Z" fill="#1B1720"/><path d="M24 50 C10 38 3 26 4 16 C5 10 13 8 24 8 C35 8 43 10 44 16 C45 26 38 38 24 50 Z" fill="var(--accent)" stroke="#1B1720" stroke-width="2.5"/><path d="M8 17 Q16 9 30 12 Q22 14 18 22 Z" fill="#1B1720"/><circle cx="31" cy="20" r="2.6" fill="#1B1720"/><path d="M33 19 L37 16.5" stroke="#1B1720" stroke-width="2" stroke-linecap="round"/><path d="M26 25 L20 33 L25 33 L21 42 L30 30 L25 30 L28 25 Z" fill="#1B1720"/></svg>'},
+  bam:{n:'Bam · กลอง',svg:'<svg viewBox="0 0 48 52" width="44" height="48" aria-hidden="true"><path d="M5 46 L41 8 M43 46 L7 8" stroke="#1B1720" stroke-width="6" stroke-linecap="round"/><path d="M5 46 L41 8 M43 46 L7 8" stroke="#D9A066" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="29" r="14" fill="#F3DCC8" stroke="#1B1720" stroke-width="2.5"/><path d="M9.5 26 L11 12 L16.5 18 L19.5 7 L24.5 15.5 L30 6 L31.5 17 L37.5 11 L38.5 26 Q24 19 9.5 26Z" fill="#1B1720"/><path d="M10.5 24.5 Q24 18.5 37.5 24.5 L37.2 28.5 Q24 22.5 10.8 28.5Z" fill="var(--accent)" stroke="#1B1720" stroke-width="1.5"/><circle cx="19" cy="32" r="1.9" fill="#1B1720"/><circle cx="29" cy="32" r="1.9" fill="#1B1720"/><path d="M18.5 37 Q24 42 29.5 37" fill="none" stroke="#1B1720" stroke-width="2.2" stroke-linecap="round"/></svg>'},
+  ivy:{n:'Ivy · เบส',svg:'<svg viewBox="0 0 48 52" width="44" height="48" aria-hidden="true"><path d="M8 30 Q6 11 24 10 Q42 11 40 30 L41 47 L35 41 L31 47 L27 41 L22 47 L18 41 L14 47 L7 41Z" fill="#1B1720"/><ellipse cx="24" cy="29" rx="12" ry="13" fill="#F6E6DA" stroke="#1B1720" stroke-width="2.5"/><path d="M11.5 27 Q13 11.5 30 12.5 Q38.5 14.5 37.5 22 Q28 18 22 24.5 Q17 30.5 11.5 35Z" fill="#1B1720"/><path d="M25 14 Q31 15.5 34 21" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/><ellipse cx="29" cy="30" rx="2.2" ry="2.7" fill="#1B1720"/><path d="M31 28.8 L34.5 26.5" stroke="#1B1720" stroke-width="2" stroke-linecap="round"/><path d="M21 37.2 Q24 38.8 27 37.2" fill="none" stroke="#6E2A4A" stroke-width="2.6" stroke-linecap="round"/><path d="M11 38 l1.2 2.6 2.8.3-2.1 1.9.6 2.8-2.5-1.4-2.5 1.4.6-2.8-2.1-1.9 2.8-.3z" fill="var(--accent)" stroke="#1B1720" stroke-width=".8"/></svg>'}
+};
+var COACH_SVG=BAND.max.svg;
 var coachT=null;
 function pickLine(a){ return a[Math.floor(Math.random()*a.length)]; }
 function coachCombo(){ var c=0; if(R&&!R.over) c=R.combo; else if(P&&P.game) c=P.game.combo; return c||0; }
@@ -1654,15 +1676,19 @@ function coach(kind){
   if(!state.skin || kind==='tap') return;
   try{
     var el=$('#coach'); if(!el) return;
-    var line, c=coachCombo();
-    if(kind==='ok' && c>=3 && c%3===0) line=pickLine(COACH.combo).replace('{n}',c);
-    else line=pickLine(COACH[kind]||COACH.ok);
-    el.innerHTML=COACH_SVG+'<div class="say"><span class="who">Max Fuzz · โค้ชประจำวง</span>'+esc(line)+'</div>';
+    var line, c=coachCombo(), who=['max'];
+    if(kind==='ok' && c>=3 && c%3===0){ line=pickLine(COACH.combo).replace('{n}',c); who=['bam']; }
+    else { line=pickLine(COACH[kind]||COACH.ok); if(kind==='bad'||kind==='lose') who=['ivy']; if(kind==='level'||kind==='win') who=['max','bam','ivy']; }
+    var label=who.length>1?'วงของเรา · Max, Bam, Ivy':BAND[who[0]].n;
+    el.innerHTML='<div class="faces'+(who.length>1?' trio':'')+'">'+who.map(function(k){ return '<span class="face">'+BAND[k].svg+'</span>'; }).join('')+'</div><div class="say"><span class="who">'+label+'</span>'+esc(line)+'</div>';
     el.hidden=false; el.className='coach'; void el.offsetWidth; el.className='coach pop';
-    clearTimeout(coachT); coachT=setTimeout(function(){ el.hidden=true; },2600);
+    clearTimeout(coachT); coachT=setTimeout(function(){ el.hidden=true; },who.length>1?3200:2600);
   }catch(e){}
 }
-function applyPunk(){ try{ var r=document.documentElement; if(!r||!r.setAttribute) return; if(state.skin==='punk') r.setAttribute('data-punk','1'); else r.removeAttribute('data-punk'); if(state.skin==='toon') r.setAttribute('data-toon','1'); else r.removeAttribute('data-toon'); }catch(e){} }
+function applyPunk(){ try{ var r=document.documentElement; if(!r||!r.setAttribute) return; var k=state.skin;
+  if(k==='punk') r.setAttribute('data-punk','1'); else r.removeAttribute('data-punk');
+  if(k==='toon'||k==='emo') r.setAttribute('data-toon','1'); else r.removeAttribute('data-toon');
+  if(k==='emo') r.setAttribute('data-emo','1'); else r.removeAttribute('data-emo'); }catch(e){} }
 function togglePunk(){ var i=SKINS.indexOf(state.skin); state.skin=SKINS[(i+1)%SKINS.length]; save(); applyPunk(); if(state.skin) coach('start'); else { var el=$('#coach'); if(el) el.hidden=true; } render(); }
 (function(){
   var _sfx=sfx; sfx=function(k){ coach(k); _sfx(k); };
