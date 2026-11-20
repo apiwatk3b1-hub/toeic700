@@ -14,7 +14,7 @@
 <style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
 <title>ติว TOEIC 700</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Thai:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Thai:wght@400;500;700&family=Permanent+Marker&family=Kanit:wght@600&display=swap">
 <style>
 /* Layout: ใบคำตอบข้อสอบ (answer sheet): คอลัมน์เดียว ตัวเลือกเป็นวงกลม OMR และสเกลคะแนน 10-990 พร้อมขีดเป้า 700 */
 :root{
@@ -172,6 +172,25 @@ td.n{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
   .qtext{font-size:18px}
 }
 @media (prefers-reduced-motion:no-preference){ .bar i{transition:width .4s ease} }
+/* punk mode */
+:root[data-punk="1"][data-punk]{
+  --bg:#121111; --surface:#1C1A1A; --ink:#F4F0E6; --muted:#B9B1A2; --line:#3B3836;
+  --accent:#E3262F; --accent-ink:#FFFFFF; --soft:#2C1719;
+  --good:#5BD98F; --good-bg:#10261A; --warn:#F2B84B; --warn-bg:#2B2210; --bad:#FF6B6B; --bad-bg:#2E1414;
+  --f-head:'Permanent Marker','Kanit','Noto Sans Thai',system-ui,sans-serif;
+  color-scheme:dark;
+}
+:root[data-punk="1"] .brand{padding-bottom:14px; border-bottom:8px solid transparent; border-image:repeating-linear-gradient(90deg,var(--ink) 0 8px,var(--bg) 8px 16px) 8}
+:root[data-punk="1"] .brand > :first-child{transform:rotate(-4deg); border-radius:6px; box-shadow:3px 3px 0 var(--ink)}
+:root[data-punk="1"] .card{border-width:2px; border-radius:6px}
+:root[data-punk="1"] .btn.primary{border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink); border-radius:6px}
+:root[data-punk="1"] .btn.primary:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink)}
+:root[data-punk="1"] nav a[aria-current="page"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+.coach{position:fixed; left:50%; transform:translateX(-50%); top:calc(10px + env(safe-area-inset-top, 0px)); width:min(440px, calc(100% - 32px)); display:flex; gap:10px; align-items:flex-start; z-index:49; pointer-events:none}
+.coach svg{flex:none; background:var(--surface); border:2px solid var(--accent); border-radius:12px; padding:3px; box-shadow:3px 3px 0 var(--accent)}
+.coach .say{min-width:0; background:var(--surface); color:var(--ink); border:2px solid var(--accent); border-radius:2px 14px 14px 14px; padding:8px 12px; font-weight:600; font-size:15px; line-height:1.45; box-shadow:3px 3px 0 var(--accent)}
+.coach .who{display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700}
+@media (prefers-reduced-motion: no-preference){ .coach.pop{animation:coachIn .28s cubic-bezier(.2,1.4,.4,1)} @keyframes coachIn{from{opacity:0; transform:translate(-50%,-18px) rotate(-2deg)} to{opacity:1; transform:translate(-50%,0)}} }
 
 .scene{border-radius:12px; overflow:hidden; border:1px solid var(--line); background:#E6ECF8}
 .scene svg{display:block; width:100%; height:auto; max-width:520px; margin:0 auto}
@@ -224,7 +243,7 @@ input[type=file]{max-width:100%; font:14px var(--f-body); color:var(--ink)}
   <main id="app"></main>
 </div>
 
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div><div id="coach" class="coach" role="status" aria-live="polite" hidden></div>
 <script>
 var G = [
  {id:'g1',cat:'บุพบท',q:'The manager asked all employees to submit their reports ______ Friday.',o:['by','until','during','since'],a:0,e:'by = ภายในเวลา ใช้กับกำหนดส่ง (deadline) ส่วน until ใช้กับการกระทำที่ต่อเนื่องไปจนถึงเวลานั้น'},
@@ -1537,7 +1556,7 @@ function viewGame(){
   if(M) return viewMatch();
   var b=state.best;
   function card(t,d,s,fn,label){ return '<div class="card"><div><h3>'+t+'</h3><p class="muted">'+d+'</p>'+(s?'<p class="mono" style="font-size:13px; margin-top:6px">'+s+'</p>':'')+'</div><button class="btn primary" onclick="'+fn+'">'+label+'</button></div>'; }
-  return '<div class="stack"><div class="row"><h2 style="font-size:20px">มินิเกม</h2><button class="btn small" onclick="toggleSnd()" aria-pressed="'+(state.snd?'true':'false')+'">เสียงเอฟเฟกต์: '+(state.snd?'เปิด':'ปิด')+'</button></div>'+
+  return '<div class="stack"><div class="row"><h2 style="font-size:20px">มินิเกม</h2><button class="btn small" onclick="toggleSnd()" aria-pressed="'+(state.snd?'true':'false')+'">เสียงเอฟเฟกต์: '+(state.snd?'เปิด':'ปิด')+'</button><button class="btn small" onclick="togglePunk()" aria-pressed="'+(state.punk?'true':'false')+'">โหมดพังก์: '+(state.punk?'เปิด':'ปิด')+'</button></div>'+
     '<p class="muted">เล่นแล้วได้ XP เลื่อนเลเวลและเก็บเหรียญ คำที่ตอบผิดจะกลับมาถามบ่อยขึ้นในโหมดฝึกศัพท์</p><div class="grid menu">'+
     card('Word Rush','เห็นความหมายภาษาไทย รีบเลือกคำอังกฤษให้ทัน 60 วินาที ถูกติดกันได้คะแนนคูณ ผิดเสียเวลา 3 วินาที','สถิติ '+(b.rush||0)+' คำ','startRush()','เริ่มเล่น')+
     card('จับคู่ศัพท์','จับคู่คำอังกฤษกับความหมายไทย 6 คู่ ยิ่งเร็วและพลาดน้อย ยิ่งได้ XP มาก',(b.matchMiss===undefined?'ยังไม่เคยเล่น':'พลาดน้อยสุด '+b.matchMiss+' ครั้ง · เร็วสุด '+mmss(b.matchTime)),'startMatch()','เริ่มเล่น')+
@@ -1573,6 +1592,46 @@ function render(){
   if(r==='vocab' && V.cur){ prefetch('v'+V.cur.i); }
   if(r!=='practice' && r!=='vocab' && r!=='game'){ stopAudio(); }
 }
+/* ---------- punk mode: original coach character "Max Fuzz" + gig-poster theme ---------- */
+if(state.punk===undefined) state.punk=true;
+var COACH={
+  start:['เสียบแจ็คแล้ว! One, two, three, four!','ซาวด์เช็คเสร็จ ลุยเลย!','ไฟเวทีเปิดแล้ว เล่นให้มันส์!'],
+  ok:['เป๊ะ! ริฟนี้ผ่าน','Nice! โน้ตตรงเป๊ะ','ถูก! คนดูกรี๊ดแล้ว','แจ่ม! เก็บไปอีกหนึ่ง','Yeah! จังหวะแน่นมาก'],
+  combo:['คอมโบ x{n}! มือกลองตามไม่ทันแล้ว','x{n} ติดกัน! Encore! Encore!','ไฟลุกแล้ว x{n}!'],
+  bad:['สายขาดนิดหน่อย เปลี่ยนสายแล้วไปต่อ','Wrong chord! อ่านเฉลยแล้วจำไว้','พลาดได้ พังก์ไม่กลัวพลาด','คอร์ดเพี้ยนไปหน่อย รอบหน้าเอาใหม่'],
+  level:['เลเวลอัป! วงเราได้เล่นเวทีใหญ่ขึ้นแล้ว','LEVEL UP! ทัวร์รอบใหม่มาแล้ว'],
+  win:['จบโชว์สวย! Stage dive ได้เลย','ทั้งฮอลล์ลุกขึ้นยืน! เก่งมาก'],
+  lose:['ไฟดับกลางโชว์... ซ้อมอีกนิดแล้วกลับขึ้นเวที','โชว์นี้ยังไม่ปัง แต่วงดังทุกวงก็เคยล่มมาก่อน']
+};
+var COACH_SVG='<svg viewBox="0 0 48 52" width="44" height="48" aria-hidden="true"><path d="M14 9 L17 1 L20 8 L24 0 L27 8 L31 1 L33 9 Z" fill="var(--ink)"/><path d="M24 50 C10 38 3 26 4 16 C5 10 13 8 24 8 C35 8 43 10 44 16 C45 26 38 38 24 50 Z" fill="var(--accent)" stroke="var(--ink)" stroke-width="2.5"/><circle cx="17" cy="20" r="2.6" fill="var(--ink)"/><circle cx="31" cy="20" r="2.6" fill="var(--ink)"/><path d="M26 25 L20 33 L25 33 L21 42 L30 30 L25 30 L28 25 Z" fill="var(--ink)"/></svg>';
+var coachT=null;
+function pickLine(a){ return a[Math.floor(Math.random()*a.length)]; }
+function coachCombo(){ var c=0; if(R&&!R.over) c=R.combo; else if(P&&P.game) c=P.game.combo; return c||0; }
+function coach(kind){
+  if(!state.punk || kind==='tap') return;
+  try{
+    var el=$('#coach'); if(!el) return;
+    var line, c=coachCombo();
+    if(kind==='ok' && c>=3 && c%3===0) line=pickLine(COACH.combo).replace('{n}',c);
+    else line=pickLine(COACH[kind]||COACH.ok);
+    el.innerHTML=COACH_SVG+'<div class="say"><span class="who">Max Fuzz · โค้ชประจำวง</span>'+esc(line)+'</div>';
+    el.hidden=false; el.className='coach'; void el.offsetWidth; el.className='coach pop';
+    clearTimeout(coachT); coachT=setTimeout(function(){ el.hidden=true; },2600);
+  }catch(e){}
+}
+function applyPunk(){ try{ var r=document.documentElement; if(!r||!r.setAttribute) return; if(state.punk) r.setAttribute('data-punk','1'); else r.removeAttribute('data-punk'); }catch(e){} }
+function togglePunk(){ state.punk=!state.punk; save(); applyPunk(); if(state.punk) coach('start'); else { var el=$('#coach'); if(el) el.hidden=true; } render(); }
+(function(){
+  var _sfx=sfx; sfx=function(k){ coach(k); _sfx(k); };
+  var _fg=finishGame; finishGame=function(){ var was=P&&P.game&&P.game.done; _fg(); if(!was&&P&&P.game&&P.game.done) coach(P.game.lives>0?'win':'lose'); };
+  var _sr=startRush; startRush=function(){ _sr(); coach('start'); };
+  var _sm=startMatch; startMatch=function(){ _sm(); coach('start'); };
+  var _sp=startPractice; startPractice=function(m){ _sp(m); if(P&&P.game) coach('start'); };
+  if(typeof endRush==='function'){ var _er=endRush; endRush=function(){ var was=R&&R.over; _er(); if(!was&&R&&R.over) coach(R.correct>=10?'win':'lose'); }; }
+  if(typeof finishMatch==='function'){ var _fm=finishMatch; finishMatch=function(){ _fm(); coach('win'); }; }
+  var _r=render; render=function(){ applyPunk(); _r(); };
+})();
+
 window.addEventListener('hashchange', function(){ confirmReset=false; impConfirm=false; render(); window.scrollTo(0,0); });
 render();
 

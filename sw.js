@@ -1,5 +1,5 @@
 /* Service worker: เปิดแอปและใช้งานออฟไลน์ได้ */
-var V = 't700-v3';
+var V = 't700-v4';
 var SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', function(e){
