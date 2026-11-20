@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2B3CC9">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TOEIC 700">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
+<title>ติว TOEIC 700</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Thai:wght@400;500;700&display=swap">
+<style>
+/* Layout: ใบคำตอบข้อสอบ (answer sheet): คอลัมน์เดียว ตัวเลือกเป็นวงกลม OMR และสเกลคะแนน 10-990 พร้อมขีดเป้า 700 */
+:root{
+  --bg:#EDF0F6; --surface:#FFFFFF; --ink:#141922; --muted:#566074; --line:#D2D8E4;
+  --accent:#2B3CC9; --accent-ink:#FFFFFF; --soft:#E3E7F8;
+  --good:#17804F; --good-bg:#E0F3E9; --warn:#A8620A; --warn-bg:#FBEFD9; --bad:#B63030; --bad-bg:#FBE4E4;
+  --f-body:'Noto Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-head:'Bai Jamjuree','Noto Sans Thai',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E121A; --surface:#161B25; --ink:#E7EBF3; --muted:#9AA4B6; --line:#283040;
+    --accent:#8F9BFF; --accent-ink:#0E121A; --soft:#1D2440;
+    --good:#4CC38A; --good-bg:#13281F; --warn:#E3A250; --warn-bg:#2B2113; --bad:#F27D7D; --bad-bg:#2D1818;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E121A; --surface:#161B25; --ink:#E7EBF3; --muted:#9AA4B6; --line:#283040;
+  --accent:#8F9BFF; --accent-ink:#0E121A; --soft:#1D2440;
+  --good:#4CC38A; --good-bg:#13281F; --warn:#E3A250; --warn-bg:#2B2113; --bad:#F27D7D; --bad-bg:#2D1818;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--f-body); font-size:15px; line-height:1.65;
+  padding-block:20px 56px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap{max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:18px}
+h1,h2,h3{font-family:var(--f-head); margin:0; line-height:1.25; text-wrap:balance}
+p{margin:0}
+.mono{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.eyebrow{font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:500}
+
+header.top{display:flex; flex-direction:column; gap:14px}
+.brand{display:flex; align-items:center; gap:12px}
+.mark{
+  font-family:var(--f-head); font-weight:700; font-size:20px; background:var(--accent); color:var(--accent-ink);
+  width:52px; height:52px; border-radius:50%; display:grid; place-items:center; flex:none;
+}
+.brand h1{font-size:22px}
+.brand p{font-size:13px; color:var(--muted)}
+nav{display:flex; gap:6px; overflow-x:auto; padding-bottom:2px}
+nav a{
+  flex:none; padding:8px 14px; border-radius:999px; text-decoration:none; color:var(--muted);
+  border:1px solid var(--line); background:var(--surface); font-weight:500; font-size:14px;
+}
+nav a[aria-current="page"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px; min-width:0}
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+.stack{display:flex; flex-direction:column; gap:12px}
+.row{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between}
+
+.hero h2{font-size:56px; line-height:1; font-weight:700}
+.hero h2 small{font-size:16px; font-weight:600; color:var(--muted); margin-left:6px}
+.hero-meta{font-size:13px; color:var(--muted); text-align:right}
+.scale{position:relative; height:12px; background:var(--soft); border-radius:6px; margin:44px 0 30px}
+.scale .fill{position:absolute; inset:0 auto 0 0; background:var(--accent); border-radius:6px}
+.scale .tick{position:absolute; top:-8px; bottom:-8px; width:2px; background:var(--ink)}
+.scale .tick span, .scale .pin span{
+  position:absolute; white-space:nowrap; font-size:12px; font-weight:700; left:50%; transform:translateX(-50%);
+}
+.scale .tick span{top:-24px}
+.scale .pin{position:absolute; top:-4px; width:20px; height:20px; margin-left:-10px; border-radius:50%; background:var(--surface); border:4px solid var(--accent)}
+.scale .pin span{top:28px; color:var(--accent)}
+.scale .pin span.l{transform:translateX(-14%)}
+.scale .pin span.r{transform:translateX(-86%)}
+.scale-ends{display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-top:-22px}
+
+.task{display:flex; flex-direction:column; gap:10px}
+.task h3{font-size:17px}
+.bar{height:8px; background:var(--soft); border-radius:4px; overflow:hidden}
+.bar i{display:block; height:100%; background:var(--accent); border-radius:4px}
+.bar.good i{background:var(--good)} .bar.warn i{background:var(--warn)} .bar.bad i{background:var(--bad)}
+.cat{display:grid; grid-template-columns:minmax(90px,150px) 1fr 52px; gap:12px; align-items:center; font-size:14px}
+.cat .pct{text-align:right; font-weight:700}
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:10px 18px; border-radius:10px;
+  border:1px solid var(--line); background:var(--surface); color:var(--ink); font:500 15px var(--f-body);
+  cursor:pointer; text-decoration:none; min-height:44px;
+}
+.btn.primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:700}
+.btn.good{background:var(--good-bg); color:var(--good); border-color:var(--good)}
+.btn.bad{background:var(--bad-bg); color:var(--bad); border-color:var(--bad)}
+.btn.small{min-height:36px; padding:6px 12px; font-size:13px}
+
+.menu .card{display:flex; flex-direction:column; gap:10px; justify-content:space-between}
+.menu h3{font-size:18px}
+
+.qhead{display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:13px; color:var(--muted)}
+.qtext{font-size:19px; line-height:1.6; font-weight:500}
+.blank{display:inline-block; min-width:5.5em; border-bottom:2px solid var(--ink); margin:0 4px; transform:translateY(2px)}
+.passage .pl{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:8px}
+.passage .pt{white-space:pre-line; font-size:15px; line-height:1.7}
+.opts{display:flex; flex-direction:column; gap:10px}
+.opt{
+  display:flex; align-items:center; gap:14px; text-align:left; width:100%; padding:12px 14px; min-height:54px;
+  background:var(--surface); border:1.5px solid var(--line); border-radius:12px; color:var(--ink); font:500 16px var(--f-body); cursor:pointer;
+}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default; color:var(--ink)}
+.bub{
+  flex:none; width:32px; height:32px; border-radius:50%; border:2px solid var(--muted); display:grid; place-items:center;
+  font:700 14px var(--f-head); color:var(--muted);
+}
+.opt.right{border-color:var(--good); background:var(--good-bg)}
+.opt.right .bub{background:var(--good); border-color:var(--good); color:var(--bg)}
+.opt.wrong{border-color:var(--bad); background:var(--bad-bg)}
+.opt.wrong .bub{background:var(--bad); border-color:var(--bad); color:var(--bg)}
+.otx{min-width:0; overflow-wrap:anywhere}
+.fb{border-radius:12px; padding:14px 16px; border:1px solid}
+.fb.good{background:var(--good-bg); border-color:var(--good)}
+.fb.bad{background:var(--bad-bg); border-color:var(--bad)}
+.fb strong{font-family:var(--f-head); font-size:17px}
+.fb p{margin-top:6px}
+
+.flash{
+  width:100%; min-height:260px; border-radius:16px; border:1.5px solid var(--line); background:var(--surface);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:24px; text-align:center;
+  cursor:pointer; color:var(--ink); font-family:var(--f-body);
+}
+.flash .w{font-family:var(--f-head); font-size:40px; font-weight:700; overflow-wrap:anywhere}
+.flash .th{font-size:26px; font-weight:700; color:var(--accent)}
+.flash .ex{font-size:15px; color:var(--muted); max-width:34ch}
+.pos{font-family:var(--f-mono); font-size:13px; color:var(--muted)}
+.dots{display:flex; gap:4px; flex-wrap:wrap}
+.dots i{width:10px; height:10px; border-radius:50%; background:var(--soft)}
+.dots i.on{background:var(--good)}
+
+.week{display:flex; flex-direction:column; gap:10px}
+.week.now{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent) inset}
+.week h3{font-size:18px}
+.tag{font-size:12px; font-weight:700; background:var(--accent); color:var(--accent-ink); padding:2px 10px; border-radius:999px}
+.chk{display:flex; gap:12px; align-items:flex-start; cursor:pointer}
+.chk input{width:22px; height:22px; margin-top:3px; accent-color:var(--accent); flex:none}
+.chk span{min-width:0}
+.tw{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:14px}
+th,td{padding:8px 10px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap}
+th{font-size:12px; color:var(--muted); letter-spacing:.04em}
+td.n{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
+.note{background:var(--warn-bg); border:1px solid var(--warn); border-radius:12px; padding:14px 16px; font-size:14px}
+.empty{padding:22px; border:1.5px dashed var(--line); border-radius:12px; text-align:center; color:var(--muted)}
+@media (max-width:520px){
+  .hero h2{font-size:46px}
+  .cat{grid-template-columns:1fr 52px}
+  .cat .bar{grid-column:1 / -1; order:3}
+  .qtext{font-size:18px}
+}
+@media (prefers-reduced-motion:no-preference){ .bar i{transition:width .4s ease} }
+
+.scene{border-radius:12px; overflow:hidden; border:1px solid var(--line); background:#E6ECF8}
+.scene svg{display:block; width:100%; height:auto; max-width:520px; margin:0 auto}
+.blk{display:inline-block; min-width:1.7em; text-align:center; border:1.5px solid var(--muted); border-radius:6px; padding:0 5px; font:500 13px var(--f-mono); color:var(--muted); line-height:1.5}
+.blk.cur{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+main h2{margin-top:2px}
+.gfx table{min-width:260px}
+textarea:focus-visible,input[type=file]:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+input[type=file]{max-width:100%; font:14px var(--f-body); color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">700</div>
+      <div><h1>ติว TOEIC 700</h1><p>ฝึกทุกวัน วัดจุดอ่อน ไปให้ถึงเป้า</p></div>
+    </div>
+    <nav id="nav" aria-label="เมนูหลัก"></nav>
+  </header>
+  <main id="app"></main>
+</div>
+
+<script>
+var G = [
+ {id:'g1',cat:'บุพบท',q:'The manager asked all employees to submit their reports ______ Friday.',o:['by','until','during','since'],a:0,e:'by = ภายในเวลา ใช้กับกำหนดส่ง (deadline) ส่วน until ใช้กับการกระทำที่ต่อเนื่องไปจนถึงเวลานั้น'},
+ {id:'g2',cat:'บุพบท',q:'Ms. Tanaka is responsible ______ training new staff.',o:['of','for','at','with'],a:1,e:'responsible for + สิ่งที่รับผิดชอบ เป็นคู่คำที่ออกสอบบ่อย'},
+ {id:'g3',cat:'โครงสร้างประโยค',q:'The new software is ______ easier to use than the old one.',o:['much','very','so','too'],a:0,e:'เติมความแรงให้ comparative (easier) ด้วย much, far, even, a lot ส่วน very/so/too ใช้กับรูปธรรมดา'},
+ {id:'g4',cat:'ตัวเชื่อม',q:'All visitors must wear a badge ______ they are inside the building.',o:['while','during','despite','because of'],a:0,e:'หลังช่องว่างเป็นประโยคเต็ม (they are) จึงต้องใช้ conjunction คือ while ส่วน during/despite/because of ตามด้วยคำนามเท่านั้น'},
+ {id:'g5',cat:'ชนิดของคำ',q:'The company\'s profits increased ______ last quarter.',o:['significant','significance','significantly','signify'],a:2,e:'ต้องการคำขยายกริยา increased จึงใช้ adverb (significantly)'},
+ {id:'g6',cat:'กาล/รูปกริยา',q:'Please ______ the attached invoice and let us know if there are any errors.',o:['review','reviewing','reviewed','reviews'],a:0,e:'ประโยคขอร้อง (Please + กริยา) ใช้กริยาช่องที่ 1 ไม่เติมอะไร'},
+ {id:'g7',cat:'กาล/รูปกริยา',q:'Mr. Lee will ______ the new branch in Chiang Mai next month.',o:['open','opens','opened','opening'],a:0,e:'หลัง will ต้องตามด้วยกริยาช่องที่ 1 เสมอ'},
+ {id:'g8',cat:'ตัวเชื่อม',q:'The conference has been postponed ______ the severe weather.',o:['because','due to','although','so'],a:1,e:'หลังช่องว่างเป็นคำนาม (the severe weather) ใช้ due to / because of ส่วน because และ although ต้องตามด้วยประโยค'},
+ {id:'g9',cat:'กาล/รูปกริยา',q:'Employees ______ complete the safety training before using the equipment.',o:['must','ought','used','able'],a:0,e:'modal verb อย่าง must ตามด้วยกริยาช่องที่ 1 ได้ทันที ส่วน ought/used ต้องมี to และ able ต้องมี be'},
+ {id:'g10',cat:'ชนิดของคำ',q:'The hotel offers a ______ breakfast to all guests.',o:['complimentary','complimented','compliment','complimenting'],a:0,e:'complimentary (adj.) = ฟรีเป็นของแถม ขยายคำนาม breakfast'},
+ {id:'g11',cat:'กาล/รูปกริยา',q:'Ms. Park is ______ for the position of regional director.',o:['consider','considering','considered','considerate'],a:2,e:'Ms. Park ถูกพิจารณา จึงใช้ passive (is considered) ส่วน considerate แปลว่าเอื้อเฟื้อ ไม่ตรงความหมาย'},
+ {id:'g12',cat:'ตัวเชื่อม',q:'______ the heavy traffic, we arrived at the meeting on time.',o:['Although','Despite','However','Because'],a:1,e:'หลังช่องว่างเป็นคำนาม (the heavy traffic) และความหมายขัดแย้ง จึงใช้ Despite'},
+ {id:'g13',cat:'กาล/รูปกริยา',q:'The marketing team has ______ a new advertising campaign.',o:['launch','launched','launching','to launch'],a:1,e:'has + กริยาช่องที่ 3 = Present perfect'},
+ {id:'g14',cat:'บุพบท',q:'Our customer service department is open ______ 9 A.M. and 6 P.M.',o:['among','between','within','along'],a:1,e:'between A and B ใช้กับช่วงเวลาหรือสิ่งสองอย่าง'},
+ {id:'g15',cat:'ชนิดของคำ',q:'The ______ of the new policy will begin on January 1.',o:['implement','implemented','implementation','implementer'],a:2,e:'ตามหลัง The และอยู่เป็นประธาน ต้องเป็นคำนาม (implementation)'},
+ {id:'g16',cat:'ชนิดของคำ',q:'Customers who purchase two items will receive a ______ discount.',o:['addition','additional','additionally','add'],a:1,e:'ต้องการคำขยายคำนาม discount จึงใช้ adjective (additional)'},
+ {id:'g17',cat:'กาล/รูปกริยา',q:'The CEO is highly ______ by all of her employees.',o:['respect','respects','respected','respecting'],a:2,e:'is + ...by = passive voice ต้องใช้กริยาช่องที่ 3 (respected)'},
+ {id:'g18',cat:'กาล/รูปกริยา',q:'If you ______ any questions, please contact our help desk.',o:['have','will have','had had','having'],a:0,e:'If-clause ที่เป็นเงื่อนไขจริงในปัจจุบันใช้ Present simple ไม่ใช้ will'},
+ {id:'g19',cat:'ตัวเชื่อม',q:'Neither the manager ______ the assistants were aware of the schedule change.',o:['or','nor','and','but'],a:1,e:'neither ... nor เป็นคู่กัน'},
+ {id:'g20',cat:'บุพบท',q:'The new employee handbook is available ______ request.',o:['on','at','by','with'],a:0,e:'on request = เมื่อมีการร้องขอ เป็นสำนวนตายตัว'},
+ {id:'g21',cat:'ศัพท์',q:'The company plans to ______ its operations to Southeast Asia next year.',o:['expand','expend','expect','expose'],a:0,e:'expand = ขยาย (กิจการ) ส่วน expend = ใช้จ่ายหมดไป ระวังสะกดคล้ายกัน'},
+ {id:'g22',cat:'ศัพท์',q:'Please ______ your seat belts during takeoff and landing.',o:['fasten','fix','hold','lock'],a:0,e:'fasten a seat belt เป็น collocation ที่ใช้จริง'},
+ {id:'g23',cat:'โครงสร้างประโยค',q:'The seminar is intended for employees ______ wish to improve their presentation skills.',o:['who','which','whose','whom'],a:0,e:'ขยายคนที่เป็นประธานของกริยา wish ใช้ relative pronoun who'},
+ {id:'g24',cat:'กาล/รูปกริยา',q:'Ms. Chen was ______ to the position of vice president last month.',o:['promoted','promoting','promotion','promote'],a:0,e:'was + กริยาช่องที่ 3 = passive (was promoted to ...)'},
+ {id:'g25',cat:'ชนิดของคำ',q:'The contract will remain ______ until December 31.',o:['effect','effective','effectively','effectiveness'],a:1,e:'remain + adjective = ยังคงอยู่ในสภาพ จึงใช้ effective'},
+ {id:'g26',cat:'ศัพท์',q:'Please ______ an appointment with the dentist before the end of the month.',o:['do','make','hold','put'],a:1,e:'make an appointment = นัดหมาย เป็น collocation'},
+ {id:'g27',cat:'โครงสร้างประโยค',q:'The sales figures were ______ than we had expected.',o:['high','higher','highest','highly'],a:1,e:'มี than ต้องใช้ comparative (higher)'},
+ {id:'g28',cat:'ศัพท์',q:'The project was completed ahead of ______.',o:['schedule','scheduled','scheduling','schedules'],a:0,e:'ahead of schedule = เสร็จก่อนกำหนด เป็นสำนวนตายตัว'},
+ {id:'g29',cat:'ตัวเชื่อม',q:'Mr. Wong asked ______ the meeting had been rescheduled.',o:['that','whether','what','because'],a:1,e:'ถามแบบ yes/no ในประโยคอ้อม (indirect question) ใช้ whether หรือ if'},
+ {id:'g30',cat:'ตัวเชื่อม',q:'______ you submit the form, you will receive a confirmation email.',o:['Once','Unless','Despite','During'],a:0,e:'Once = เมื่อ...แล้ว ตามด้วยประโยค ส่วน Unless แปลว่าถ้าไม่ ความหมายไม่เข้ากัน'}
+];
+var RP = [
+ {label:'Email · Part 7',text:'To: All Staff\nFrom: Daniel Reyes, Facilities\nSubject: Parking lot closure\n\nPlease note that the north parking lot will be closed for repaving from Monday, March 4, through Wednesday, March 6. During this time, employees may park in the visitor lot behind the main building or use the free shuttle from Riverside Station, which runs every 15 minutes from 7:00 A.M. to 9:30 A.M. and from 4:30 P.M. to 7:00 P.M. Visitors should check in at the front desk as usual. We apologize for the inconvenience.'},
+ {label:'Advertisement · Part 7',text:'GREENFIELD OFFICE SUPPLIES\nAnnual Clearance Sale!\n\nSave up to 40% on desks, chairs, and filing cabinets from October 10 to October 20. Orders over $200 qualify for free delivery within the city. Online orders must be placed before 5 P.M. to be delivered the next day. Sale items cannot be returned, but may be exchanged within 14 days with a receipt.'},
+ {label:'Memo · Part 7',text:'MEMO\nTo: Sales Team\nFrom: Priya Nair, Regional Manager\nDate: June 3\nRe: Quarterly Targets\n\nThank you for your hard work in the first quarter, during which our team exceeded its target by 8 percent. For the second quarter, headquarters has raised the target by 5 percent. To help you reach this goal, we will hold a half-day workshop on client negotiation on June 12. Attendance is mandatory for new hires and optional for everyone else. Please confirm your attendance with my assistant, Tom Albright, by June 8.'}
+];
+var RQ = [
+ {id:'r1',cat:'Part 7 อ่านจับใจความ',p:0,q:'Why was the email written?',o:['To announce a permanent shuttle service','To inform staff of a temporary parking change','To invite staff to a visitor event','To ask for volunteers to repave the lot'],a:1,e:'อีเมลบอกว่าลานจอดรถทิศเหนือปิดซ่อม 3 วัน และบอกทางเลือกชั่วคราว จึงเป็นการแจ้งการเปลี่ยนแปลงชั่วคราว'},
+ {id:'r2',cat:'Part 7 อ่านจับใจความ',p:0,q:'What is indicated about the shuttle?',o:['It is free.','It only runs in the morning.','It is for visitors only.','It stops at the main building every hour.'],a:0,e:'อีเมลระบุ "free shuttle" ส่วนรถวิ่งทั้งเช้าและเย็น ทุก 15 นาที และใช้ได้สำหรับพนักงาน'},
+ {id:'r3',cat:'Part 7 อ่านจับใจความ',p:1,q:'What is being advertised?',o:['A moving company','Discounted office furniture','A computer repair service','Job openings'],a:1,e:'ลดราคา desks, chairs, filing cabinets คือเฟอร์นิเจอร์สำนักงาน'},
+ {id:'r4',cat:'Part 7 อ่านจับใจความ',p:1,q:'What is true about sale items?',o:['They can be returned for a refund.','They can be exchanged within 14 days.','They are sold only online.','They are always delivered free.'],a:1,e:'ประโยคท้ายระบุว่าคืนเงินไม่ได้ แต่แลกสินค้าได้ภายใน 14 วันพร้อมใบเสร็จ'},
+ {id:'r5',cat:'Part 7 อ่านจับใจความ',p:2,q:'What is suggested about the sales team?',o:['It missed its first-quarter target.','It will have a higher target next quarter.','It has a new regional manager.','It is moving to headquarters.'],a:1,e:'ไตรมาสสองเป้าหมายถูกเพิ่ม 5 เปอร์เซ็นต์ ส่วนไตรมาสแรกทีมทำได้เกินเป้า'},
+ {id:'r6',cat:'Part 7 อ่านจับใจความ',p:2,q:'Who must attend the workshop?',o:['All sales staff','Only managers','New employees','Tom Albright\'s team'],a:2,e:'"mandatory for new hires" แปลว่าพนักงานใหม่ต้องเข้า ที่เหลือเข้าหรือไม่ก็ได้'}
+];
+var LQ = [
+ {id:'l1',cat:'Listening Part 2',q:'When is the budget meeting?',o:['In the conference room.','At three o\'clock this afternoon.','Yes, I\'ll bring the report.'],a:1,e:'คำถาม When ต้องตอบเรื่องเวลา ไม่ใช่สถานที่ (Where) หรือ Yes/No'},
+ {id:'l2',cat:'Listening Part 2',q:'Who is going to lead the training session?',o:['Ms. Alvarez, I believe.','It lasts two hours.','In room 204.'],a:0,e:'คำถาม Who ต้องตอบเป็นชื่อคน'},
+ {id:'l3',cat:'Listening Part 2',q:'Where can I find the printer paper?',o:['About fifty dollars.','It\'s in the supply closet.','I printed it yesterday.'],a:1,e:'Where ตอบสถานที่ และตัวหลอก "printed" ออกเสียงคล้ายกับ printer'},
+ {id:'l4',cat:'Listening Part 2',q:'Would you like some coffee or tea?',o:['Yes, it was.','At the cafeteria.','Tea, please.'],a:2,e:'คำถามเลือกระหว่างสองอย่าง (A or B) ต้องตอบโดยเลือกอย่างใดอย่างหนึ่ง'},
+ {id:'l5',cat:'Listening Part 2',q:'Why was the flight delayed?',o:['Because of bad weather.','For about two hours.','I\'ll take the morning flight.'],a:0,e:'Why ตอบด้วยเหตุผล (Because ...) ตัวเลือกที่สองตอบ How long'},
+ {id:'l6',cat:'Listening Part 2',q:'How much does the monthly pass cost?',o:['Every month.','Thirty-five dollars.','At the ticket office.'],a:1,e:'How much ถามราคา ต้องตอบเป็นจำนวนเงิน'},
+ {id:'l7',cat:'Listening Part 2',q:'Haven\'t you finished the sales report yet?',o:['No, I need another hour.','Yes, it\'s on sale.','In the top drawer.'],a:0,e:'คำถามปฏิเสธแบบ Yes/No ตอบด้วย No + เหตุผลได้ ตัวหลอก "sale" ซ้ำกับคำว่า sales'},
+ {id:'l8',cat:'Listening Part 2',q:'Could you send me the schedule?',o:['I\'ll email it right now.','It starts at nine.','No, he wasn\'t there.'],a:0,e:'Could you ... ? คือคำขอร้อง ตอบรับด้วยการบอกว่าจะทำให้'}
+];
+G.forEach(function(x){x.t='g';}); RQ.forEach(function(x){x.t='r';}); LQ.forEach(function(x){x.t='l';});
+var VOC = [
+ ['postpone','v.','เลื่อน (กำหนดการ)','The meeting was postponed until Friday.'],
+ ['reimburse','v.','จ่ายเงินคืน','The company will reimburse your travel expenses.'],
+ ['invoice','n.','ใบแจ้งหนี้','Please send the invoice by the end of the month.'],
+ ['deadline','n.','กำหนดส่ง','The deadline for applications is June 30.'],
+ ['supervisor','n.','หัวหน้างาน','Ask your supervisor to approve the request.'],
+ ['résumé','n.','ประวัติย่อ (เรซูเม่)','Attach your résumé to the application form.'],
+ ['candidate','n.','ผู้สมัคร','Each candidate will have a short interview.'],
+ ['negotiate','v.','เจรจาต่อรอง','She negotiated a better price with the supplier.'],
+ ['quarter','n.','ไตรมาส','Sales rose in the second quarter.'],
+ ['revenue','n.','รายได้','Annual revenue reached two million dollars.'],
+ ['budget','n.','งบประมาณ','We need to stay within the budget.'],
+ ['renew','v.','ต่ออายุ','You must renew your membership every year.'],
+ ['warranty','n.','การรับประกันสินค้า','The laptop comes with a two-year warranty.'],
+ ['shipment','n.','การจัดส่งสินค้า','The shipment will arrive on Tuesday.'],
+ ['vacancy','n.','ตำแหน่งงานว่าง / ห้องว่าง','There is a vacancy in the accounting department.'],
+ ['mandatory','adj.','เป็นข้อบังคับ','Attendance at the meeting is mandatory.'],
+ ['reschedule','v.','เปลี่ยนเวลานัด','Can we reschedule the interview for Monday?'],
+ ['complimentary','adj.','ฟรี (ที่ทางร้านมอบให้)','Guests receive a complimentary breakfast.'],
+ ['confirm','v.','ยืนยัน','Please confirm your reservation by email.'],
+ ['colleague','n.','เพื่อนร่วมงาน','I discussed the plan with a colleague.'],
+ ['attach','v.','แนบ (ไฟล์)','I have attached the revised contract.'],
+ ['inquire','v.','สอบถาม','She called to inquire about the price.'],
+ ['estimate','n.','ใบประเมินราคา / ประมาณการ','The contractor gave us a written estimate.'],
+ ['expire','v.','หมดอายุ','Your passport will expire next month.'],
+ ['supplier','n.','ผู้จัดหาสินค้า','We switched to a cheaper supplier.'],
+ ['agenda','n.','วาระการประชุม','The first item on the agenda is the budget.'],
+ ['refund','n.','เงินคืน','Customers can request a full refund within 30 days.'],
+ ['renovation','n.','การปรับปรุงอาคาร','The lobby is closed for renovation.'],
+ ['headquarters','n.','สำนักงานใหญ่','The company\'s headquarters is in Singapore.'],
+ ['inventory','n.','สินค้าคงคลัง','We check our inventory every Monday.']
+].map(function(r){ return {w:r[0],pos:r[1],th:r[2],ex:r[3]}; });
+var PLAN = [
+ {t:'วางรากไวยากรณ์',f:'Tense พื้นฐาน ประธานกับกริยา',tasks:['ทบทวน Present, Past, Future simple และ Present perfect','ท่องศัพท์ 10 คำต่อวัน (ใช้แท็บศัพท์)','ทำ Part 5 วันละ 10 ข้อ จดข้อที่ผิดไว้ทบทวน','ฝึกฟัง Part 2 วันละ 5 ข้อ จับคำถาม Who, When, Where, Why']},
+ {t:'Part 5: ชนิดของคำ',f:'Noun, Verb, Adjective, Adverb และคำต่อท้าย',tasks:['ดูตำแหน่งของ noun, adj, adv ในประโยค','จำคำต่อท้าย -tion, -ment, -ive, -ly','ทำ Part 5 วันละ 15 ข้อ แล้วอ่านคำอธิบายทุกข้อ','ทบทวนข้อที่ผิดจากสัปดาห์ที่แล้ว']},
+ {t:'Part 5: บุพบทและตัวเชื่อม',f:'by/until, during/while, despite/although, due to/because',tasks:['แยกให้ออกว่าตัวเชื่อมตามด้วยคำนามหรือประโยค','ท่องคู่คำ เช่น responsible for, on request','ทำ Part 5 วันละ 15 ข้อ จับเวลาไม่เกิน 25 วินาทีต่อข้อ','ฟัง Part 2 วันละ 8 ข้อ เน้นประโยคคำสั่งและคำขอร้อง']},
+ {t:'Part 6 และฟัง Part 3',f:'เติมคำและประโยคในอีเมล ฟังบทสนทนาสั้น',tasks:['ฝึกเดาจากบริบทของย่อหน้า ไม่ดูแค่ประโยคเดียว','อ่านโจทย์ Part 3 ก่อนฟัง ขีดเส้นใต้คำถาม','ฟังบทสนทนา 3 ชุดต่อวัน จับว่าใคร อยู่ที่ไหน ทำไม','ทำ Part 5 วันละ 10 ข้อ เพื่อไม่ให้เบสิกหลุด']},
+ {t:'Part 7: อ่านเร็ว',f:'อีเมล ประกาศ โฆษณา',tasks:['อ่านคำถามก่อน แล้วค่อยหาคำตอบในบทความ','ฝึกกวาดตา (skim) หาตัวเลข วันที่ ชื่อ','ทำ Part 7 วันละ 2 บทความ จับเวลา 8 นาที','ท่องศัพท์ต่อเนื่อง และทบทวนคำที่เคยพลาด']},
+ {t:'Part 7 หลายบทความและฟัง Part 4',f:'บทความคู่ และประกาศหรือบทพูดสั้น',tasks:['ฝึกโยงข้อมูลจากสองบทความ (double passage)','ฟัง Part 4 วันละ 3 ชุด เช่น ประกาศ โฆษณา ข้อความเสียง','ทำ Part 7 วันละ 3 บทความ','ทบทวนข้อที่ผิดทั้งหมดในแท็บฝึก']},
+ {t:'จำลองสนามสอบ',f:'ทำครึ่งชุด จับเวลาจริง',tasks:['ทำ Reading ครึ่งชุด (50 ข้อ) ใน 37 นาที','ทำ Listening ครึ่งชุด ไม่หยุดเทปกลางทาง','เช็กว่าพลาดพาร์ตไหนมากที่สุด แล้วเก็บเพิ่ม','ทบทวนศัพท์ทั้ง 30 คำในแท็บศัพท์']},
+ {t:'ซ้อมใหญ่และเตรียมตัว',f:'ข้อสอบเต็มชุด และพักให้พร้อม',tasks:['ทำข้อสอบเต็มชุด 2 รอบ (ใช้เวลา 2 ชั่วโมงต่อรอบ)','ทบทวนข้อผิดและจุดอ่อนที่เหลือ','เตรียมบัตรประจำตัวและรู้เส้นทางไปสนามสอบ','นอนให้พอก่อนวันสอบ ไม่ติวหนักคืนก่อนสอบ']}
+];
+/* ===== เนื้อหาเพิ่มเติม: ให้ครอบคลุมทุกพาร์ต ===== */
+var ALLNEW = [];
+LQ.forEach(function(x){ x.cat='Part 2 ถามตอบ'; });
+
+/* Part 5 เพิ่ม g31-g60 (ใช้ cat เดิมของหมวดไวยากรณ์) */
+[
+ ['g31','ศัพท์','The new regulations will take ______ next month.',['effect','effective','effectively','effecting'],0,'take effect = มีผลบังคับใช้ เป็นสำนวนตายตัว'],
+ ['g32','บุพบท','Ms. Kim has worked here ______ 2015.',['for','since','during','from'],1,'since + จุดเริ่มต้นของเวลา (ปี) ใช้กับ Present perfect ส่วน for ตามด้วยช่วงเวลา เช่น for five years'],
+ ['g33','ตัวเชื่อม','The proposal was rejected ______ it exceeded the budget.',['because','because of','despite','although'],0,'หลังช่องว่างเป็นประโยค (it exceeded) และเป็นเหตุผล จึงใช้ because'],
+ ['g34','บุพบท','All requests must be submitted ______ writing.',['on','in','by','at'],1,'in writing = เป็นลายลักษณ์อักษร สำนวนตายตัว'],
+ ['g35','ชนิดของคำ','Our new line of products is ______ popular among young customers.',['increase','increasing','increased','increasingly'],3,'ขยาย adjective (popular) ต้องใช้ adverb คือ increasingly'],
+ ['g36','ตัวเชื่อม','The meeting room is not available ______ it is being cleaned.',['while','due to','in spite of','because of'],0,'หลังช่องว่างเป็นประโยค จึงใช้ conjunction ส่วน due to, in spite of, because of ต้องตามด้วยคำนาม'],
+ ['g37','ศัพท์','Please ______ me know if you need any assistance.',['let','make','tell','say'],0,'let me know = บอกให้ฉันรู้ เป็นสำนวนที่ใช้บ่อยในอีเมลธุรกิจ'],
+ ['g38','โครงสร้างประโยค','The manager, ______ has worked here for ten years, will retire in June.',['who','whom','which','whose'],0,'ขยายคน และทำหน้าที่เป็นประธานของ has worked จึงใช้ who'],
+ ['g39','บุพบท','Sales have increased ______ 12 percent compared with last year.',['by','of','at','on'],0,'increase by + จำนวนที่เพิ่มขึ้น'],
+ ['g40','กาล/รูปกริยา','The shipment is expected to ______ on Wednesday.',['arrive','arrival','arrived','arriving'],0,'expected to + กริยาช่องที่ 1'],
+ ['g41','โครงสร้างประโยค','Mr. Garcia is ______ qualified for the position than the other candidates.',['more','most','much','very'],0,'มี than ต้องเป็น comparative และ qualified เป็นคำยาว จึงใช้ more qualified'],
+ ['g42','กาล/รูปกริยา','We would appreciate it if you ______ the form by Monday.',['return','returned','returning','to return'],1,'would appreciate it if + กริยาช่องที่ 2 (รูปสุภาพ)'],
+ ['g43','บุพบท','The company is known ______ its excellent customer service.',['for','as','with','to'],0,'known for = เป็นที่รู้จักเพราะ ส่วน known as = ถูกเรียกว่า'],
+ ['g44','โครงสร้างประโยค','______ of the employees attended the training session, so it will be held again.',['Few','Little','Much','Every'],0,'employees นับได้พหูพจน์ จึงใช้ Few (ส่วน Little/Much ใช้กับนับไม่ได้ และ Every of ผิดโครงสร้าง)'],
+ ['g45','ชนิดของคำ','The hotel\'s staff are always ______ to help guests.',['will','willing','willingly','willingness'],1,'be + adjective + to ... = willing to ... (เต็มใจที่จะ)'],
+ ['g46','ชนิดของคำ','Applicants should have ______ experience in project management.',['extend','extensive','extensively','extension'],1,'ขยายคำนาม experience ต้องใช้ adjective (extensive)'],
+ ['g47','บุพบท','The office will be closed ______ the holiday.',['during','while','among','between'],0,'หลังช่องว่างเป็นคำนาม (the holiday) และหมายถึงช่วงเวลา ใช้ during'],
+ ['g48','ชนิดของคำ','The two companies reached an ______ after weeks of negotiation.',['agree','agreeable','agreement','agreeing'],2,'ตามหลัง an ต้องเป็นคำนาม (agreement) reach an agreement = บรรลุข้อตกลง'],
+ ['g49','กาล/รูปกริยา','Employees are ______ to use the parking lot behind the building.',['encourage','encouraged','encouraging','encouragement'],1,'are encouraged to ... = ได้รับการสนับสนุนให้ ... (passive)'],
+ ['g50','ชนิดของคำ','The report was written ______ by the research team.',['collaborate','collaboration','collaboratively','collaborative'],2,'ขยายกริยา written ต้องใช้ adverb (collaboratively)'],
+ ['g51','ชนิดของคำ','Please review the contract ______ before signing it.',['careful','carefully','care','carefulness'],1,'ขยายกริยา review ใช้ adverb (carefully)'],
+ ['g52','โครงสร้างประโยค','Not only ______ the project finish early, but it also came in under budget.',['did','does','was','has'],0,'Not only ที่ขึ้นต้นประโยคต้องกลับประธานกับกริยาช่วย และเรื่องในอดีตจึงใช้ did'],
+ ['g53','กาล/รูปกริยา','The CEO announced that the company ______ a new factory next year.',['built','would build','building','to build'],1,'เล่าอนาคตในประโยคอ้อมที่กริยาหลักเป็นอดีต ใช้ would + กริยาช่องที่ 1'],
+ ['g54','ตัวเชื่อม','The printer needs to be repaired ______ it can be used again.',['before','during','between','after'],0,'ต้องซ่อมก่อน แล้วถึงใช้ได้ จึงใช้ before ตามด้วยประโยค'],
+ ['g55','ชนิดของคำ','Ms. Rossi is ______ for organizing the annual conference.',['respond','response','responsible','responsibly'],2,'be responsible for = รับผิดชอบ ต้องใช้ adjective หลัง is'],
+ ['g56','ชนิดของคำ','The training manual contains ______ information about safety procedures.',['use','useful','usefully','usefulness'],1,'ขยายคำนาม information ใช้ adjective (useful)'],
+ ['g57','บุพบท','We apologize ______ the delay in processing your order.',['for','to','at','with'],0,'apologize for + สิ่งที่ขอโทษ'],
+ ['g58','กาล/รูปกริยา','The marketing budget has been ______ by ten percent this year.',['reduce','reduced','reducing','reduction'],1,'has been + กริยาช่องที่ 3 = Present perfect passive'],
+ ['g59','ตัวเชื่อม','______ the project manager is away, Ms. Wu will lead the team.',['While','During','Despite','Among'],0,'หลังช่องว่างเป็นประโยค (the project manager is away) จึงใช้ While'],
+ ['g60','ตัวเชื่อม','Customers can pay ______ cash or credit card.',['either','neither','both','whether'],0,'either ... or ... = อย่างใดอย่างหนึ่ง คู่กับ or']
+].forEach(function(r){ G.push({id:r[0],t:'g',cat:r[1],q:r[2],o:r[3],a:r[4],e:r[5]}); });
+
+/* Part 6 */
+var P6 = [
+ {label:'Email · Part 6',text:'To: All Employees\nFrom: Human Resources\nSubject: New Health Benefits\n\nWe are pleased to announce that starting January 1, the company will [1] a new health insurance plan for all full-time employees. The plan [2] regular check-ups, dental care, and emergency treatment. Employees who wish to enroll must complete the attached form [3] December 15. [4] Questions about the plan can be sent to the HR office.'},
+ {label:'Notice · Part 6',text:'NOTICE TO TENANTS\n\nThe building management will begin renovating the main lobby on March 10. During the work, the front entrance [1] closed, and visitors should use the side entrance on Park Street. We expect [2] of the project within three weeks. [3] We apologize for any inconvenience this may cause and thank you for your [4].'},
+ {label:'Article · Part 6',text:'Greenway Foods announced on Monday that it will open a new factory in Rayong. The factory, [1] is expected to create about 300 jobs, will begin production next spring. Company president Anna Wong said the new site will allow Greenway to [2] its growing demand in Southeast Asia. [3], the company plans to hire local workers and train them at its existing plants. A job fair will be held [4] the end of this month.'},
+ {label:'Email · Part 6',text:'Dear Ms. Alvarez,\n\nThank you for contacting us about the damaged lamp you received. We are [1] sorry for the trouble. A replacement lamp [2] to your address today and should arrive within three business days. [3] If you prefer a refund instead, please reply to this email. [4], you do not need to return the damaged item.'}
+];
+[
+ ['s1',0,1,['offer','offers','offered','offering'],0,'หลัง will ต้องเป็นกริยาช่องที่ 1 (offer)'],
+ ['s2',0,2,['covers','cover','covering','coverage'],0,'ประธาน The plan เป็นเอกพจน์ ต้องการกริยาเติม s (covers)'],
+ ['s3',0,3,['by','until','during','among'],0,'by + กำหนดเวลาส่ง (deadline) = ภายในวันที่ 15 ธันวาคม'],
+ ['s4',0,4,['The office is located on the third floor.','Early enrollment will help us process your coverage on time.','Many employees enjoy their vacation in December.','The company was founded in 1998.'],1,'ต้องเป็นประโยคที่ต่อจากเรื่องการลงทะเบียนก่อนวันที่ 15 และนำไปสู่ประโยคถามคำถามกับ HR ตัวเลือกอื่นไม่เกี่ยวกับเรื่องที่พูดถึง'],
+ ['s5',1,1,['will be','was','has','being'],0,'งานปรับปรุงจะเริ่มในอนาคต (will begin) ทางเข้าจึงจะปิด ใช้ will be closed'],
+ ['s6',1,2,['complete','completed','completing','completion'],3,'หลัง expect ที่มี of ตามมา ต้องเป็นคำนาม (completion of the project = การเสร็จสิ้นของโครงการ)'],
+ ['s7',1,3,['Tenants are welcome to use the parking lot as usual.','Our new cafeteria menu has many options.','The lobby was last renovated ten years ago.','Please contact the manager to apply for a job.'],0,'ประโยคที่เหมาะต้องให้ข้อมูลเรื่องผลกระทบต่อผู้เช่าระหว่างปรับปรุง ตัวเลือกอื่นไม่ต่อเนื่องกับเนื้อหา'],
+ ['s8',1,4,['patient','patience','patiently','patients'],1,'หลัง your ต้องเป็นคำนาม thank you for your patience = ขอบคุณที่อดทน'],
+ ['s9',2,1,['that','which','what','who'],1,'ขยายสิ่งของ (the factory) ในวรรคที่คั่นด้วยจุลภาค (non-restrictive) ใช้ which'],
+ ['s10',2,2,['meet','meets','meeting','met'],0,'allow ... to + กริยาช่องที่ 1 และ meet demand = ตอบสนองความต้องการ'],
+ ['s11',2,3,['However','Instead','In addition','Otherwise'],2,'ประโยคนี้เพิ่มข้อมูลที่เป็นแผนต่อเนื่องจากข้างต้น จึงใช้ In addition (นอกจากนี้)'],
+ ['s12',2,4,['by','during','between','among'],0,'by the end of this month = ภายในสิ้นเดือนนี้'],
+ ['s13',3,1,['truly','true','truth','truthful'],0,'ขยาย adjective (sorry) ใช้ adverb (truly)'],
+ ['s14',3,2,['ship','is being shipped','shipping','shipped'],1,'ตัวโคมไฟถูกส่ง (passive) และเป็นเหตุการณ์ที่กำลังดำเนินการวันนี้ ใช้ is being shipped'],
+ ['s15',3,3,['You will receive a tracking number by email shortly.','Our store hours have changed for the winter.','The lamp is available in three colors.','We have opened a new branch downtown.'],0,'ต้องเป็นข้อมูลต่อเนื่องเรื่องการจัดส่งของใหม่ ตัวเลือกอื่นไม่เกี่ยวกับเรื่องการร้องเรียน'],
+ ['s16',3,4,['Meanwhile','In either case','For instance','Unfortunately'],1,'ประโยคนี้สรุปทั้งสองกรณี (รับของใหม่หรือรับเงินคืน) จึงใช้ In either case']
+].forEach(function(r){ var it={id:r[0],t:'s',cat:'Part 6 เติมข้อความ',p:r[1],b:r[2],q:'ช่องว่าง ('+r[2]+')',o:r[3],a:r[4],e:r[5]}; ALLNEW.push(it); });
+
+/* Part 7 เพิ่ม */
+RP.push({label:'Notice · Part 7',text:'WESTBROOK PUBLIC LIBRARY\nSummer Hours\n\nBeginning June 1, the library will be open Monday through Friday from 9:00 A.M. to 8:00 P.M., and on Saturdays from 10:00 A.M. to 4:00 P.M. The library will be closed on Sundays and on July 4. Members may return books at the outdoor drop box at any time. Overdue fines will be waived for all items returned before June 15. A library card is required to borrow materials. New cards can be obtained at the front desk with a photo ID.'});
+RP.push({label:'Article · Part 7',text:'LOCAL BAKERY EXPANDS\n\nSunrise Bakery, a family-owned business in Maplewood, will open a second location on Oak Street next month. Owner Diana Cole said the decision came after the original shop began attracting customers from neighboring towns. "We were selling out of bread by noon," Ms. Cole explained. The new shop will have seating for thirty customers and will offer a wider range of sandwiches. Ms. Cole plans to hire ten additional employees, with priority given to local residents. A grand opening event on the first Saturday of the month will feature free samples.'});
+RP.push({label:'Job ad + Email · Part 7 (สองบทความ)',texts:[
+ {label:'Job advertisement',text:'POSITION: Customer Service Representative\nHarbor Telecom\n\nHarbor Telecom seeks a full-time customer service representative for its Phuket office. Applicants must have at least two years of experience in customer service and be fluent in English and Thai. Responsibilities include answering customer inquiries by phone and email and resolving billing issues. Benefits include health insurance and paid training. Send your résumé and a cover letter to hr@harbortelecom.example by October 31.'},
+ {label:'Email',text:'To: hr@harbortelecom.example\nFrom: Nattapong Rojana\nDate: October 20\nSubject: Customer Service Representative\n\nDear Hiring Manager,\n\nI am writing to apply for the customer service position advertised on your website. I have three years of experience at a hotel front desk, where I handled guest complaints and billing questions daily. I am fluent in English, Thai, and basic Mandarin. My résumé is attached. I would be grateful for the opportunity to interview and am available any weekday after 2 P.M.\n\nSincerely,\nNattapong Rojana'}
+]});
+RP.push({label:'Text-message chain · Part 7',text:'Mei Lin (10:02): Are you still coming to the client lunch?\nTom Baker (10:05): Yes, but my train is delayed. I\'ll be about 20 minutes late.\nMei Lin (10:06): No problem. I\'ll order for you. Any preference?\nTom Baker (10:08): Anything vegetarian, thanks.\nMei Lin (10:09): Done. Ask the host for our table. It\'s under my name.'});
+[
+ ['r7',3,'What is the purpose of the notice?',['To announce a permanent closing','To announce summer hours and policies','To ask for book donations','To advertise a reading event'],1,'ประกาศบอกเวลาเปิด-ปิดช่วงฤดูร้อนและกฎต่าง ๆ ของห้องสมุด'],
+ ['r8',3,'When can books be returned to the outdoor drop box?',['Only on weekdays','Before 8:00 P.M.','At any time','Only before June 15'],2,'ประกาศระบุว่าคืนหนังสือที่ drop box ได้ "at any time"'],
+ ['r9',3,'What is needed to get a new library card?',['A membership fee','A photo ID','A letter from an employer','A reservation'],1,'ประโยคสุดท้ายบอกว่าทำบัตรใหม่ที่เคาน์เตอร์ด้วยบัตรที่มีรูปถ่าย (photo ID)'],
+ ['r10',3,'What is indicated about overdue fines?',['They will increase on July 4.','They will be waived for items returned before June 15.','They must be paid at the drop box.','They apply only to new members.'],1,'Overdue fines จะยกเว้นให้ถ้าคืนก่อนวันที่ 15 มิถุนายน'],
+ ['r11',4,'Why is Sunrise Bakery opening a new location?',['The owner is moving to a new town.','There is strong demand from customers.','The original shop will close.','A competitor has left Maplewood.'],1,'เจ้าของบอกว่าร้านเดิมเริ่มมีลูกค้ามาจากเมืองใกล้เคียง ขนมปังขายหมดตั้งแต่เที่ยง'],
+ ['r12',4,'What is true about the new shop?',['It will have seating for customers.','It will sell only bread.','It will open next week.','It will employ twenty people.'],0,'ร้านใหม่มีที่นั่ง 30 ที่ ขายแซนด์วิชหลากหลายขึ้น และจะจ้างเพิ่ม 10 คน'],
+ ['r13',4,'What will happen at the grand opening?',['Free samples will be offered.','The owner will give a speech.','Discount coupons will be sold.','New recipes will be announced.'],0,'ประโยคสุดท้ายระบุว่างานเปิดตัวจะมีของชิมฟรี (free samples)'],
+ ['r14',5,'What is indicated about the position?',['It is based in Phuket.','It is part-time.','It requires Mandarin.','It does not include training.'],0,'โฆษณาระบุว่าเป็นตำแหน่งของออฟฟิศภูเก็ต แบบเต็มเวลา และมีการอบรมที่จ่ายเงินให้'],
+ ['r15',5,'What is the deadline for applying?',['October 20','October 31','November 1','October 25'],1,'โฆษณาให้ส่งใบสมัครภายในวันที่ 31 ตุลาคม'],
+ ['r16',5,'What can be inferred about Mr. Rojana?',['He has no hotel experience.','He meets the experience requirement.','He lives in Phuket.','He applied after the deadline.'],1,'เขามีประสบการณ์ 3 ปี ซึ่งมากกว่าขั้นต่ำ 2 ปีที่โฆษณากำหนด ส่วนเรื่องที่พักอาศัยไม่ได้กล่าวถึง และเขาส่งวันที่ 20 ก่อนกำหนด'],
+ ['r17',5,'What did Mr. Rojana include with his email?',['A cover letter and a photo','His résumé','A reference letter','His degree certificate'],1,'ในอีเมลเขาบอกว่าแนบ résumé (My résumé is attached) ไม่ได้พูดถึงจดหมายสมัครงาน'],
+ ['r18',6,'Why is Tom going to be late?',['He missed a meeting.','His train is delayed.','He is ordering lunch.','He cannot find the restaurant.'],1,'ทอมบอกว่ารถไฟล่าช้า (my train is delayed)'],
+ ['r19',6,'At 10:06, what does Mei Lin mean when she writes "No problem"?',['She cannot solve a problem.','She does not mind Tom arriving late.','She will cancel the lunch.','She has no food preference.'],1,'"No problem" ตอบรับข้อความที่ทอมบอกว่าจะมาสาย แปลว่าไม่เป็นไร'],
+ ['r20',6,'What will Tom most likely do when he arrives?',['Call Mei Lin','Ask for a table under Mei Lin\'s name','Order from the menu','Wait outside the restaurant'],1,'เหม่ยหลินบอกว่าให้ขอโต๊ะกับพนักงาน โต๊ะจองในชื่อเธอ']
+].forEach(function(r){ RQ.push({id:r[0],t:'r',cat:'Part 7 อ่านจับใจความ',p:r[1],q:r[2],o:r[3],a:r[4],e:r[5]}); });
+
+/* Part 2 เพิ่ม l9-l20 */
+[
+ ['l9','Do you know where the sales department is?',['Yes, I sold it last week.','It\'s on the third floor.','At about ten o\'clock.'],1,'Where ถามสถานที่ ตอบด้วยตำแหน่งชั้น ตัวเลือกแรกใช้ sold หลอกให้สับสนกับ sales'],
+ ['l10','Why don\'t we move the meeting to Thursday?',['Because it\'s on the fourth floor.','That works for me.','Yes, he moved last year.'],1,'Why don\'t we ... ? คือคำชวน/ข้อเสนอ ตอบรับด้วย That works for me'],
+ ['l11','Which printer is out of order?',['The one near the reception desk.','I ordered some paper.','Around five dollars.'],0,'Which ถามให้เลือกระบุ ตอบด้วย The one + รายละเอียด ตัวหลอก ordered ออกเสียงคล้าย order'],
+ ['l12','How often does the shuttle bus run?',['Every fifteen minutes.','About a mile from here.','Yes, it\'s running late.'],0,'How often ถามความถี่ ตอบด้วย Every ... minutes'],
+ ['l13','Should I call the client now or wait until tomorrow?',['Yes, he called me.','Let\'s wait until we have the final numbers.','In the client\'s office.'],1,'ถามเลือกระหว่างสองทาง (A or B) ตอบโดยเลือกหรือให้ความเห็นได้ ไม่ใช่ตอบ Yes/No'],
+ ['l14','Who approved the new budget?',['About ten thousand dollars.','The finance director did.','Last quarter\'s report.'],1,'Who ตอบด้วยบุคคลหรือตำแหน่ง'],
+ ['l15','Are you attending the workshop next week?',['I\'m afraid I have a business trip.','It\'s in the main hall.','A new training program.'],0,'ถาม Yes/No ตอบปฏิเสธโดยบอกเหตุผลได้ ไม่ต้องพูดคำว่า No'],
+ ['l16','What time does the store close?',['I\'ll close the window.','At nine on weekdays.','It\'s close to the station.'],1,'What time ถามเวลา ตัวหลอก close ซ้ำคำแต่คนละความหมาย'],
+ ['l17','Would you mind opening the window?',['Not at all.','It\'s a nice view.','Yes, at noon.'],0,'Would you mind ...? ตอบรับว่า Not at all = ได้เลย ไม่เป็นไร'],
+ ['l18','Where did you put the sales figures?',['They\'re up by ten percent.','I left them on your desk.','At the end of the month.'],1,'Where ถามที่วางของ ตอบด้วยสถานที่ ไม่ใช่ตัวเลขยอดขาย'],
+ ['l19','I think we should hire another designer.',['Yes, our workload has really increased.','The design is on the wall.','At the design studio.'],0,'ประโยคแสดงความเห็น ตอบด้วยการเห็นด้วยพร้อมเหตุผล'],
+ ['l20','How was the conference in Singapore?',['It was very informative.','It\'s next Monday.','By airplane.'],0,'How was ...? ถามความเห็น/ความรู้สึกต่อสิ่งที่ผ่านไปแล้ว']
+].forEach(function(r){ LQ.push({id:r[0],t:'l',cat:'Part 2 ถามตอบ',q:r[1],o:r[2],a:r[3],e:r[4]}); });
+
+/* จัดตำแหน่งเฉลย Part 2 ให้กระจาย A/B/C (เหมือนข้อสอบจริง) */
+(function(){ var tgt={l9:2,l10:2,l11:1,l12:2,l13:2,l14:1,l15:0,l16:1,l17:2,l18:1,l19:0,l20:0};
+  LQ.forEach(function(it){ if(tgt[it.id]===undefined) return; var c=it.o.splice(it.a,1)[0]; it.o.splice(tgt[it.id],0,c); it.a=tgt[it.id]; }); })();
+
+/* Part 1: ภาพ (SVG วาดเอง) */
+function svgWrap(inner){ return '<svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ภาพประกอบโจทย์ Part 1"><rect width="320" height="190" fill="#E6ECF8"/><rect y="152" width="320" height="38" fill="#CBD5EA"/>'+inner+'</svg>'; }
+function stand(x,shirt){ var t=38; return '<rect x="'+(x-14)+'" y="'+(t+70)+'" width="11" height="46" rx="3" fill="#33415C"/><rect x="'+(x+3)+'" y="'+(t+70)+'" width="11" height="46" rx="3" fill="#33415C"/><rect x="'+(x-18)+'" y="'+(t+14)+'" width="36" height="58" rx="9" fill="'+shirt+'"/><circle cx="'+x+'" cy="'+t+'" r="13" fill="#E8B98A"/><path d="M'+(x-13)+' '+(t-2)+' a13 13 0 0 1 26 0 z" fill="#2B2B33"/>'; }
+function arm(a,b,c,d){ return '<line x1="'+a+'" y1="'+b+'" x2="'+c+'" y2="'+d+'" stroke="#E8B98A" stroke-width="8" stroke-linecap="round"/>'; }
+function bike(x){ var y=142; return '<circle cx="'+x+'" cy="'+y+'" r="16" fill="none" stroke="#2A2F3A" stroke-width="4"/><circle cx="'+(x+52)+'" cy="'+y+'" r="16" fill="none" stroke="#2A2F3A" stroke-width="4"/><polyline points="'+x+','+y+' '+(x+22)+',118 '+(x+44)+',118 '+(x+52)+','+y+'" fill="none" stroke="#C0392B" stroke-width="4" stroke-linejoin="round"/><line x1="'+(x+22)+'" y1="118" x2="'+(x+26)+'" y2="'+y+'" stroke="#C0392B" stroke-width="4"/><line x1="'+(x+44)+'" y1="118" x2="'+(x+40)+'" y2="104" stroke="#2A2F3A" stroke-width="4"/><line x1="'+(x+34)+'" y1="104" x2="'+(x+46)+'" y2="104" stroke="#2A2F3A" stroke-width="4" stroke-linecap="round"/>'; }
+var SC = [
+ svgWrap('<rect x="100" y="60" width="8" height="64" rx="3" fill="#55627F"/><rect x="112" y="56" width="36" height="52" rx="9" fill="#D9822B"/><circle cx="130" cy="40" r="13" fill="#E8B98A"/><path d="M117 38 a13 13 0 0 1 26 0 z" fill="#2B2B33"/><rect x="112" y="104" width="52" height="10" rx="4" fill="#33415C"/><rect x="150" y="112" width="10" height="42" rx="3" fill="#33415C"/><rect x="70" y="112" width="190" height="8" rx="2" fill="#8B6B4A"/><rect x="78" y="120" width="6" height="34" fill="#6F5538"/><rect x="246" y="120" width="6" height="34" fill="#6F5538"/>'+arm(146,68,176,104)+'<rect x="164" y="104" width="52" height="8" rx="2" fill="#9AA5BD"/><rect x="208" y="64" width="8" height="40" rx="2" fill="#3A4256"/>'),
+ svgWrap(stand(160,'#D9822B')+arm(142,62,124,96)+arm(178,62,196,96)+'<rect x="122" y="78" width="76" height="38" rx="2" fill="#C99A5B" stroke="#8A6A38" stroke-width="2"/><rect x="132" y="56" width="56" height="22" rx="2" fill="#D8A96C" stroke="#8A6A38" stroke-width="2"/>'),
+ svgWrap(stand(105,'#2B3CC9')+stand(215,'#2E8B6A')+arm(123,60,158,86)+arm(197,60,162,86)+'<circle cx="160" cy="86" r="6" fill="#E8B98A"/>'),
+ svgWrap('<rect x="120" y="20" width="80" height="46" fill="#FFFFFF" stroke="#AAB4C8" stroke-width="2"/><rect x="75" y="70" width="34" height="36" rx="6" fill="#55627F"/><rect x="143" y="70" width="34" height="36" rx="6" fill="#55627F"/><rect x="211" y="70" width="34" height="36" rx="6" fill="#55627F"/><rect x="50" y="104" width="220" height="14" rx="4" fill="#8B6B4A"/><rect x="70" y="118" width="8" height="34" fill="#6F5538"/><rect x="242" y="118" width="8" height="34" fill="#6F5538"/><rect x="65" y="128" width="54" height="10" rx="4" fill="#55627F"/><rect x="133" y="128" width="54" height="10" rx="4" fill="#55627F"/><rect x="201" y="128" width="54" height="10" rx="4" fill="#55627F"/>'),
+ svgWrap('<rect x="170" y="26" width="130" height="92" fill="#FFFFFF" stroke="#AAB4C8" stroke-width="2"/><rect x="188" y="78" width="16" height="32" fill="#2B3CC9"/><rect x="214" y="62" width="16" height="48" fill="#2B3CC9"/><rect x="240" y="46" width="16" height="64" fill="#2B3CC9"/>'+stand(100,'#6B4FD0')+arm(118,60,168,66)+arm(82,60,78,100)),
+ svgWrap('<rect y="30" width="320" height="122" fill="#D7DDEB"/><rect x="30" y="48" width="40" height="30" fill="#A9B7D6"/><rect x="140" y="48" width="40" height="30" fill="#A9B7D6"/><rect x="250" y="48" width="40" height="30" fill="#A9B7D6"/>'+bike(40)+bike(125)+bike(210))
+];
+[
+ ['p1_1',0,['A woman is typing on a laptop.','A woman is talking on the phone.','A woman is watering a plant.','A woman is carrying a box.'],'ภาพเป็นผู้หญิงนั่งที่โต๊ะ มีโน้ตบุ๊ก มือวางบนแป้นพิมพ์ จึงตรงกับ typing on a laptop'],
+ ['p1_2',1,['A man is opening a door.','A man is carrying some boxes.','A man is driving a truck.','A man is painting a wall.'],'ภาพผู้ชายยืนถือกล่องหลายใบ จึงเป็น carrying some boxes'],
+ ['p1_3',2,['They are sitting on a bench.','They are looking at a map.','They are shaking hands.','They are climbing the stairs.'],'คนสองคนยืนหันหน้าเข้าหากันและจับมือกัน จึงเป็น shaking hands'],
+ ['p1_4',3,['People are attending a meeting.','A projector is hanging from the ceiling.','Some chairs are arranged around a table.','The table is covered with documents.'],'ภาพห้องไม่มีคน มีเก้าอี้ล้อมโต๊ะ ไม่มีเครื่องฉายและเอกสาร ตัวหลอกใช้คำที่เข้ากับห้องประชุมแต่ไม่มีในภาพ'],
+ ['p1_5',4,['A man is writing in a notebook.','A man is hanging a picture on the wall.','A man is wearing a helmet.','A man is pointing at a whiteboard.'],'ผู้ชายยื่นแขนชี้ไปที่กระดานไวท์บอร์ด จึงเป็น pointing at a whiteboard'],
+ ['p1_6',5,['Some bicycles are parked in a row.','A woman is riding a bicycle.','Cars are driving down the street.','A bicycle is being repaired.'],'ภาพมีจักรยานจอดเรียงกันไม่มีคนในภาพ จึงเป็น parked in a row']
+].forEach(function(r){ var it={id:r[0],t:'p1',cat:'Part 1 ภาพ',scene:r[1],q:'เลือกประโยคที่บรรยายภาพได้ถูกต้อง',o:r[2],a:0,e:r[3]};
+  /* ตำแหน่งคำตอบเรียงตามลำดับที่เขียนไว้ ด้านล่างกำหนดเฉลยจริง */ ALLNEW.push(it); });
+/* เฉลย Part 1 (index ของประโยคที่ถูก) */
+(function(){ var key={p1_1:0,p1_2:1,p1_3:2,p1_4:2,p1_5:3,p1_6:0}; ALLNEW.forEach(function(it){ if(it.t==='p1') it.a=key[it.id]; }); })();
+
+/* Part 3: บทสนทนา (W = ผู้หญิง, M = ผู้ชาย) */
+var P3 = [
+ {id:'c1',lines:[['W','Hi, Marcus. Did you get my email about the quarterly report?'],['M','I did, but the file wouldn\'t open. Could you send it again?'],['W','Sure. I\'ll send it as a PDF this time. By the way, do you know when the printer will be fixed?'],['M','The technician is coming tomorrow morning. For now, you can use the one on the second floor.'],['W','Great. I need to print twenty copies for Friday\'s meeting.'],['M','Then you\'d better go now. That machine is usually busy in the afternoon.']],
+  qs:[['What problem does the man mention?',['He lost an email.','He could not open a file.','The report has errors.','The meeting was canceled.'],1,'ผู้ชายบอกว่าไฟล์เปิดไม่ได้ (the file wouldn\'t open)'],
+      ['What will happen tomorrow morning?',['A new printer will be delivered.','A technician will come.','The meeting will start.','The woman will send a PDF.'],1,'ผู้ชายบอกว่าช่างจะมาตอนเช้าพรุ่งนี้'],
+      ['What does the man suggest the woman do?',['Print the report tomorrow','Use a printer on another floor right away','Email the report to everyone','Call the technician'],1,'เขาแนะนำให้ใช้เครื่องพิมพ์ชั้นสองและบอกว่าควรไปตอนนี้เพราะช่วงบ่ายมักมีคนใช้']]},
+ {id:'c2',lines:[['M','Good morning, Bayview Hotel. How can I help you?'],['W','Hello, I have a reservation for next Tuesday, but I\'d like to change it to Thursday. Is that possible?'],['M','Let me check. We have a standard room available on Thursday, but the price is slightly higher because of a trade fair in the city.'],['W','How much higher?'],['M','It\'s fifteen dollars more per night. Breakfast is still included.'],['W','That\'s fine. Please also add a late checkout if you can.'],['M','Certainly. I\'ll update your booking and send a confirmation by email.']],
+  qs:[['Why is the woman calling?',['To cancel a trip','To change a reservation date','To ask about breakfast','To complain about a room'],1,'เธอขอเปลี่ยนการจองจากวันอังคารเป็นวันพฤหัสบดี'],
+      ['Why is the price higher on Thursday?',['It is a holiday.','There is a trade fair.','Breakfast is included.','The room is larger.'],1,'ราคาสูงขึ้นเพราะมีงานแสดงสินค้า (trade fair) ในเมือง'],
+      ['What will the man do next?',['Cancel the booking','Offer free breakfast','Send a confirmation by email','Call the trade fair organizers'],2,'เขาบอกว่าจะปรับการจองและส่งอีเมลยืนยัน']]},
+ {id:'c3',lines:[['W','Mr. Ortiz, thank you for coming. I\'m Hana from Human Resources.'],['M','Nice to meet you. I\'m excited about the sales coordinator position.'],['W','Before we start, could I see your résumé? I only received your cover letter by email.'],['M','Oh, I\'m sorry. I\'ve brought a printed copy with me.'],['W','Thank you. The interview will take about thirty minutes. Afterward, I\'ll take you to meet the team.'],['M','That would be great.']],
+  qs:[['Where does the conversation most likely take place?',['At a restaurant','At a company office','At an airport','At a bookstore'],1,'ผู้หญิงมาจากฝ่ายบุคคลและกำลังสัมภาษณ์งาน จึงเป็นออฟฟิศบริษัท'],
+      ['What did the woman not receive by email?',['A cover letter','A job description','A résumé','A reference'],2,'เธอบอกว่าได้รับแค่ cover letter ยังไม่ได้รับ résumé'],
+      ['What will the woman do after the interview?',['Give a company tour to a client','Introduce the man to the team','Send an email to the applicant','Print his résumé'],1,'เธอบอกว่าหลังสัมภาษณ์จะพาไปพบทีม']]},
+ {id:'c4',lines:[['M','Customer service. This is Paul speaking.'],['W','Hello, I ordered a desk lamp two weeks ago, but it hasn\'t arrived yet.'],['M','I\'m sorry about that. Could you give me your order number?'],['W','It\'s four, seven, two, nine, one.'],['M','Thank you. It looks like the shipment was delayed because of a storm. It should arrive by Monday.'],['W','If it doesn\'t, can I get a refund?'],['M','Of course. Just call us again and we\'ll process it right away.']],
+  qs:[['What is the woman calling about?',['A damaged product','A late delivery','A billing error','A store location'],1,'เธอสั่งโคมไฟไว้สองสัปดาห์แล้วยังไม่ได้รับของ'],
+      ['What caused the delay?',['A storm','A strike','A wrong address','A system error'],0,'ผู้ชายบอกว่าการจัดส่งล่าช้าเพราะพายุ'],
+      ['What can the woman do if the item does not arrive?',['Order a different lamp','Visit the store','Request a refund','Pay a delivery fee'],2,'ผู้ชายบอกว่าถ้าไม่มาถึง ให้โทรมาใหม่ แล้วจะคืนเงินให้']]},
+ {id:'c5',lines:[['W','We need to finalize the venue for the company picnic.'],['M','I checked two places. Lakeside Park costs less, but it has no indoor space.'],['W','That could be a problem if it rains.'],['M','True. The Greenfield Center is more expensive, though it has a large hall and parking.'],['W','Our budget is limited, but I\'d rather avoid any weather risk. Let\'s book Greenfield.'],['M','Okay. I\'ll call them this afternoon to reserve the date.']],
+  qs:[['What are the speakers discussing?',['Hiring new staff','Choosing a location for an event','Planning a business trip','Reducing costs'],1,'ทั้งสองกำลังเลือกสถานที่จัดปิกนิกของบริษัท'],
+      ['What is a disadvantage of Lakeside Park?',['It is too far away.','It has no indoor space.','It is expensive.','It has no parking.'],1,'ผู้ชายบอกว่า Lakeside Park ราคาถูกแต่ไม่มีพื้นที่ในร่ม'],
+      ['What will the man do this afternoon?',['Visit the park','Cancel the picnic','Call to reserve the date','Check the weather'],2,'ผู้ชายบอกว่าบ่ายนี้จะโทรไปจองวัน']]},
+ {id:'c6',lines:[['M','Did you attend yesterday\'s training on the new scheduling software?'],['W','I couldn\'t. I had a client meeting. Was it useful?'],['M','Very. It\'s much easier to book meeting rooms now, and you can see everyone\'s calendar at once.'],['W','That sounds helpful. Is there a recording?'],['M','Yes, the IT department uploaded it to the intranet this morning.'],['W','Great, I\'ll watch it after lunch.']],
+  qs:[['Why could the woman not attend the training?',['She was on vacation.','She had a client meeting.','She was sick.','She did not know about it.'],1,'เธอบอกว่าติดประชุมกับลูกค้า'],
+      ['What does the man say about the software?',['It is difficult to learn.','It makes booking rooms easier.','It is expensive.','It is not ready yet.'],1,'เขาบอกว่าจองห้องประชุมง่ายขึ้นมาก'],
+      ['What will the woman do after lunch?',['Attend another training','Watch a recording','Meet a client','Call the IT department'],1,'เธอบอกว่าหลังมื้อเที่ยงจะดูวิดีโอบันทึกการอบรม']]}
+];
+
+/* Part 4: บทพูดคนเดียว */
+var P4 = [
+ {id:'t1',kind:'ประกาศที่สนามบิน',text:'Attention, passengers on Flight 218 to Chiang Mai. Due to heavy fog, your flight has been delayed by approximately one hour. The new departure time is 3:45 P.M. Please remain near Gate 12 and listen for further announcements. Passengers who wish to change their flight may visit the service counter near Gate 10. We apologize for the inconvenience.',
+  qs:[['Why is the flight delayed?',['A mechanical problem','Heavy fog','A staff shortage','A late crew'],1,'ประกาศระบุว่าเลื่อนเพราะหมอกหนา (heavy fog)'],
+      ['What is the new departure time?',['2:45 P.M.','3:15 P.M.','3:45 P.M.','4:45 P.M.'],2,'เวลาออกเดินทางใหม่คือ 3:45 P.M.'],
+      ['Where should passengers go to change their flight?',['Gate 12','The service counter near Gate 10','The information desk at the entrance','The baggage claim area'],1,'ผู้ที่ต้องการเปลี่ยนเที่ยวบินให้ไปที่เคาน์เตอร์บริการใกล้ Gate 10']]},
+ {id:'t2',kind:'ข้อความเสียง (voicemail)',text:'Hello, this is Karen Lee from Brightview Dental Clinic calling for Mr. Davis. I\'m calling to confirm your appointment tomorrow at 10 A.M. Please remember to bring your insurance card and arrive ten minutes early to complete a form. If you need to reschedule, please call us back at five five five, zero one four two before five o\'clock today. Thank you.',
+  qs:[['Who is the speaker?',['A pharmacist','A clinic staff member','An insurance agent','A patient'],1,'ผู้พูดแนะนำตัวว่ามาจากคลินิกทันตกรรม และโทรยืนยันนัด'],
+      ['What are listeners asked to bring?',['A photo ID','Previous test results','An insurance card','A payment form'],2,'ให้นำบัตรประกัน (insurance card) มาด้วย'],
+      ['What should Mr. Davis do if he needs to reschedule?',['Visit the clinic tomorrow','Call before five o\'clock today','Send an email','Fill out a form online'],1,'ถ้าต้องเลื่อนนัด ให้โทรกลับก่อนห้าโมงเย็นวันนี้']]},
+ {id:'t3',kind:'โฆษณาร้านค้า',text:'Welcome to Metro Electronics\' weekend sale. This Saturday and Sunday only, all laptops are fifteen percent off, and customers who spend over five hundred dollars will receive a free wireless mouse. Our staff will also be offering free setup service at the technical support desk on the second floor. The sale ends Sunday at six P.M. Don\'t miss it.',
+  qs:[['What is being advertised?',['A new store opening','A weekend sale','A repair service','A job fair'],1,'ประกาศโปรโมตงานลดราคาช่วงสุดสัปดาห์'],
+      ['What will customers receive if they spend over $500?',['A gift card','A free wireless mouse','A laptop bag','A free repair'],1,'ลูกค้าที่ซื้อเกิน 500 ดอลลาร์จะได้เมาส์ไร้สายฟรี'],
+      ['Where can customers get free setup service?',['At the entrance','At the cashier','On the second floor','Outside the store'],2,'บริการติดตั้งฟรีอยู่ที่โต๊ะซัพพอร์ตชั้นสอง']]},
+ {id:'t4',kind:'พูดเปิดการประชุม',text:'Good morning, everyone. Before we begin today\'s meeting, I\'d like to welcome our new marketing director, Ms. Sato, who joined us this week. She previously worked in our Osaka office for five years. We\'ll start with a brief presentation on next quarter\'s campaign, followed by a question-and-answer session. Please silence your phones and hold your questions until the end.',
+  qs:[['Who is Ms. Sato?',['A client','The new marketing director','An Osaka office manager','A training consultant'],1,'ผู้พูดแนะนำ Ms. Sato ว่าเป็นผู้อำนวยการฝ่ายการตลาดคนใหม่'],
+      ['What will happen first?',['A question-and-answer session','A budget review','A presentation about a campaign','A lunch break'],2,'เริ่มด้วยการนำเสนอแคมเปญของไตรมาสหน้า แล้วค่อยถึงช่วงถามตอบ'],
+      ['What are listeners asked to do?',['Take notes','Hold their questions until the end','Introduce themselves','Turn in a report'],1,'ผู้พูดขอให้เก็บคำถามไว้จนจบ และปิดเสียงโทรศัพท์']]},
+ {id:'t5',kind:'แนะนำทัวร์พิพิธภัณฑ์',text:'Welcome to the Riverside Science Museum. Your tour will last about ninety minutes and will begin in the main hall. Please note that photography is permitted, but flash photography is not allowed in the planetarium. Lockers are available near the entrance if you\'d like to leave your bags. After the tour, we invite you to visit our gift shop, where members receive a ten percent discount.',
+  qs:[['Where will the tour begin?',['In the planetarium','In the main hall','At the gift shop','Near the entrance'],1,'ทัวร์เริ่มที่ main hall'],
+      ['What is not allowed?',['Taking photographs','Bringing bags inside','Flash photography in the planetarium','Visiting the gift shop'],2,'ถ่ายภาพได้ แต่ห้ามใช้แฟลชในท้องฟ้าจำลอง'],
+      ['What benefit is mentioned for members?',['Free entry','A discount at the gift shop','A private tour','Free lockers'],1,'สมาชิกได้ส่วนลด 10 เปอร์เซ็นต์ที่ร้านของที่ระลึก']]}
+];
+
+/* ศัพท์เพิ่ม 30 คำ (ลำดับที่ 31-60) */
+[
+ ['launch','v.','เปิดตัว (สินค้า)','The company will launch a new product in May.'],
+ ['applicant','n.','ผู้สมัคร','Every applicant must submit a résumé.'],
+ ['anticipate','v.','คาดการณ์','We anticipate a rise in demand.'],
+ ['contract','n.','สัญญา','Both parties signed the contract.'],
+ ['delegate','v.','มอบหมายงาน','A good manager knows how to delegate.'],
+ ['eligible','adj.','มีสิทธิ์','Full-time staff are eligible for the bonus.'],
+ ['facility','n.','สิ่งอำนวยความสะดวก / สถานที่','The training facility has modern equipment.'],
+ ['implement','v.','นำไปใช้ปฏิบัติ','We will implement the new policy in July.'],
+ ['merger','n.','การควบรวมกิจการ','The merger created a larger company.'],
+ ['obtain','v.','ได้รับ','You can obtain a permit at city hall.'],
+ ['permit','n.','ใบอนุญาต','Visitors need a permit to park here.'],
+ ['qualification','n.','คุณสมบัติ','Her qualifications match the job.'],
+ ['recipient','n.','ผู้รับ','The recipient must sign for the package.'],
+ ['subscription','n.','การสมัครสมาชิก','Your subscription renews each month.'],
+ ['tentative','adj.','เบื้องต้น ยังไม่แน่นอน','We made a tentative plan for Friday.'],
+ ['urgent','adj.','เร่งด่วน','This is an urgent request.'],
+ ['venue','n.','สถานที่จัดงาน','The venue holds two hundred people.'],
+ ['withdraw','v.','ถอน / ถอนตัว','She withdrew her application.'],
+ ['approve','v.','อนุมัติ','The board approved the budget.'],
+ ['commute','v.','เดินทางไปทำงาน','I commute to work by train.'],
+ ['discount','n.','ส่วนลด','Members get a ten percent discount.'],
+ ['enclose','v.','แนบมาในซอง','Please find the invoice enclosed.'],
+ ['fluctuate','v.','ผันผวน','Prices fluctuate during the year.'],
+ ['itinerary','n.','กำหนดการเดินทาง','The itinerary includes two stops.'],
+ ['landlord','n.','เจ้าของที่ / ผู้ให้เช่า','The landlord repaired the heater.'],
+ ['maintenance','n.','การบำรุงรักษา','The elevator is closed for maintenance.'],
+ ['outstanding','adj.','ค้างชำระ / ยอดเยี่ยม','You have an outstanding balance.'],
+ ['premises','n.','อาคารสถานที่','Smoking is not allowed on the premises.'],
+ ['procedure','n.','ขั้นตอน','Please follow the safety procedure.'],
+ ['temporary','adj.','ชั่วคราว','She took a temporary job.']
+].forEach(function(r){ VOC.push({w:r[0],pos:r[1],th:r[2],ex:r[3]}); });
+VOC.forEach(function(w,i){ w.i=i; });
+
+/* แผนเรียนฉบับปรับปรุง */
+PLAN = [
+ {t:'วางรากไวยากรณ์ และทำความรู้จักข้อสอบ',f:'Tense พื้นฐาน ประธานกับกริยา และรูปแบบข้อสอบทั้ง 7 พาร์ต',tasks:['ทำข้อสอบจริงเต็มชุดหนึ่งครั้งเพื่อวัดระดับตัวเอง (จากหนังสือหรือเว็บทางการ)','ทบทวน Present, Past, Future simple และ Present perfect','ท่องศัพท์ 10 คำต่อวัน (ใช้แท็บศัพท์)','ฝึก Part 1 และ Part 2 วันละ 8 ข้อ เริ่มจับคำถาม Who, When, Where, Why']},
+ {t:'Part 5: ชนิดของคำ',f:'Noun, Verb, Adjective, Adverb และคำต่อท้าย',tasks:['ดูตำแหน่งของ noun, adj, adv ในประโยค','จำคำต่อท้าย -tion, -ment, -ive, -ly','ทำ Part 5 วันละ 15 ข้อ แล้วอ่านคำอธิบายทุกข้อ','ทบทวนข้อที่ผิดจากสัปดาห์ที่แล้วในโหมดทบทวน']},
+ {t:'Part 5: บุพบทและตัวเชื่อม',f:'by/until, during/while, despite/although, due to/because',tasks:['แยกให้ออกว่าตัวเชื่อมตามด้วยคำนามหรือประโยค','ท่องคู่คำ เช่น responsible for, on request, take effect','ทำ Part 5 วันละ 15 ข้อ จับเวลาไม่เกิน 25 วินาทีต่อข้อ','ฝึก Part 2 วันละ 10 ข้อ เน้นคำขอร้องและคำชวน']},
+ {t:'Part 6 และฟัง Part 3',f:'เติมคำและประโยคในอีเมล ฟังบทสนทนา',tasks:['ทำ Part 6 สองบทความต่อวัน อ่านทั้งย่อหน้าก่อนเลือก','อ่านโจทย์ Part 3 ก่อนฟัง ขีดเส้นใต้คำถาม','ฟัง Part 3 วันละ 2 ชุด แล้วเทียบกับ transcript','ทำ Part 5 วันละ 10 ข้อเพื่อไม่ให้เบสิกหลุด']},
+ {t:'Part 7: อ่านเร็ว',f:'อีเมล ประกาศ โฆษณา ข้อความแชต',tasks:['อ่านคำถามก่อน แล้วค่อยหาคำตอบในบทความ','ฝึกกวาดตา (skim) หาตัวเลข วันที่ ชื่อ','ทำ Part 7 วันละ 3 บทความ จับเวลา 8 นาที','ท่องศัพท์ต่อเนื่อง และทบทวนคำที่เคยพลาด']},
+ {t:'Part 7 สองบทความ และฟัง Part 4',f:'บทความคู่ ประกาศและบทพูดสั้น',tasks:['ฝึกโยงข้อมูลจากสองบทความ (double passage)','ฟัง Part 4 วันละ 3 ชุด เช่น ประกาศ โฆษณา ข้อความเสียง','ทำ Part 7 วันละ 3 บทความ','ทบทวนข้อที่ผิดทั้งหมดในโหมดทบทวน']},
+ {t:'จำลองสนามสอบ',f:'ทำข้อสอบจำลองจับเวลาจริง',tasks:['ทำข้อสอบจำลองในแอป (Reading และ Listening) อย่างละ 2 รอบ','ทำ Reading ครึ่งชุดจากข้อสอบจริง (50 ข้อ) ใน 37 นาที','เช็กว่าพลาดพาร์ตไหนมากที่สุด แล้วเก็บเพิ่ม','ทบทวนศัพท์ทั้ง 60 คำในแท็บศัพท์']},
+ {t:'ซ้อมใหญ่และเตรียมตัว',f:'ข้อสอบเต็มชุด และพักให้พร้อม',tasks:['ทำข้อสอบเต็มชุด 2 รอบ (ใช้เวลา 2 ชั่วโมงต่อรอบ)','ทบทวนข้อผิดและจุดอ่อนที่เหลือ','เตรียมบัตรประจำตัวและรู้เส้นทางไปสนามสอบ','นอนให้พอก่อนวันสอบ ไม่ติวหนักคืนก่อนสอบ']}
+];
+
+/* ===== เพิ่มเติมรอบ 2: Part 7 สามบท, Part 3 (3 คน + ตาราง), Part 4 ===== */
+function tbl(head, rows){ return '<table><thead><tr>'+head.map(function(h){return '<th>'+h+'</th>';}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table>'; }
+var GFX = {
+ c8: '<p class="eyebrow" style="margin-bottom:8px">Evening Trains to Eastport</p>'+tbl(['Departs','Arrives','Platform'],[['6:10 P.M.','7:05 P.M.','Platform 2'],['6:40 P.M.','7:35 P.M.','Platform 5'],['7:15 P.M.','8:10 P.M.','Platform 3'],['7:50 P.M.','8:45 P.M.','Platform 1']]),
+ t6: '<p class="eyebrow" style="margin-bottom:8px">Delmar Department Store · Floor Directory</p>'+tbl(['Floor','Department'],[['Floor 1','Cosmetics and Accessories'],['Floor 2','Women\'s Clothing'],['Floor 3','Men\'s Clothing'],['Floor 4','Electronics'],['Floor 5','Home and Kitchen']])
+};
+
+/* Part 7: บทอ่านเพิ่ม (RP index 7-12) */
+RP.push({label:'Email · Part 7',text:'To: Customer Support Team\nFrom: Linda Park, Operations Manager\nDate: May 12\nSubject: Revised refund process\n\nStarting June 1, all refund requests must be entered into the new Case Tracker system rather than handled by email. Each request must include the order number, the reason for the refund, and a photo if the item arrived damaged. Refunds under $50 can be approved by any team member. Refunds above $50 require approval from a team leader. Training sessions will be held on May 20 and May 22 at 2 P.M. in Conference Room B. Attendance at one session is required.'});
+RP.push({label:'Advertisement · Part 7',text:'COASTAL LANGUAGE INSTITUTE\nEvening English Classes\n\nImprove your business English in just eight weeks! Classes meet Tuesdays and Thursdays from 6:30 P.M. to 8:30 P.M. at our Riverside campus. Each course is limited to twelve students to ensure personal attention. Students who register before August 1 receive a 20 percent discount on tuition and a free workbook. All instructors hold teaching certificates and have at least five years of experience. To register, visit our website or stop by the front office between 10 A.M. and 5 P.M.'});
+RP.push({label:'Article · Part 7',text:'HARBOR CITY PLANS NEW TRAM LINE\n\nHARBOR CITY (March 3) — The city council voted on Tuesday to build a new tram line connecting the airport to the downtown business district. Construction is scheduled to begin in January and is expected to take three years. The project will cost an estimated $240 million, about half of which will come from a national transportation fund. Mayor Elena Ruiz said the line would reduce traffic on Route 9, which currently carries more than 60,000 vehicles per day. Some residents have raised concerns about noise during construction. In response, the council has promised to limit work to daytime hours.'});
+RP.push({label:'Order confirmation · Part 7',text:'ORDER CONFIRMATION\nBrightline Office Supply\nOrder No.: 58213    Date: November 4\n\nItem                      Qty    Unit price\nErgonomic chair             4       $120\nStanding desk               2       $350\nDesk lamp                   6        $25\n\nShipping: Free for orders over $1,000.\nDelivery date: November 12.\nPlease inspect all items upon delivery and report any damage within 48 hours.'});
+RP.push({label:'Announcement + 2 emails · Part 7 (สามบท)',texts:[
+ {label:'Announcement',text:'GLOBAL RETAIL SUMMIT\nSingapore, September 18-19\n\nJoin over 2,000 retail professionals for two days of talks, workshops, and networking. Early-bird registration ($300) ends July 31; after that the fee is $420. Group discounts of 15 percent are available for teams of five or more. The summit takes place at the Marina Convention Center. Hotel rooms near the venue can be booked at a special rate through the summit website.'},
+ {label:'Email 1',text:'To: Grace Tan\nFrom: Kevin Lim\nDate: July 25\nSubject: Retail Summit\n\nHi Grace,\n\nI\'d like to attend the Global Retail Summit in September. Three of my teammates, Nina, Omar, and Pedro, are interested as well, so the four of us would like to register together. Since the early-bird deadline is approaching, could you approve our request by the end of this week? I\'ve also attached the schedule showing the workshops we plan to attend.\n\nThanks,\nKevin'},
+ {label:'Email 2',text:'To: Kevin Lim\nFrom: Grace Tan\nDate: July 26\nSubject: RE: Retail Summit\n\nKevin,\n\nI approve your request. Please register all four of you before July 31. Since the group is smaller than five, the group discount won\'t apply, but the early-bird price is still worth it. Please book hotel rooms through the summit website as well. I\'d like each of you to prepare a short summary of one session for our team meeting in October.\n\nGrace'}
+]});
+RP.push({label:'Notice + 2 emails · Part 7 (สามบท)',texts:[
+ {label:'Safety notice',text:'SAFETY NOTICE\nAurora Home Appliances\n\nAurora is voluntarily recalling its Model T-200 electric kettles manufactured between January and March of this year. The affected kettles may overheat if left on without water. The model number and manufacturing date are printed on the underside of the base. Customers who own an affected kettle should stop using it immediately and visit the Aurora website to request a free replacement or a full refund. No receipt is required.'},
+ {label:'Email 1',text:'To: Aurora Customer Care\nFrom: Sofia Marin\nDate: April 9\nSubject: Recalled kettle\n\nDear Aurora,\n\nI recently read about your recall. I bought a T-200 kettle in February, and the date on the base reads February 14. I would prefer a refund rather than a replacement, because I have since purchased a different brand. I no longer have my receipt, but I understand it is not needed. Please tell me how to return the kettle.\n\nSincerely,\nSofia Marin'},
+ {label:'Email 2',text:'To: Sofia Marin\nFrom: Aurora Customer Care\nDate: April 11\nSubject: RE: Recalled kettle\n\nDear Ms. Marin,\n\nThank you for contacting us. We confirm that your kettle is covered by the recall. We have emailed a prepaid shipping label to you. Please pack the kettle securely and drop it off at any post office within 14 days. Your refund of $39.99 will be issued to your original payment method within seven business days after we receive the kettle. We apologize for the inconvenience.'}
+]});
+[
+ ['r21',7,'What is the main change described in the email?',['Refund requests will be entered into a new system instead of email.','All refunds will be approved by team members.','Customers must send photos with every request.','Refunds will no longer be given for damaged items.'],0,'Starting June 1 คำขอคืนเงินต้องบันทึกในระบบ Case Tracker แทนการจัดการทางอีเมล'],
+ ['r22',7,'Who must approve an $80 refund?',['Any team member','A team leader','The operations manager','The customer'],1,'การคืนเงินเกิน 50 ดอลลาร์ต้องให้หัวหน้าทีม (team leader) อนุมัติ'],
+ ['r23',7,'What are team members required to do?',['Submit photos of damaged items','Attend one training session','Move to Conference Room B','Approve all refunds under $50 by email'],1,'ประโยคสุดท้ายระบุว่าต้องเข้าร่วมการอบรมหนึ่งรอบ'],
+ ['r24',8,'What is indicated about the classes?',['They are held on weekends.','They have a maximum of twelve students.','They are offered only online.','They last twelve weeks.'],1,'แต่ละคอร์สจำกัด 12 คน ส่วนคอร์สมี 8 สัปดาห์และเรียนวันอังคารกับพฤหัสบดี'],
+ ['r25',8,'How can students get a discount?',['By registering before August 1','By bringing a friend','By paying in cash','By visiting the front office after 5 P.M.'],0,'ผู้ลงทะเบียนก่อน 1 สิงหาคมได้ส่วนลด 20 เปอร์เซ็นต์และสมุดงานฟรี'],
+ ['r26',8,'What is true about the instructors?',['They are all native speakers.','They teach part-time.','They hold teaching certificates and have experience.','They are former students.'],2,'ผู้สอนทุกคนมีใบรับรองการสอนและมีประสบการณ์อย่างน้อยห้าปี'],
+ ['r27',9,'What is the article mainly about?',['A plan to build a tram line','A new airport terminal','A change in bus fares','A road repair project'],0,'สภาเมืองลงมติสร้างรถรางเชื่อมสนามบินกับย่านธุรกิจ'],
+ ['r28',9,'How will the project be funded?',['Entirely by the city','Partly by a national transportation fund','By ticket sales','By private companies'],1,'งบประมาณประมาณครึ่งหนึ่งมาจากกองทุนขนส่งแห่งชาติ'],
+ ['r29',9,'What is the council\'s response to residents\' concerns?',['It will move the construction site.','It will limit work to daytime hours.','It will compensate nearby homeowners.','It will shorten the project.'],1,'สภาเมืองสัญญาว่าจะจำกัดการก่อสร้างในช่วงกลางวัน'],
+ ['r30',9,'According to Mayor Ruiz, what will the project help do?',['Reduce traffic on Route 9','Create 60,000 jobs','Lower airport fees','Attract more tourists'],0,'นายกเทศมนตรีบอกว่าจะลดการจราจรบน Route 9'],
+ ['r31',10,'What is the total cost of the standing desks?',['$350','$480','$700','$1,330'],2,'โต๊ะยืน 2 ตัว ตัวละ 350 ดอลลาร์ รวม 700 ดอลลาร์'],
+ ['r32',10,'What is indicated about the order?',['It will be delivered on November 4.','Shipping is free of charge.','It includes five desk lamps.','It must be paid in cash.'],1,'ยอดรวมของออร์เดอร์เกิน 1,000 ดอลลาร์ (480 + 700 + 150 = 1,330) จึงส่งฟรี'],
+ ['r33',10,'What must the customer do within 48 hours of delivery?',['Pay the balance','Report any damage','Return unused items','Confirm the order'],1,'ข้อความท้ายใบสั่งซื้อให้ตรวจสินค้าและแจ้งความเสียหายภายใน 48 ชั่วโมง'],
+ ['r34',11,'What is indicated about the summit?',['It lasts two days.','It is held in July.','It is free for groups.','It is held at a hotel.'],0,'ประกาศระบุวันที่ 18-19 กันยายน จึงจัดสองวัน และจัดที่ Marina Convention Center'],
+ ['r35',11,'How much will each person in Kevin\'s group most likely pay for registration?',['$255','$300','$357','$420'],1,'ลงทะเบียนก่อน 31 กรกฎาคมจึงได้ราคา early-bird 300 ดอลลาร์ และกลุ่มมี 4 คนจึงไม่ได้ส่วนลดกลุ่ม'],
+ ['r36',11,'Why does Kevin ask for approval by the end of the week?',['The summit schedule has changed.','The early-bird deadline is approaching.','His teammates will leave soon.','The hotel rooms are almost full.'],1,'ในอีเมลเขาบอกว่าวันสุดท้ายของราคา early-bird ใกล้เข้ามาแล้ว'],
+ ['r37',11,'Why will the group discount not apply?',['The group registered late.','The group has fewer than five people.','Grace did not approve it.','The discount ended on July 31.'],1,'เกรซอธิบายว่ากลุ่มมีน้อยกว่าห้าคน และส่วนลดกลุ่มสำหรับทีมตั้งแต่ห้าคนขึ้นไป'],
+ ['r38',11,'What does Grace ask the team to do after the summit?',['Write a report for the manager','Prepare a summary of one session','Book more hotel rooms','Register for next year'],1,'เธอให้แต่ละคนเตรียมสรุปสั้น ๆ ของหนึ่งเซสชันสำหรับประชุมทีมเดือนตุลาคม'],
+ ['r39',12,'What is the purpose of the first text?',['To advertise a new product','To announce a product recall','To report a store closing','To invite customers to a sale'],1,'ประกาศความปลอดภัยแจ้งเรียกคืนกาต้มน้ำรุ่น T-200'],
+ ['r40',12,'Where can customers find a kettle\'s manufacturing date?',['On the box','On the receipt','On the underside of the base','On the website'],2,'ระบุว่าพิมพ์ไว้ใต้ฐานของกาต้มน้ำ'],
+ ['r41',12,'What does Ms. Marin request?',['A replacement kettle','A refund','A new receipt','A repair'],1,'เธอบอกว่าอยากได้เงินคืนมากกว่าสินค้าทดแทน'],
+ ['r42',12,'What will Ms. Marin most likely do next?',['Buy another T-200','Pack the kettle and take it to a post office','Request a receipt','Wait for a replacement'],1,'บริษัทส่งป้ายส่งพัสดุที่จ่ายแล้วมาให้ และขอให้แพ็กแล้วนำไปส่งที่ไปรษณีย์ภายใน 14 วัน'],
+ ['r43',12,'What is indicated about Ms. Marin\'s kettle?',['It was bought in April.','It was made during the recalled period.','It cost $49.99.','It overheated.'],1,'วันที่บนฐานคือ 14 กุมภาพันธ์ ซึ่งอยู่ในช่วงมกราคมถึงมีนาคมที่ถูกเรียกคืน']
+].forEach(function(r){ RQ.push({id:r[0],t:'r',cat:'Part 7 อ่านจับใจความ',p:r[1],q:r[2],o:r[3],a:r[4],e:r[5]}); });
+
+/* Part 3 เพิ่ม (N = ผู้ชายคนที่สอง) */
+P3.push(
+ {id:'c7',lines:[['W','Hi, Daniel and Kenji. Thanks for joining. I wanted to discuss the delay with the Hillside apartment project.'],['M','The main problem is the shipment of window frames. The supplier says it won\'t arrive until the twenty-fifth.'],['N','That\'s two weeks later than planned. We could switch to a local supplier, but their frames cost about ten percent more.'],['W','Would that affect our overall budget?'],['M','Slightly. But we have some extra funds in the contingency account.'],['W','Then let\'s use the local supplier. Kenji, can you contact them today?'],['N','Sure. I\'ll call them as soon as this meeting ends.']],
+  qs:[['What problem are the speakers discussing?',['A budget cut','A delayed shipment of materials','A staff shortage','A design error'],1,'ปัญหาคือกรอบหน้าต่างจะมาถึงช้ากว่ากำหนดสองสัปดาห์'],
+      ['What is a disadvantage of the local supplier?',['It is farther away.','It has a higher price.','It has less experience.','It requires a deposit.'],1,'ผู้ชายคนที่สองบอกว่ากรอบหน้าต่างของผู้ขายในท้องถิ่นแพงกว่าราว 10 เปอร์เซ็นต์'],
+      ['What will Kenji do after the meeting?',['Contact the local supplier','Visit the construction site','Prepare a new budget','Cancel the order'],0,'เคนจิบอกว่าจะโทรหาผู้ขายท้องถิ่นเมื่อประชุมจบ']]},
+ {id:'c8',lines:[['M','Excuse me, I need to get to Eastport for a dinner at eight-fifteen. Which train should I take?'],['W','Let me look at the schedule. The seven-fifteen would get you there at ten past eight, but it\'s cutting it close. I\'d recommend the earlier one.'],['M','Which one is that? The six-forty?'],['W','Yes, that one arrives at seven thirty-five, so you\'ll have plenty of time. It leaves from the platform on the far side of the station.'],['M','Great. And can I buy my ticket from the machine?'],['W','Yes, or you can use the mobile app, which is a bit cheaper.']],
+  qs:[['Look at the graphic. Which platform will the man most likely use?',['Platform 1','Platform 2','Platform 3','Platform 5'],3,'ผู้หญิงแนะนำขบวน 6:40 P.M. ซึ่งในตารางออกจาก Platform 5'],
+      ['Why does the woman recommend the earlier train?',['It is cheaper.','It is faster.','The man will have plenty of time.','The later train is full.'],2,'ขบวน 6:40 ถึง 7:35 ทำให้มีเวลาเหลือเฟือ ส่วนขบวน 7:15 ถึง 8:10 เฉียดเวลาเกินไป'],
+      ['What does the woman say about the mobile app?',['It costs less.','It is difficult to use.','It shows the platform number.','It cannot be used today.'],0,'เธอบอกว่าซื้อตั๋วผ่านแอปถูกกว่าเล็กน้อย']]},
+ {id:'c9',lines:[['M','Hi, Rita. Did the new office chairs arrive?'],['W','Yes, they came this morning, but there\'s a problem. Three of the twenty chairs are the wrong color. We ordered gray, but they sent black.'],['M','Did you contact the vendor?'],['W','I called, and they said they can exchange them, but it will take a week.'],['M','That\'s fine. We don\'t need all of them immediately. Why don\'t you ask them to send the correct ones along with the next delivery?'],['W','Good idea. I\'ll email them the order details now.']],
+  qs:[['What problem does the woman report?',['Some chairs are damaged.','Some chairs are the wrong color.','The delivery was late.','The chairs are too expensive.'],1,'เก้าอี้สามตัวจากยี่สิบตัวเป็นสีดำ ทั้งที่สั่งสีเทา'],
+      ['What does the vendor offer to do?',['Refund the money','Exchange the chairs','Send a technician','Give a discount'],1,'ผู้ขายบอกว่าแลกเปลี่ยนให้ได้ แต่ต้องใช้เวลาหนึ่งสัปดาห์'],
+      ['What will the woman do next?',['Return all the chairs','Call the manager','Email the order details to the vendor','Place a new order'],2,'เธอบอกว่าจะอีเมลรายละเอียดคำสั่งซื้อไปให้ตอนนี้']]},
+ {id:'c10',lines:[['W','Welcome to the Facilities Office. How can I help you?'],['M','I\'m a new employee, and I\'d like to get a parking permit.'],['W','Of course. You\'ll need to fill out this form and show your employee ID. The permit costs thirty dollars a month, and it will be deducted from your paycheck.'],['M','Is there a cheaper option? I\'ll only drive to work two or three days a week.'],['W','Yes, we offer a daily pass for four dollars. You can buy it from the machine in the lobby.'],['M','That\'s probably better for me. I\'ll take a few passes today.']],
+  qs:[['Who most likely is the man?',['A visitor','A new employee','A facilities manager','A parking attendant'],1,'ผู้ชายบอกว่าตัวเองเป็นพนักงานใหม่'],
+      ['What does the woman say about the monthly permit?',['It must be bought online.','The cost is deducted from the paycheck.','It is free for new employees.','It expires after a week.'],1,'เธอบอกว่าค่าบัตรเดือนละ 30 ดอลลาร์ จะหักจากเงินเดือน'],
+      ['Why does the man prefer the daily pass?',['It is more convenient to buy.','He drives only a few days a week.','It lasts longer.','He lost his employee ID.'],1,'เขาบอกว่าจะขับรถมาทำงานแค่สองสามวันต่อสัปดาห์']]}
+);
+
+/* Part 4 เพิ่ม */
+P4.push(
+ {id:'t6',kind:'ประกาศในห้างสรรพสินค้า',text:'Attention, shoppers. Thank you for visiting Delmar Department Store. For the next two hours, we\'re offering twenty percent off all items in our home and kitchen department. If you\'re interested in this offer, please take the escalator to the top floor. Customers who spend more than one hundred dollars will receive a free tote bag at the checkout counter. Please note that the electronics department is closing early today for inventory. Thank you for shopping with us.',
+  qs:[['Look at the graphic. Which floor should listeners go to for the discount?',['Floor 1','Floor 3','Floor 4','Floor 5'],3,'ส่วนลดอยู่ที่แผนกเครื่องใช้ในบ้านและครัวซึ่งอยู่ชั้นบนสุด ตามตารางคือ Floor 5'],
+      ['What will customers receive if they spend more than $100?',['A gift card','A free tote bag','A coupon','A free meal'],1,'ลูกค้าที่ซื้อเกิน 100 ดอลลาร์จะได้ถุงผ้าฟรีที่แคชเชียร์'],
+      ['What is mentioned about the electronics department?',['It is offering a discount.','It is moving to another floor.','It will close early today.','It has new products.'],2,'แผนกอิเล็กทรอนิกส์ปิดก่อนเวลาวันนี้เพื่อตรวจนับสินค้า']]},
+ {id:'t7',kind:'ข้อความเสียงจากซัพพลายเออร์',text:'Hi, this is Omar from Delta Packaging returning your call about order number eight, four, one. I\'m afraid we can\'t deliver the boxes on Thursday as planned because one of our trucks is being repaired. We can deliver them on Friday morning instead, or if you need them sooner, you can pick them up at our warehouse on Thursday afternoon. Please call me back at your earliest convenience to let me know which option you prefer. I apologize for the trouble.',
+  qs:[['Why is the speaker calling?',['To place an order','To report a change in delivery','To request a payment','To offer a discount'],1,'โอมาร์แจ้งว่าส่งกล่องวันพฤหัสบดีตามกำหนดไม่ได้ ต้องเปลี่ยนวันส่ง'],
+      ['What is the cause of the problem?',['A truck is being repaired.','The warehouse is closed.','The order was lost.','The boxes are damaged.'],0,'รถบรรทุกคันหนึ่งกำลังซ่อม'],
+      ['What does the speaker ask the listener to do?',['Pick up the boxes today','Send a new order','Call back to choose an option','Visit the warehouse tomorrow'],2,'ขอให้โทรกลับเพื่อบอกว่าเลือกทางไหนระหว่างส่งวันศุกร์หรือมารับเองวันพฤหัสบดี']]},
+ {id:'t8',kind:'ปฐมนิเทศพนักงานใหม่',text:'Welcome to Northfield Insurance. I\'m Maria from Human Resources, and I\'ll be guiding you through today\'s orientation. First, we\'ll go over our company policies and benefits. After lunch, you\'ll meet your department managers and set up your computer accounts. Please remember to collect your security badge from the front desk before you leave today. You\'ll need it to enter the building tomorrow. If you have any questions during the sessions, feel free to interrupt me.',
+  qs:[['Who is the speaker?',['A department manager','A human resources employee','A security guard','An insurance client'],1,'ผู้พูดแนะนำตัวว่าเป็นเจ้าหน้าที่จากฝ่ายทรัพยากรบุคคล'],
+      ['What will listeners do after lunch?',['Review company policies','Collect security badges','Meet their managers and set up accounts','Take a tour of the building'],2,'หลังมื้อเที่ยงจะพบผู้จัดการแผนกและตั้งค่าบัญชีคอมพิวเตอร์'],
+      ['What are listeners reminded to do?',['Collect a security badge','Bring a laptop tomorrow','Submit a form','Park in the front lot'],0,'ให้มารับบัตรพนักงาน (security badge) ที่เคาน์เตอร์หน้าก่อนกลับ']]}
+);
+
+/* ===== รวมโจทย์ทั้งหมด ===== */
+var SETS = {};
+P3.forEach(function(s){ SETS[s.id]={kind:'บทสนทนา',tr:s.lines.map(function(l){ return (l[0]==='W'?'ผู้หญิง':(l[0]==='N'?'ผู้ชายคนที่สอง':'ผู้ชาย'))+': '+l[1]; }).join('\n')};
+  s.qs.forEach(function(r,n){ ALLNEW.push({id:'p3_'+s.id+'_'+(n+1),t:'p3',set:s.id,cat:'Part 3 บทสนทนา',q:r[0],o:r[1],a:r[2],e:r[3]}); }); });
+P4.forEach(function(s){ SETS[s.id]={kind:s.kind,tr:s.text};
+  s.qs.forEach(function(r,n){ ALLNEW.push({id:'p4_'+s.id+'_'+(n+1),t:'p4',set:s.id,cat:'Part 4 บทพูด',q:r[0],o:r[1],a:r[2],e:r[3]}); }); });
+var ITEMS = G.concat(RQ, LQ, ALLNEW);
+ITEMS.forEach(function(it){ if(it.t==='r'||it.t==='s'){ it.group=it.t+it.p; } else if(it.set){ it.group=it.set; } });
+
+/* ===== logic ===== */
+var store = {
+  get: function(k, d){ try{ var v = localStorage.getItem('t700:'+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set: function(k, v){ try{ localStorage.setItem('t700:'+k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+function dkey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function today(){ return dkey(new Date()); }
+var state = {
+  stats: store.get('stats', {}),
+  vocab: store.get('vocab', {}),
+  plan: store.get('plan', {}),
+  log: store.get('log', {}),
+  start: store.get('start', today()),
+  user: store.get('user', [])
+};
+state.user.forEach(function(it){ ITEMS.push(it); });
+function save(){ for(var k in state){ if(k!=='user') store.set(k, state[k]); } }
+save();
+
+var TTS = ('speechSynthesis' in window) && (typeof SpeechSynthesisUtterance !== 'undefined');
+var CAN_PLAY = (typeof Audio !== 'undefined') || TTS;
+var PARTN = {p1:'Part 1',l:'Part 2',p3:'Part 3',p4:'Part 4',g:'Part 5',s:'Part 6',r:'Part 7',x:'ศัพท์'};
+var AUDK = {p1:1,l:1,p3:1,p4:1};
+var READK = ['g','s','r'], LISTK = ['p1','l','p3','p4'];
+function isAud(it){ return !!AUDK[it.t]; }
+
+/* ---------- helpers ---------- */
+function $(s){ return document.querySelector(s); }
+function shuf(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function todayLog(){ return state.log[today()] || {v:0,p:0,l:0}; }
+function bump(kind){ var t=today(); var l=state.log[t]||(state.log[t]={v:0,p:0,l:0}); l[kind]=(l[kind]||0)+1; save(); }
+function record(it, ok){
+  var s=state.stats[it.id]||(state.stats[it.id]={c:0,w:0,last:null});
+  if(ok) s.c++; else s.w++;
+  s.last=ok; s.at=Date.now(); bump(it.t==='x'?'v':(isAud(it)?'l':'p'));
+}
+function attemptsBy(types){
+  var c=0,w=0;
+  ITEMS.forEach(function(it){ if(types.indexOf(it.t)<0) return; var s=state.stats[it.id]; if(s){ c+=s.c; w+=s.w; } });
+  var n=c+w; return {c:c,w:w,n:n,acc:n?c/n:0};
+}
+function r5(x){ return Math.max(10, Math.min(990, Math.round(x/5)*5)); }
+function estScore(){
+  var R=attemptsBy(READK), L=attemptsBy(LISTK);
+  if(R.n>=8 && L.n>=8) return {v:r5(R.acc*495+L.acc*495), basis:'both', R:R, L:L};
+  var T=attemptsBy(READK.concat(LISTK));
+  if(T.n>=10) return {v:r5(T.acc*990), basis:'one', R:R, L:L, T:T};
+  return null;
+}
+function catStats(){
+  var m={}; ITEMS.forEach(function(it){ var s=state.stats[it.id]; if(!s) return; var o=m[it.cat]||(m[it.cat]={c:0,w:0}); o.c+=s.c; o.w+=s.w; });
+  return Object.keys(m).map(function(k){ var n=m[k].c+m[k].w; return {cat:k,n:n,acc:m[k].c/n}; }).sort(function(a,b){return a.acc-b.acc;});
+}
+function streak(){
+  var d=new Date(); var n=0;
+  if(!state.log[dkey(d)]) d.setDate(d.getDate()-1);
+  while(state.log[dkey(d)]){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function weekNo(){
+  var diff=(new Date(today())-new Date(state.start))/864e5;
+  return Math.min(8, Math.max(1, Math.floor(diff/7)+1));
+}
+function barCls(acc){ return acc>=0.75?'good':(acc>=0.6?'warn':'bad'); }
+function pct(x){ return Math.round(x*100); }
+function mmss(s){ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+
+/* ---------- audio ---------- */
+var player=null, audData={}, audEl={};
+function speak(text, rate){
+  try{ if(!TTS) return; speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=rate||0.9; speechSynthesis.speak(u); }catch(e){}
+}
+function stopAudio(){
+  try{ Object.keys(audEl).forEach(function(k){ audEl[k].pause(); }); if(TTS) speechSynthesis.cancel(); }catch(e){}
+}
+function prefetch(key){
+  if(audData[key]) return;
+  audData[key]='loading';
+  try{
+    fetch('audio/'+key+'.txt').then(function(r){ if(!r.ok) throw new Error('x'); return r.text(); }).then(function(t){
+      audData[key]=t.trim(); var a=new Audio(); a.preload='auto'; a.src=audData[key]; audEl[key]=a;
+    }).catch(function(){ audData[key]='fail'; });
+  }catch(e){ audData[key]='fail'; }
+}
+function playAud(key, text, rate){
+  stopAudio();
+  var a=audEl[key];
+  if(a){ player=a; try{ a.currentTime=0; }catch(e){} var pr=a.play(); if(pr && pr.catch) pr.catch(function(){ speak(text, rate); }); return; }
+  if(audData[key]==='fail'){ speak(text, rate); return; }
+  prefetch(key);
+  var tries=0; var iv=setInterval(function(){
+    tries++;
+    if(audEl[key]){ clearInterval(iv); playAud(key, text, rate); }
+    else if(audData[key]==='fail' || tries>50){ clearInterval(iv); speak(text, rate); }
+  }, 150);
+}
+function audKey(it){ return (it.t==='p3'||it.t==='p4') ? it.set : it.id; }
+function speechText(it){
+  if(it.t==='p1') return it.o.map(function(o,d){ return 'Letter '+'ABCD'[d]+'. '+o; }).join(' ... ');
+  if(it.t==='l') return it.q+' ... '+it.o.map(function(o,d){ return 'Letter '+'ABC'[d]+'. '+o; }).join(' ... ');
+  return SETS[it.set].tr.replace(/^(ผู้หญิง|ผู้ชายคนที่สอง|ผู้ชาย): /gm,'');
+}
+function playCur(){ var it=P.items[P.i]; playAud(audKey(it), speechText(it), 0.9); }
+
+/* ---------- navigation ---------- */
+var TABS=[['home','ภาพรวม'],['practice','ฝึกทำข้อสอบ'],['vocab','ศัพท์'],['plan','แผน 8 สัปดาห์'],['mine','โจทย์ของฉัน']];
+function route(){ var h=(location.hash||'').replace('#',''); return TABS.some(function(t){return t[0]===h;})?h:'home'; }
+function go(h){ if(location.hash==='#'+h){ render(); } else { location.hash=h; } }
+
+/* ---------- home ---------- */
+function viewHome(){
+  var est=estScore();
+  var tl=todayLog(); var tgt={v:10,p:15,l:8};
+  function task(t,title,desc,done,href,label){
+    var p=Math.min(1,done/tgt[t]);
+    return '<div class="card task"><h3>'+title+'</h3><p class="muted">'+desc+'</p>'+
+      '<div class="bar '+(p>=1?'good':'')+'"><i style="width:'+pct(p)+'%"></i></div>'+
+      '<div class="row"><span class="mono">'+Math.min(done,tgt[t])+' / '+tgt[t]+'</span><a class="btn small primary" href="#'+href+'">'+label+'</a></div></div>';
+  }
+  var cats=catStats();
+  var catHtml = cats.length ? cats.map(function(c,i){
+    return '<div class="cat"><span>'+c.cat+(i===0&&c.acc<0.75?' <span class="tag">จุดอ่อน</span>':'')+'</span><div class="bar '+barCls(c.acc)+'"><i style="width:'+pct(c.acc)+'%"></i></div><span class="pct mono">'+pct(c.acc)+'%</span></div>';
+  }).join('') : '<div class="empty">ยังไม่มีข้อมูล ทำแบบฝึกสัก 10 ข้อ แล้วจะเห็นว่าหมวดไหนต้องเก็บเพิ่ม</div>';
+  var estPct = est?est.v/990*100:0;
+  var lc = estPct<12?'l':(estPct>88?'r':'');
+  var note;
+  if(!est) note='ทำแบบฝึกให้ครบ 10 ข้อ ระบบจะประมาณระดับคะแนนให้ (ประมาณคร่าว ๆ ไม่ใช่คะแนนสอบจริง)';
+  else if(est.basis==='both') note='ประมาณจากอัตราตอบถูกในแอปนี้ Reading '+pct(est.R.acc)+'% และ Listening '+pct(est.L.acc)+'% ใช้เป็นแนวทางเท่านั้น ไม่ใช่คะแนนสอบจริง';
+  else note='ประมาณจากอัตราตอบถูกรวม '+pct(est.T.acc)+'% จาก '+est.T.n+' ข้อ ฝึกทั้ง Reading และ Listening เพิ่มเพื่อให้แม่นขึ้น ไม่ใช่คะแนนสอบจริง';
+  return '<div class="stack">'+
+   '<section class="card hero"><div class="row"><div><p class="eyebrow">เป้าหมายคะแนนรวม</p><h2 class="mono">700<small>/ 990</small></h2></div>'+
+   '<div class="hero-meta">สัปดาห์ที่ '+weekNo()+' จาก 8<br>ฝึกติดต่อกัน '+streak()+' วัน</div></div>'+
+   '<div class="scale" role="img" aria-label="สเกลคะแนน 10 ถึง 990 เป้าหมาย 700"><div class="fill" style="width:'+estPct+'%"></div>'+
+   '<div class="tick" style="left:'+(700/990*100)+'%"><span>เป้า 700</span></div>'+
+   (est?'<div class="pin" style="left:'+estPct+'%"><span class="'+lc+' mono">ประมาณ '+est.v+'</span></div>':'')+'</div>'+
+   '<div class="scale-ends mono"><span>10</span><span>990</span></div>'+
+   '<p class="muted" style="font-size:13px">'+note+'</p></section>'+
+   '<section><h2 style="font-size:18px;margin-bottom:10px">เป้าหมายวันนี้</h2><div class="grid">'+
+     task('v','ศัพท์ 15 นาที','ทบทวน 10 คำจากแฟลชการ์ด',tl.v,'vocab','เปิดแฟลชการ์ด')+
+     task('p','อ่านและไวยากรณ์ 30 นาที','Part 5, 6, 7 รวม 15 ข้อ',tl.p,'practice','ไปทำข้อสอบ')+
+     task('l','ฟัง 15 นาที','Part 1 ถึง 4 อย่างน้อย 8 ข้อ',tl.l,'practice','ฝึกฟัง')+
+   '</div></section>'+
+   '<section class="card stack"><h2 style="font-size:18px">จุดอ่อนของคุณ เรียงจากน้อยไปมาก</h2>'+catHtml+'</section>'+
+  '</div>';
+}
+
+
+/* ---------- smart random ---------- */
+function gkey(it){ return it.group||it.id; }
+function itemWeight(it, catAcc, now){
+  var s=state.stats[it.id]; var w;
+  if(!s) w=2;
+  else if(s.last===false) w=4+Math.min(2,s.w)*0.5;
+  else w=0.6/(1+s.c*0.5);
+  var ca=catAcc[it.cat]; if(ca===undefined) ca=0.5;
+  w*= (1+(1-ca)*1.5);
+  if(s && s.at){ var age=now-s.at; if(age<600000) w*=0.1; else if(age<86400000 && s.last!==false) w*=0.5; }
+  return w;
+}
+function smartPick(types, n){
+  var now=Date.now(); var catAcc={};
+  catStats().forEach(function(c){ catAcc[c.cat]=c.acc; });
+  var groups={}, order=[];
+  ITEMS.forEach(function(it){
+    if(types.indexOf(it.t)<0) return;
+    var k=gkey(it); if(!groups[k]){ groups[k]={items:[],t:it.t,w:0}; order.push(k); }
+    groups[k].items.push(it);
+  });
+  order.forEach(function(k){ var g=groups[k]; g.w=g.items.reduce(function(a,it){ return a+itemWeight(it,catAcc,now); },0)/g.items.length; });
+  var pool=order.slice(), chosen=[], total=0, perType={}, cap=Math.max(4,Math.ceil(n*0.4));
+  var guard=0;
+  while(pool.length && total<n && guard++<2000){
+    var sum=pool.reduce(function(a,k){ return a+groups[k].w; },0), r=Math.random()*sum, idx=0;
+    for(var i=0;i<pool.length;i++){ r-=groups[pool[i]].w; if(r<=0){ idx=i; break; } idx=i; }
+    var k=pool.splice(idx,1)[0], g=groups[k];
+    if(total+g.items.length>n+2) continue;
+    if((perType[g.t]||0)+g.items.length>cap && types.length>2) continue;
+    chosen.push(g); total+=g.items.length; perType[g.t]=(perType[g.t]||0)+g.items.length;
+  }
+  return shuf(chosen).reduce(function(a,g){ return a.concat(g.items); },[]);
+}
+function seenCount(types){ var n=0,t=0; ITEMS.forEach(function(it){ if(types.indexOf(it.t)<0) return; t++; if(state.stats[it.id]) n++; }); return {n:n,t:t}; }
+
+/* ---------- practice ---------- */
+var P=null, clk=null, notice='';
+function wrongItems(){ return ITEMS.filter(function(it){ return state.stats[it.id] && state.stats[it.id].last===false; }); }
+function byType(t){ return ITEMS.filter(function(i){ return i.t===t; }); }
+function pickGroups(t,n){
+  var gs={}, order=[];
+  byType(t).forEach(function(i){ if(!gs[i.group]){ gs[i.group]=[]; order.push(i.group); } gs[i.group].push(i); });
+  return shuf(order).slice(0,n).reduce(function(a,g){ return a.concat(gs[g]); },[]);
+}
+function buildItems(mode){
+  if(mode==='vb'){
+    var nowT=Date.now();
+    var due=shuf(byType('x').filter(function(it){ var s=state.stats[it.id]; return s && s.last===false && (!s.at || nowT-s.at>=600000); })).slice(0,6);
+    var seen={}; due.forEach(function(it){ seen[it.id]=1; });
+    var rest=smartPick(['x'],15).filter(function(it){ return !seen[it.id]; }).slice(0,15-due.length);
+    return shuf(due.concat(rest));
+  }
+  if(mode==='sm') return smartPick(READK.concat(LISTK),20);
+  if(mode==='smr') return smartPick(READK,15);
+  if(mode==='sml') return smartPick(LISTK,15);
+  if(mode==='g') return shuf(byType('g')).slice(0,10);
+  if(mode==='s') return pickGroups('s',2);
+  if(mode==='r') return pickGroups('r',3);
+  if(mode==='p1') return shuf(byType('p1'));
+  if(mode==='l') return shuf(byType('l')).slice(0,10);
+  if(mode==='p3') return pickGroups('p3',2);
+  if(mode==='p4') return pickGroups('p4',2);
+  if(mode==='mr') return shuf(byType('g')).slice(0,10).concat(pickGroups('s',1), pickGroups('r',2));
+  if(mode==='ml') return shuf(byType('p1')).slice(0,3).concat(shuf(byType('l')).slice(0,6), pickGroups('p3',2), pickGroups('p4',2));
+  return shuf(wrongItems());
+}
+function menuCard(mode,title,desc,btn,primary){
+  return '<div class="card"><div><h3>'+title+'</h3><p class="muted">'+desc+'</p></div><button class="btn'+(primary===false?'':' primary')+'" onclick="startPractice(\''+mode+'\')">'+btn+'</button></div>';
+}
+function practiceMenu(){
+  var cnt=function(t){ return byType(t).length; };
+  return '<div class="stack">'+
+   (notice?'<div class="note">'+notice+'</div>':'')+
+   '<h2 style="font-size:20px">สุ่มอัจฉริยะ</h2><p class="muted" style="margin-top:-6px">เลือกข้อที่เคยผิด ข้อที่ยังไม่เคยทำ และหมวดที่คะแนนต่ำก่อน ข้ามข้อที่เพิ่งทำถูก ทำไปแล้ว '+seenCount(READK.concat(LISTK)).n+' จาก '+seenCount(READK.concat(LISTK)).t+' ข้อ</p><div class="grid menu">'+
+    menuCard('sm','สุ่มรวมทุกพาร์ต','20 ข้อ ผสม Reading และ Listening ตามจุดอ่อนของคุณ','เริ่มสุ่ม 20 ข้อ')+
+    menuCard('smr','สุ่มเฉพาะ Reading','15 ข้อจาก Part 5, 6, 7','สุ่ม Reading')+
+    menuCard('sml','สุ่มเฉพาะ Listening','15 ข้อจาก Part 1 ถึง 4','สุ่ม Listening')+
+    vbCard()+
+   '</div>'+
+   '<h2 style="font-size:20px">Reading</h2><div class="grid menu">'+
+    menuCard('g','Part 5 เติมประโยค','สุ่ม 10 จาก '+cnt('g')+' ข้อ ควรตอบไม่เกิน 25 วินาทีต่อข้อ','เริ่ม 10 ข้อ')+
+    menuCard('s','Part 6 เติมข้อความ','อ่านทั้งย่อหน้า สุ่ม 2 บทความ (8 ข้อ) จากทั้งหมด '+cnt('s')+' ข้อ','เริ่ม Part 6')+
+    menuCard('r','Part 7 อ่านจับใจความ','สุ่ม 3 บทความ มีอีเมล ประกาศ แชต และบทความคู่ รวม '+cnt('r')+' ข้อ','เริ่ม Part 7')+
+   '</div><h2 style="font-size:20px">Listening</h2><div class="grid menu">'+
+    menuCard('p1','Part 1 ดูภาพ','ฟังประโยค 4 ประโยค เลือกอันที่ตรงกับภาพ ('+cnt('p1')+' ภาพ)','เริ่ม Part 1')+
+    menuCard('l','Part 2 ถามตอบ','สุ่ม 10 จาก '+cnt('l')+' ข้อ ตัวเลือกไม่แสดงจนกว่าจะตอบ','เริ่ม Part 2')+
+    menuCard('p3','Part 3 บทสนทนา','ฟังบทสนทนา 2 ชุด ตอบชุดละ 3 ข้อ (จาก '+SETKIND('p3')+' ชุด)','เริ่ม Part 3')+
+    menuCard('p4','Part 4 บทพูดคนเดียว','ประกาศ ข้อความเสียง โฆษณา 2 ชุด ตอบชุดละ 3 ข้อ (จาก '+SETKIND('p4')+' ชุด)','เริ่ม Part 4')+
+   '</div><h2 style="font-size:20px">ซ้อมสอบ</h2><div class="grid menu">'+
+    menuCard('mr','ข้อสอบจำลอง Reading','รวม Part 5, 6, 7 ราว 21 ข้อ จับเวลา 45 วินาทีต่อข้อ เหมือนสนามสอบ เฉลยตอนจบ','เริ่มจับเวลา')+
+    menuCard('ml','ข้อสอบจำลอง Listening','Part 1 ถึง 4 รวม 21 ข้อ ไม่เฉลยระหว่างทำ ดูผลและคำอธิบายตอนจบ','เริ่มสอบ')+
+    menuCard('w','ทบทวนข้อที่ผิด','ข้อที่ตอบผิดครั้งล่าสุด ตอนนี้มี '+wrongItems().length+' ข้อ','ทบทวน',false)+
+   '</div></div>';
+}
+function SETKIND(t){ var n={}; byType(t).forEach(function(i){ n[i.group]=1; }); return Object.keys(n).length; }
+function vbCard(){
+  var s=seenCount(['x']);
+  if(s.t) return menuCard('vb','ศัพท์จากหนังสือ','15 ข้อ ดูความหมายแล้วเลือกคำ ถ่วงน้ำหนักข้อที่เคยผิด ทำไปแล้ว '+s.n+' จาก '+s.t+' ข้อ','ฝึกศัพท์');
+  return '<div class="card"><div><h3>ศัพท์จากหนังสือ</h3><p class="muted">ยังไม่ได้นำเข้า ไปที่แท็บโจทย์ของฉัน แล้วเลือกไฟล์ศัพท์</p></div><a class="btn" href="#mine">ไปนำเข้า</a></div>';
+}
+function startPractice(mode){
+  var items=buildItems(mode);
+  if(!items.length){ P=null; notice='ยังไม่มีข้อที่ผิด ลองทำชุดฝึกอื่นก่อน แล้วข้อที่พลาดจะมาอยู่ที่นี่'; go('practice'); return; }
+  notice='';
+  var exam=(mode==='mr'||mode==='ml');
+  P={mode:mode,items:items,i:0,picked:null,right:0,order:null,t0:Date.now(),secs:0,showText:false,exam:exam,answers:[],
+     deadline:(mode==='mr')?Date.now()+items.length*45000:0, limit:(mode==='mr')?items.length*45:0, over:false};
+  go('practice');
+}
+function pick(d){
+  if(!P||P.picked!==null) return;
+  var it=P.items[P.i]; var k=P.order[d]; var ok=(k===it.a);
+  if(ok) P.right++;
+  record(it, ok);
+  if(P.exam){ P.answers.push({it:it,k:k,ok:ok}); P.i++; P.picked=null; P.order=null; P.showText=false; stopAudio(); render(); window.scrollTo(0,0); return; }
+  P.picked=d; P.secs=Math.round((Date.now()-P.t0)/1000); render();
+}
+function nextQ(){ stopAudio(); P.i++; P.picked=null; P.order=null; P.showText=false; P.t0=Date.now(); render(); window.scrollTo(0,0); }
+function endPractice(){ P=null; stopAudio(); render(); }
+function finishExam(){ if(!P) return; if(P.deadline && Date.now()>=P.deadline) P.over=true; P.i=P.items.length; stopAudio(); render(); window.scrollTo(0,0); }
+function toggleText(){ P.showText=!P.showText; render(); }
+
+function passageHtml(it){
+  if(it.t==='r'){
+    var rp=RP[it.p];
+    var cards=(rp.texts||[rp]).map(function(x){ return '<div class="card passage"><div class="pl">'+(rp.texts?x.label:rp.label)+'</div><div class="pt">'+x.text+'</div></div>'; });
+    return cards.join('');
+  }
+  if(it.t==='s'){
+    var t=P6[it.p].text.replace(/\[(\d)\]/g,function(m,n){ return '<span class="blk'+(+n===it.b?' cur':'')+'">'+n+'</span>'; });
+    return '<div class="card passage"><div class="pl">'+P6[it.p].label+'</div><div class="pt">'+t+'</div></div>';
+  }
+  return '';
+}
+function summaryHtml(){
+  var n=P.items.length;
+  if(!P.exam){
+    return '<div class="stack"><div class="card stack"><p class="eyebrow">สรุปผล</p><h2 class="mono" style="font-size:48px">'+P.right+' / '+n+'</h2>'+
+      '<p>'+(P.right/n>=0.75?'ผ่านเกณฑ์ระดับ 700 แล้ว รักษาจังหวะนี้ไว้':'ยังต่ำกว่าเกณฑ์ที่ควรทำได้ (ราว 75 เปอร์เซ็นต์ขึ้นไป) ดูข้อที่ผิดแล้วทำซ้ำ')+'</p>'+
+      '<div class="row" style="justify-content:flex-start"><button class="btn primary" onclick="startPractice(\''+P.mode+'\')">ทำอีกรอบ</button><button class="btn" onclick="endPractice()">กลับเมนู</button></div></div></div>';
+  }
+  var by={}; P.answers.forEach(function(a){ var o=by[a.it.t]||(by[a.it.t]={c:0,n:0}); o.n++; if(a.ok) o.c++; });
+  var unans=n-P.answers.length;
+  var acc=P.answers.length?P.right/n:0;
+  var sec=(P.mode==='mr')?'Reading':'Listening';
+  var rows=Object.keys(by).map(function(t){ return '<tr><td>'+PARTN[t]+'</td><td class="n">'+by[t].c+' / '+by[t].n+'</td><td class="n">'+pct(by[t].c/by[t].n)+'%</td></tr>'; }).join('');
+  var wrongs=P.answers.filter(function(a){ return !a.ok; });
+  var wl=wrongs.map(function(a){
+    var it=a.it;
+    return '<div class="card stack"><p class="eyebrow">'+PARTN[it.t]+' · '+it.cat+'</p><p class="qtext" style="font-size:16px">'+(it.t==='s'?'ช่องว่าง '+it.b+' ใน '+P6[it.p].label:it.q)+'</p>'+
+      '<p>คำตอบของคุณ: <strong>'+it.o[a.k]+'</strong></p><p>เฉลย: <strong>'+it.o[it.a]+'</strong></p><p class="muted">'+it.e+'</p></div>';
+  }).join('');
+  return '<div class="stack"><div class="card stack"><p class="eyebrow">ผลข้อสอบจำลอง '+sec+'</p><h2 class="mono" style="font-size:48px">'+P.right+' / '+n+'</h2>'+
+    '<p>ตอบถูก '+pct(acc)+'% ถ้าทำได้ระดับนี้ในข้อสอบจริง ส่วน '+sec+' จะได้ประมาณ '+r5(acc*495)+' จากเต็ม 495 (ประมาณคร่าว ๆ) เป้า 700 ต้องได้ราว 350 ต่อส่วน</p>'+
+    (P.over?'<div class="note">หมดเวลา ข้อที่ยังไม่ได้ทำ '+unans+' ข้อนับเป็นผิด</div>':'')+
+    '<div class="tw"><table><thead><tr><th>พาร์ต</th><th>ถูก</th><th>อัตรา</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div class="row" style="justify-content:flex-start"><button class="btn primary" onclick="startPractice(\''+P.mode+'\')">ทำอีกรอบ</button><button class="btn" onclick="endPractice()">กลับเมนู</button></div></div>'+
+    (wrongs.length?'<h2 style="font-size:18px">ข้อที่ผิดและคำอธิบาย</h2>'+wl:'<div class="empty">ถูกทุกข้อ</div>')+'</div>';
+}
+function viewPractice(){
+  if(!P) return practiceMenu();
+  if(P.i>=P.items.length) return summaryHtml();
+  var it=P.items[P.i];
+  var aud=isAud(it);
+  if(!P.order){
+    var keepOrder = (it.t==='p1' || it.t==='l');
+    P.order = keepOrder ? it.o.map(function(_,k){return k;}) : shuf(it.o.map(function(_,k){return k;}));
+  }
+  var ans=P.picked!==null; var ok=ans && P.order[P.picked]===it.a;
+  var hideOpts = (it.t==='p1'||it.t==='l') && !ans && !P.showText && CAN_PLAY;
+  var showTr = (it.t==='p3'||it.t==='p4') && ((ans && !P.exam) || P.showText);
+  var topCards = passageHtml(it);
+  if(it.t==='p1') topCards += '<div class="scene">'+SC[it.scene]+'</div>';
+  if(aud){
+    topCards += '<div class="card stack"><div class="row" style="justify-content:flex-start">'+
+      '<button class="btn primary" onclick="playCur()"'+(CAN_PLAY?'':' disabled')+'>▶ ฟังเสียง</button>'+
+      (P.exam?'':'<button class="btn small" onclick="toggleText()">'+(P.showText?'ซ่อนข้อความ':'แสดงข้อความ (transcript)')+'</button>')+'</div>'+
+      (CAN_PLAY?'':'<p class="muted" style="font-size:13px">เบราว์เซอร์นี้เล่นเสียงไม่ได้ แสดงข้อความแทน</p>')+
+      ((it.t==='l' && (ans||P.showText||!CAN_PLAY))?'<p class="qtext">'+it.q+'</p>':'')+
+      ((it.t==='l' && !(ans||P.showText||!CAN_PLAY))?'<p class="muted">กดฟังเสียง แล้วเลือกตัวอักษรที่เป็นคำตอบ ฟังซ้ำได้</p>':'')+
+      (it.t==='p3'||it.t==='p4'?'<p class="muted" style="font-size:13px">'+SETS[it.set].kind+' · ฟังจบแล้วตอบข้อนี้และข้อถัดไปของชุดเดียวกัน</p>':'')+
+      '</div>';
+    if(GFX[it.set]) topCards += '<div class="card gfx"><div class="tw">'+GFX[it.set]+'</div></div>';
+    if(showTr) topCards += '<div class="card passage"><div class="pl">Transcript</div><div class="pt">'+SETS[it.set].tr+'</div></div>';
+  }
+  var qhtml='';
+  if(it.t==='g') qhtml='<p class="qtext">'+it.q.replace('______','<span class="blank"></span>')+'</p>';
+  else if(it.t==='s') qhtml='<p class="qtext">เลือกคำตอบสำหรับช่องว่าง '+it.b+'</p>';
+  else if(it.t==='l') qhtml='';
+  else if(it.t==='x') qhtml='<p class="eyebrow">เลือกคำที่ตรงกับความหมาย</p><p class="qtext">'+it.q+'</p>';
+  else qhtml='<p class="qtext">'+it.q+'</p>';
+  var opts=P.order.map(function(k,d){
+    var cls='opt'; if(ans){ if(k===it.a) cls+=' right'; else if(d===P.picked) cls+=' wrong'; }
+    return '<button class="'+cls+'" onclick="pick('+d+')"'+(ans?' disabled':'')+'><span class="bub">'+'ABCD'[d]+'</span>'+(hideOpts?'':'<span class="otx">'+it.o[k]+'</span>')+'</button>';
+  }).join('');
+  var fb='';
+  if(ans){
+    fb='<div class="fb '+(ok?'good':'bad')+'" role="status"><strong>'+(ok?'ถูกต้อง':'ยังไม่ใช่')+'</strong> <span class="muted">· ใช้เวลา '+P.secs+' วินาที</span><p>'+it.e+'</p></div>'+
+      '<div><button class="btn primary" onclick="nextQ()">'+(P.i+1>=P.items.length?'ดูผลสรุป':'ข้อต่อไป')+'</button></div>';
+  }
+  var left = P.exam && P.limit ? mmss((P.deadline-Date.now())/1000) : (ans?P.secs+' วิ':'0 วิ');
+  return '<div class="stack"><div class="qhead"><span><span class="mono">'+(P.i+1)+' / '+P.items.length+'</span> · '+PARTN[it.t]+(P.exam?' · โหมดสอบ':'')+'</span>'+
+    '<span class="row" style="gap:12px"><span class="mono" id="clock">'+left+'</span>'+
+    (P.exam?'<button class="btn small" onclick="finishExam()">ส่งข้อสอบ</button>':'<button class="btn small" onclick="endPractice()">ออก</button>')+'</span></div>'+
+    topCards+'<div class="card stack">'+qhtml+'<div class="opts">'+opts+'</div></div>'+fb+'</div>';
+}
+
+/* ---------- vocab ---------- */
+var V={cur:null,flip:false};
+function nextWord(){
+  var pool=VOC.filter(function(w){ return (state.vocab[w.w]||0)<3; });
+  if(!pool.length) return null;
+  var minBox=Math.min.apply(null,pool.map(function(w){return state.vocab[w.w]||0;}));
+  var c=pool.filter(function(w){ return (state.vocab[w.w]||0)===minBox && !(V.cur&&V.cur.w===w.w); });
+  var arr=c.length?c:pool; return arr[Math.floor(Math.random()*arr.length)];
+}
+function flip(){ V.flip=!V.flip; render(); }
+function rate(ok){
+  var w=V.cur; var b=state.vocab[w.w]||0; state.vocab[w.w]= ok?Math.min(3,b+1):0;
+  bump('v'); V.flip=false; V.cur=nextWord(); render();
+}
+function resetVocab(){ state.vocab={}; save(); V.cur=nextWord(); V.flip=false; render(); }
+function sayWord(){ if(V.cur) playAud('v'+V.cur.i, V.cur.w+'. '+V.cur.ex, 0.8); }
+function viewVocab(){
+  if(!V.cur) V.cur=nextWord();
+  var done=VOC.filter(function(w){return (state.vocab[w.w]||0)>=3;}).length;
+  var dots='<div class="dots" aria-hidden="true">'+VOC.map(function(w){return '<i class="'+((state.vocab[w.w]||0)>=3?'on':'')+'"></i>';}).join('')+'</div>';
+  var head='<div class="card stack"><div class="row"><h2 style="font-size:18px">ศัพท์ TOEIC ที่ออกบ่อย</h2><span class="mono">จำได้แล้ว '+done+' / '+VOC.length+'</span></div>'+dots+'</div>';
+  if(!V.cur){
+    return '<div class="stack">'+head+'<div class="empty stack"><p>จำได้ครบทุกคำแล้ว</p><div><button class="btn" onclick="resetVocab()">เริ่มทบทวนใหม่ทั้งหมด</button></div></div></div>';
+  }
+  var w=V.cur;
+  var face = V.flip
+    ? '<span class="th">'+w.th+'</span><span class="pos">'+w.w+' ('+w.pos+')</span><span class="ex">'+w.ex+'</span>'
+    : '<span class="w">'+w.w+'</span><span class="pos">'+w.pos+'</span><span class="muted" style="font-size:13px">แตะการ์ดเพื่อดูความหมาย</span>';
+  var btns = V.flip
+    ? '<div class="row" style="justify-content:center"><button class="btn bad" onclick="rate(false)">ยังจำไม่ได้</button><button class="btn good" onclick="rate(true)">จำได้</button></div>'
+    : '<div class="row" style="justify-content:center"><button class="btn" onclick="flip()">ดูความหมาย</button></div>';
+  return '<div class="stack">'+head+'<button class="flash" onclick="flip()" aria-label="การ์ดคำศัพท์ แตะเพื่อพลิก">'+face+'</button>'+
+    '<div class="row" style="justify-content:center">'+(CAN_PLAY?'<button class="btn small" onclick="sayWord()">▶ ฟังคำอ่านและประโยคตัวอย่าง</button>':'')+'</div>'+btns+'</div>';
+}
+
+/* ---------- plan ---------- */
+var confirmReset=false;
+function togglePlan(key){ if(state.plan[key]) delete state.plan[key]; else state.plan[key]=true; save(); render(); }
+function restartWeeks(){ state.start=today(); save(); render(); }
+function wipe(){ if(!confirmReset){ confirmReset=true; render(); return; } state.stats={}; state.vocab={}; state.plan={}; state.log={}; state.start=today(); save(); confirmReset=false; P=null; V.cur=null; render(); }
+function viewPlan(){
+  var cw=weekNo();
+  var fmt='<div class="card stack"><h2 style="font-size:18px">โครงสร้างข้อสอบ TOEIC (Listening and Reading)</h2><div class="tw"><table><thead><tr><th>ส่วน</th><th>พาร์ต</th><th>จำนวนข้อ</th><th>เวลา</th></tr></thead><tbody>'+
+    '<tr><td>Listening</td><td>1 ภาพ · 2 ถามตอบ · 3 บทสนทนา · 4 บทพูด</td><td class="n">6 + 25 + 39 + 30 = 100</td><td class="n">45 นาที</td></tr>'+
+    '<tr><td>Reading</td><td>5 เติมประโยค · 6 เติมข้อความ · 7 อ่านจับใจความ</td><td class="n">30 + 16 + 54 = 100</td><td class="n">75 นาที</td></tr>'+
+    '</tbody></table></div><p class="muted" style="font-size:13px">คะแนนรวม 10 ถึง 990 แยกเป็น Listening และ Reading ส่วนละไม่เกิน 495 เป้า 700 คือราว 350 ต่อส่วน</p></div>';
+  var cov='<div class="card stack"><h2 style="font-size:18px">โจทย์ในแอปนี้</h2><p>'+ITEMS.length+' ข้อ ครบทุกพาร์ต: Part 1 ('+byType('p1').length+') · Part 2 ('+byType('l').length+') · Part 3 ('+byType('p3').length+') · Part 4 ('+byType('p4').length+') · Part 5 ('+byType('g').length+') · Part 6 ('+byType('s').length+') · Part 7 ('+byType('r').length+') และศัพท์ '+VOC.length+' คำ</p>'+
+    '<div class="note">ข้อสอบจริงมี 200 ข้อ โจทย์ในแอปเหมาะกับการฝึกรูปแบบและจับจุดอ่อน แต่ปริมาณยังน้อยกว่าที่ต้องใช้ ควรทำข้อสอบจริงเต็มชุดจากหนังสือหรือเว็บทางการเพิ่มอย่างน้อย 4 ถึง 6 ชุดก่อนสอบ</div></div>';
+  var routine='<div class="card stack"><h2 style="font-size:18px">ตารางประจำวัน (ประมาณ 1 ชั่วโมง)</h2><div class="grid">'+
+    '<div><p class="mono" style="font-weight:500">15 นาที</p><p>ศัพท์ 10 คำ ด้วยแฟลชการ์ด</p></div>'+
+    '<div><p class="mono" style="font-weight:500">30 นาที</p><p>Part 5, 6, 7 แล้วอ่านคำอธิบายทุกข้อ</p></div>'+
+    '<div><p class="mono" style="font-weight:500">15 นาที</p><p>ฟัง Part 1 ถึง 4 และทบทวนข้อที่ผิด</p></div></div>'+
+    '<div class="note">ถ้าพื้นฐานอ่อนมากและมีเวลา 1 ถึง 2 เดือน 700 เป็นเป้าที่ท้าทาย ต้องฝึกทุกวันและทบทวนข้อที่ผิดจริงจัง ถ้าสัปดาห์ที่ 4 ยังตอบถูกต่ำกว่า 60 เปอร์เซ็นต์ ให้ถอยกลับไปเก็บไวยากรณ์ก่อน</div></div>';
+  var weeks=PLAN.map(function(w,i){
+    var n=i+1; var d=0; w.tasks.forEach(function(_,j){ if(state.plan['w'+n+'t'+j]) d++; });
+    return '<section class="card week'+(n===cw?' now':'')+'"><div class="row"><h3>สัปดาห์ที่ '+n+' · '+w.t+'</h3>'+(n===cw?'<span class="tag">สัปดาห์นี้</span>':'<span class="mono muted">'+d+'/'+w.tasks.length+'</span>')+'</div>'+
+      '<p class="muted">'+w.f+'</p>'+
+      w.tasks.map(function(t,j){ var k='w'+n+'t'+j; return '<label class="chk"><input type="checkbox" id="c-'+k+'" '+(state.plan[k]?'checked':'')+' onchange="togglePlan(\''+k+'\')"><span>'+t+'</span></label>'; }).join('')+
+    '</section>';
+  }).join('');
+  var tools='<div class="card stack"><div class="row" style="justify-content:flex-start"><button class="btn small" onclick="restartWeeks()">เริ่มนับสัปดาห์ที่ 1 จากวันนี้</button>'+
+    '<button class="btn small '+(confirmReset?'bad':'')+'" onclick="wipe()">'+(confirmReset?'กดอีกครั้งเพื่อยืนยันล้างข้อมูล':'ล้างข้อมูลทั้งหมด')+'</button></div>'+
+    '<p class="muted" style="font-size:13px">ความคืบหน้าเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น เปิดจากเครื่องอื่นจะเริ่มใหม่</p></div>';
+  return '<div class="stack">'+cov+fmt+routine+weeks+offlineCard()+tools+'</div>';
+}
+
+
+/* ---------- my questions (import) ---------- */
+var impDraft='', impMsg='', impConfirm=false;
+function hashStr(s){ var h=5381; for(var i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))|0; } return (h>>>0).toString(36); }
+function parseUser(text){
+  var blocks=String(text).replace(/\r/g,'').split(/\n\s*\n/).map(function(b){ return b.trim(); }).filter(Boolean);
+  var items=[], errors=[];
+  blocks.forEach(function(b,bi){
+    var q='', opts={}, ans='', exp='', cat='', type='', last='q';
+    b.split('\n').forEach(function(line){
+      var t=line.trim(); if(!t) return; var m;
+      if((m=t.match(/^(?:Q|Question|คำถาม|โจทย์)\s*[:：.]\s*(.*)$/i))){ q=m[1]; last='q'; }
+      else if((m=t.match(/^\(?([A-D])\s*[\)\.:：]\s*(.*)$/i))){ opts[m[1].toUpperCase()]=m[2]; last=m[1].toUpperCase(); }
+      else if((m=t.match(/^(?:ANS|Answer|เฉลย|คำตอบ)\s*[:：.]\s*\(?([A-D])\)?/i))){ ans=m[1].toUpperCase(); last='x'; }
+      else if((m=t.match(/^(?:EXP|Explanation|อธิบาย|คำอธิบาย)\s*[:：.]\s*(.*)$/i))){ exp=m[1]; last='e'; }
+      else if((m=t.match(/^(?:TYPE|ประเภท)\s*[:：.]\s*(.*)$/i))){ type=m[1]; last='x'; }
+      else if((m=t.match(/^(?:CAT|Category|หมวด)\s*[:：.]\s*(.*)$/i))){ cat=m[1]; last='x'; }
+      else if(last==='q') q+=' '+t;
+      else if(last==='e') exp+=' '+t;
+      else if(opts[last]!==undefined) opts[last]+=' '+t;
+    });
+    var letters=Object.keys(opts).sort();
+    var label='ข้อที่ '+(bi+1);
+    if(!q){ errors.push(label+': ไม่พบบรรทัด Q:'); return; }
+    if(letters.length<2){ errors.push(label+': ต้องมีตัวเลือกอย่างน้อย 2 ข้อ (A) B) ...)'); return; }
+    if(!ans || letters.indexOf(ans)<0){ errors.push(label+': ไม่พบ ANS: หรือตัวอักษรเฉลยไม่ตรงกับตัวเลือก'); return; }
+    var o=letters.map(function(k){ return opts[k].trim(); });
+    if(o.some(function(x){ return !x; })){ errors.push(label+': มีตัวเลือกที่ว่าง'); return; }
+    if(new Set(o).size!==o.length){ errors.push(label+': มีตัวเลือกซ้ำกัน'); return; }
+    q=q.trim().replace(/_{3,}/g,'______');
+    var isV=/vocab|ศัพท์/i.test(type);
+    items.push({id:'u'+hashStr(q+'|'+o.join('|')), t:(isV?'x':'g'), cat:esc((cat||(isV?'ศัพท์ตามความหมาย':'โจทย์ของฉัน')).trim()), q:esc(q), o:o.map(esc), a:letters.indexOf(ans), e:esc((exp||'ไม่มีคำอธิบาย (เพิ่มได้ด้วยบรรทัด EXP:)').trim()), u:true});
+  });
+  return {items:items, errors:errors};
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function doImport(txt){
+  var src=(typeof txt==='string')?txt:impDraft;
+  var r=parseUser(src); var have={}; ITEMS.forEach(function(it){ have[it.id]=1; });
+  var add=r.items.filter(function(it){ if(have[it.id]) return false; have[it.id]=1; return true; });
+  add.forEach(function(it){ state.user.push(it); ITEMS.push(it); });
+  var okSave=store.set('user', state.user);
+  var dup=r.items.length-add.length;
+  impMsg='นำเข้าสำเร็จ '+add.length+' ข้อ'+(dup?' (ข้ามข้อที่ซ้ำ '+dup+' ข้อ)':'')+(r.errors.length?' · มีปัญหา '+r.errors.length+' ข้อ ดูด้านล่าง':'')+(okSave?'':' · บันทึกลงเบราว์เซอร์ไม่สำเร็จ (พื้นที่เก็บเต็มหรือถูกปิด) ปิดหน้านี้แล้วโจทย์ที่นำเข้าจะหายไป');
+  impErr=r.errors.slice(0,10); if(r.errors.length>10) impErr.push('...และอีก '+(r.errors.length-10)+' ข้อ');
+  if(typeof txt!=='string' && add.length && !r.errors.length) impDraft='';
+  render();
+}
+function onFile(inp){
+  var f=inp.files && inp.files[0]; if(!f) return;
+  if(f.size>6000000){ impMsg='ไฟล์ใหญ่เกิน 6 MB นำเข้าไม่ได้'; impErr=[]; render(); return; }
+  var rd=new FileReader();
+  rd.onload=function(){ doImport(String(rd.result)); };
+  rd.onerror=function(){ impMsg='อ่านไฟล์ไม่ได้ ลองใหม่อีกครั้ง'; impErr=[]; render(); };
+  rd.readAsText(f,'utf-8');
+}
+var impErr=[];
+function clearImported(){
+  if(!impConfirm){ impConfirm=true; render(); return; }
+  var ids={}; state.user.forEach(function(it){ ids[it.id]=1; });
+  for(var i=ITEMS.length-1;i>=0;i--){ if(ids[ITEMS[i].id]) ITEMS.splice(i,1); }
+  for(var k in ids){ delete state.stats[k]; }
+  state.user=[]; store.set('user', state.user); save(); impConfirm=false; impMsg='ล้างโจทย์ที่นำเข้าแล้ว'; impErr=[]; render();
+}
+var SAMPLE='Q: The manager asked all employees to submit their reports ______ Friday.\nA) by\nB) until\nC) during\nD) since\nANS: A\nEXP: by = ภายในเวลา ใช้กับกำหนดส่ง\nCAT: บุพบท\n\nQ: Ms. Tanaka is responsible ______ training new staff.\nA) of\nB) for\nC) at\nD) with\nANS: B';
+function viewMine(){
+  var n=state.user.length;
+  return '<div class="stack">'+
+   '<div class="card stack"><h2 style="font-size:18px">โจทย์ของฉัน</h2>'+
+   '<p>พิมพ์หรือวางโจทย์จากหนังสือ ข้อสอบที่คุณมี หรือโจทย์ที่ครูให้ แอปจะแปลงเป็นข้อสอบแบบเลือกตอบ เข้าไปปนกับโจทย์ Part 5 และเข้าระบบสุ่มอัจฉริยะด้วย</p>'+
+   '<p class="muted" style="font-size:13px">โจทย์ที่นำเข้าเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ถูกส่งไปที่ไหน รองรับโจทย์แบบข้อความที่มีตัวเลือก A ถึง D (ใช้กับ Part 5 หรือคำถามข้อความอื่น ๆ ได้) ยังไม่รองรับรูปภาพและเสียง</p>'+
+   '<div class="tw"><pre class="mono" style="margin:0; font-size:12px; line-height:1.6; white-space:pre">'+esc(SAMPLE)+'</pre></div>'+
+   '<p class="muted" style="font-size:13px">เว้นหนึ่งบรรทัดระหว่างข้อ บรรทัด EXP: (คำอธิบาย) และ CAT: (หมวด) ไม่บังคับ</p></div>'+
+   '<div class="card stack"><label for="impfile" style="font-weight:700">เลือกไฟล์ .txt</label><input type="file" id="impfile" accept=".txt,text/plain" onchange="onFile(this)"><p class="muted" style="font-size:13px">ไฟล์ใช้รูปแบบเดียวกับตัวอย่างด้านบน ใส่บรรทัด TYPE: vocab ท้ายข้อ เพื่อให้เป็นโจทย์ศัพท์ (ไปอยู่ในโหมดศัพท์จากหนังสือ แยกจาก Part 5) นำเข้าไฟล์ใหญ่อาจใช้เวลาไม่กี่วินาที</p></div>'+
+   '<div class="card stack"><label for="imp" style="font-weight:700">หรือวางโจทย์ที่นี่</label>'+
+   '<textarea id="imp" rows="12" oninput="impDraft=this.value" style="width:100%; font:14px/1.6 var(--f-mono); padding:12px; border-radius:10px; border:1.5px solid var(--line); background:var(--bg); color:var(--ink); resize:vertical">'+esc(impDraft)+'</textarea>'+
+   '<div class="row" style="justify-content:flex-start"><button class="btn primary" onclick="doImport()">นำเข้าโจทย์</button>'+
+   '<button class="btn small" onclick="impDraft=SAMPLE; render()">ใส่ตัวอย่าง</button></div>'+
+   (impMsg?'<div class="note" role="status">'+impMsg+'</div>':'')+
+   (impErr.length?'<div class="fb bad"><strong>แก้ไขแล้วนำเข้าใหม่</strong><p>'+impErr.map(esc).join('<br>')+'</p></div>':'')+
+   '</div>'+
+   '<div class="card stack"><div class="row"><h3 style="font-size:16px">ที่นำเข้าแล้ว '+n+' ข้อ</h3>'+
+   (n?'<button class="btn small '+(impConfirm?'bad':'')+'" onclick="clearImported()">'+(impConfirm?'กดอีกครั้งเพื่อยืนยันลบ':'ลบโจทย์ที่นำเข้า')+'</button>':'')+'</div>'+
+   (n?'<p class="muted" style="font-size:13px">ฝึกได้ที่เมนู Part 5 หรือสุ่มอัจฉริยะ โจทย์ที่นำเข้านับรวมในคะแนนประมาณด้วย</p>':'<div class="empty">ยังไม่มีโจทย์ที่นำเข้า</div>')+'</div>'+
+  '</div>';
+}
+
+
+/* ---------- offline / install (ใช้เมื่อเปิดจากเว็บไซต์ที่ติดตั้งได้) ---------- */
+var offMsg='';
+function swReady(){ return typeof navigator!=='undefined' && navigator.serviceWorker && navigator.serviceWorker.controller; }
+function audioKeysAll(){ var k={}; ITEMS.forEach(function(it){ if(isAud(it)) k[audKey(it)]=1; }); VOC.forEach(function(w){ k['v'+w.i]=1; }); return Object.keys(k); }
+function cacheAudio(){
+  var keys=audioKeysAll(), done=0, fail=0, i=0;
+  offMsg='กำลังเก็บเสียง 0/'+keys.length; render();
+  function next(){
+    if(i>=keys.length){ offMsg='เก็บเสียงเสร็จ '+(keys.length-fail)+' จาก '+keys.length+' ไฟล์'+(fail?' (ล้มเหลว '+fail+' ไฟล์ ลองกดใหม่เมื่อมีอินเทอร์เน็ต)':'')+' ตอนนี้ฟังได้แม้ไม่มีอินเทอร์เน็ต'; render(); return; }
+    var k=keys[i++];
+    fetch('audio/'+k+'.txt').then(function(r){ if(!r.ok) fail++; return r.text(); }).catch(function(){ fail++; }).then(function(){
+      done++; if(done%10===0){ offMsg='กำลังเก็บเสียง '+done+'/'+keys.length; render(); } next();
+    });
+  }
+  next();
+}
+function offlineCard(){
+  if(!swReady()) return '';
+  var standalone=false; try{ standalone=window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true; }catch(e){}
+  return '<div class="card stack"><h3 style="font-size:16px">ใช้ออฟไลน์และติดตั้งเป็นแอป</h3>'+
+    '<p class="muted" style="font-size:13px">เก็บเสียงทั้งหมดไว้ในเครื่อง (ประมาณ 5 MB) เพื่อฟังได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>'+
+    '<div><button class="btn small" onclick="cacheAudio()">เก็บเสียงไว้ในเครื่อง</button></div>'+
+    (offMsg?'<div class="note" role="status">'+offMsg+'</div>':'')+
+    (standalone?'':'<p style="font-size:14px"><strong>Android (Chrome):</strong> เมนูสามจุด แล้วเลือก ติดตั้งแอป หรือ เพิ่มลงในหน้าจอหลัก<br><strong>iPhone (Safari):</strong> ปุ่มแชร์ แล้วเลือก เพิ่มลงในหน้าจอโฮม</p>')+
+    '</div>';
+}
+
+/* ---------- render ---------- */
+function render(){
+  var r=route();
+  $('#nav').innerHTML=TABS.map(function(t){ return '<a href="#'+t[0]+'"'+(t[0]===r?' aria-current="page"':'')+'>'+t[1]+'</a>'; }).join('');
+  var html = r==='home'?viewHome(): r==='practice'?viewPractice(): r==='vocab'?viewVocab(): r==='mine'?viewMine(): viewPlan();
+  $('#app').innerHTML=html;
+  clearInterval(clk);
+  if(r==='practice' && P && P.items[P.i]){
+    var cur=P.items[P.i];
+    if(isAud(cur)){ prefetch(audKey(cur)); var nx=P.items[P.i+1]; if(nx && isAud(nx)) prefetch(audKey(nx)); }
+    if(P.exam && P.limit){
+      clk=setInterval(function(){ var el=$('#clock'); var left=(P.deadline-Date.now())/1000; if(el) el.textContent=mmss(left); if(left<=0){ finishExam(); } },500);
+    } else if(!P.exam && P.picked===null){
+      clk=setInterval(function(){ var el=$('#clock'); if(el && P) el.textContent=Math.round((Date.now()-P.t0)/1000)+' วิ'; },500);
+    }
+  }
+  if(r==='vocab' && V.cur){ prefetch('v'+V.cur.i); }
+  if(r!=='practice' && r!=='vocab'){ stopAudio(); }
+}
+window.addEventListener('hashchange', function(){ confirmReset=false; impConfirm=false; render(); window.scrollTo(0,0); });
+render();
+
+</script>
+<script>
+if('serviceWorker' in navigator && location.protocol!=='file:'){
+  window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+}
+</script>
+</body>
+</html>
